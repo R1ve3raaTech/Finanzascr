@@ -106,6 +106,7 @@ export function TransactionList({
                     <p className="text-xs text-zinc-500">
                       {t.bank_name} · {formatDate(t.transaction_date)}
                     </p>
+                    <p className="mt-0.5 text-[11px] text-zinc-600">Ver más detalles</p>
                   </div>
                   <span
                     className={`font-mono text-sm ${

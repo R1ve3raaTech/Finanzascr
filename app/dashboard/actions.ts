@@ -148,6 +148,28 @@ export async function syncMyGmail() {
   return { error: hadError ? "Hubo un error. Volvé a intentarlo." : null, inserted };
 }
 
+export async function deleteTransaction(id: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const { error } = await supabase
+    .from("transactions")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { error: "Hubo un error. Volvé a intentarlo." };
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/insights");
+  return { error: null };
+}
+
 export async function categorizeUncategorized() {
   const supabase = await createClient();
   const {

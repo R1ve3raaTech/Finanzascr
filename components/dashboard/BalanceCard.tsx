@@ -6,9 +6,11 @@ import { formatMoney } from "@/lib/format";
 export function BalanceCard({
   crc,
   usd,
+  filtered = false,
 }: {
   crc: number;
   usd: number;
+  filtered?: boolean;
 }) {
   const reduce = useReducedMotion();
 
@@ -20,7 +22,9 @@ export function BalanceCard({
       whileHover={reduce ? undefined : { y: -2 }}
       className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6 transition-colors hover:border-white/20"
     >
-      <h2 className="text-sm font-medium text-zinc-400">Saldo consolidado</h2>
+      <h2 className="text-sm font-medium text-zinc-400">
+        {filtered ? "Neto del período seleccionado" : "Saldo consolidado"}
+      </h2>
       <div className="mt-4 grid gap-6 sm:grid-cols-2">
         <div>
           <p className="text-xs text-zinc-500">Colones</p>

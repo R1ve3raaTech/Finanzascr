@@ -2,28 +2,42 @@ import { redirect } from "next/navigation";
 import { ChartBar, GearSix } from "@phosphor-icons/react/dist/ssr";
 import { AddCashModal } from "@/components/dashboard/AddCashModal";
 import { BalanceCard } from "@/components/dashboard/BalanceCard";
+import { DateRangeFilter } from "@/components/dashboard/DateRangeFilter";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
 import { ProfileAvatar } from "@/components/dashboard/ProfileAvatar";
 import { SignOutButton } from "@/components/dashboard/SignOutButton";
 import { SyncGmailButton } from "@/components/dashboard/SyncGmailButton";
 import { TransactionList } from "@/components/dashboard/TransactionList";
 import { Logo } from "@/components/Logo";
+import { endOfDayISO, startOfDayISO } from "@/lib/dateRange";
 import { createClient } from "@/lib/supabase/server";
 import type { Currency, Transaction, UserCategory } from "@/lib/types";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ from?: string; to?: string }>;
+}) {
+  const { from, to } = await searchParams;
+  const hasRange = Boolean(from && to);
+
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
+  let transactionsQuery = supabase
+    .from("transactions")
+    .select("*")
+    .order("transaction_date", { ascending: false });
+
+  transactionsQuery = hasRange
+    ? transactionsQuery.gte("transaction_date", startOfDayISO(from!)).lte("transaction_date", endOfDayISO(to!))
+    : transactionsQuery.limit(50);
+
   const [{ data }, { data: settings }, { data: categories }] = await Promise.all([
-    supabase
-      .from("transactions")
-      .select("*")
-      .order("transaction_date", { ascending: false })
-      .limit(50),
+    transactionsQuery,
     supabase
       .from("user_settings")
       .select("default_currency")
@@ -73,11 +87,13 @@ export default async function DashboardPage() {
       </header>
 
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
-        <BalanceCard crc={balance.CRC} usd={balance.USD} />
+        <DateRangeFilter />
+
+        <BalanceCard crc={balance.CRC} usd={balance.USD} filtered={hasRange} />
 
         <section className="flex flex-col gap-4">
           <h2 className="text-sm font-medium text-zinc-400">
-            Últimas transacciones
+            {hasRange ? "Movimientos del período" : "Últimas transacciones"}
           </h2>
           <TransactionList transactions={transactions} />
         </section>

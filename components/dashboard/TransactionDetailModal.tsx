@@ -1,7 +1,9 @@
 "use client";
 
+import { useState, useTransition } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X } from "@phosphor-icons/react";
+import { Trash, X } from "@phosphor-icons/react";
+import { deleteTransaction } from "@/app/dashboard/actions";
 import { formatMoney } from "@/lib/format";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { BankLogo } from "./BankLogo";
@@ -26,6 +28,29 @@ export function TransactionDetailModal({
   onClose: () => void;
 }) {
   const reduce = useReducedMotion();
+  const [confirming, setConfirming] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  function handleClose() {
+    setConfirming(false);
+    setError(null);
+    onClose();
+  }
+
+  function handleDelete() {
+    if (!transaction) return;
+    setError(null);
+    startTransition(async () => {
+      const result = await deleteTransaction(transaction.id);
+      if (result.error) {
+        setError(result.error);
+        setConfirming(false);
+      } else {
+        handleClose();
+      }
+    });
+  }
 
   return (
     <AnimatePresence>
@@ -35,7 +60,7 @@ export function TransactionDetailModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
             className="fixed inset-0 z-50 bg-zinc-950/70 backdrop-blur-sm"
           />
           <motion.div
@@ -67,7 +92,7 @@ export function TransactionDetailModal({
                 </div>
               </div>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 aria-label="Cerrar"
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 cursor-pointer"
               >
@@ -103,6 +128,37 @@ export function TransactionDetailModal({
               <Row label="ID" value={transaction.id} />
               {transaction.gmail_message_id && (
                 <Row label="ID de correo" value={transaction.gmail_message_id} />
+              )}
+            </div>
+
+            <div className="mt-5 border-t border-white/5 pt-4">
+              {error && <p className="mb-3 text-xs text-rose-400">{error}</p>}
+              {!confirming ? (
+                <button
+                  onClick={() => setConfirming(true)}
+                  className="flex items-center gap-2 rounded-full border border-rose-400/20 px-4 py-2 text-xs font-medium text-rose-400 transition-colors hover:border-rose-400/40 hover:bg-rose-400/10 cursor-pointer"
+                >
+                  <Trash size={14} weight="bold" />
+                  Eliminar este movimiento
+                </button>
+              ) : (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs text-zinc-400">¿Seguro que querés eliminarlo?</span>
+                  <button
+                    onClick={handleDelete}
+                    disabled={isPending}
+                    className="rounded-full bg-rose-400 px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-50 cursor-pointer"
+                  >
+                    {isPending ? "Eliminando..." : "Sí, eliminar"}
+                  </button>
+                  <button
+                    onClick={() => setConfirming(false)}
+                    disabled={isPending}
+                    className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-zinc-400 hover:text-zinc-100 disabled:opacity-50 cursor-pointer"
+                  >
+                    Cancelar
+                  </button>
+                </div>
               )}
             </div>
           </motion.div>
