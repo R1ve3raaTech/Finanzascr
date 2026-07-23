@@ -3,10 +3,13 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { syncGmailForUser } from "@/lib/google/sync";
 
 /**
- * Disparado por un cron externo (cron-job.org, Vercel Cron, etc.) cada
- * pocos minutos. Protegido con un secreto compartido, no con sesión de usuario.
+ * Disparado por un cron externo (Vercel Cron llama con GET; cron-job.org u
+ * otros pueden usar POST) cada pocos minutos. Protegido con un secreto
+ * compartido, no con sesión de usuario. Vercel agrega automáticamente
+ * "Authorization: Bearer $CRON_SECRET" en sus llamadas de cron si esa
+ * variable de entorno existe en el proyecto.
  */
-export async function POST(request: Request) {
+async function handleSync(request: Request) {
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
@@ -48,4 +51,12 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ usersProcessed, transactionsInserted, errors });
+}
+
+export async function GET(request: Request) {
+  return handleSync(request);
+}
+
+export async function POST(request: Request) {
+  return handleSync(request);
 }
