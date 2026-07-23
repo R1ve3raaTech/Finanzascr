@@ -3,6 +3,7 @@ import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
 import { BreakdownList } from "@/components/insights/BreakdownList";
 import { BudgetProgress } from "@/components/insights/BudgetProgress";
+import { CategorizeButton } from "@/components/insights/CategorizeButton";
 import { MonthlyBarChart } from "@/components/insights/MonthlyBarChart";
 import { SubscriptionsList } from "@/components/insights/SubscriptionsList";
 import { BANK_BRAND } from "@/lib/bankBrand";
@@ -47,6 +48,9 @@ export default async function InsightsPage() {
     key
   );
   const recurring = detectRecurring(transactions);
+  const uncategorizedCount = transactions.filter(
+    (t) => t.is_automated && !t.category
+  ).length;
 
   const spentByCategory = new Map<string, number>();
   for (const item of byCategory) spentByCategory.set(item.label, item.amount);
@@ -116,7 +120,10 @@ export default async function InsightsPage() {
         </section>
 
         <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:180ms]">
-          <h2 className="mb-4 text-sm font-medium text-zinc-400">Gasto por categoría este mes</h2>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-sm font-medium text-zinc-400">Gasto por categoría este mes</h2>
+            <CategorizeButton pendingCount={uncategorizedCount} />
+          </div>
           <BreakdownList items={byCategory} emptyLabel="Todavía no hay gastos categorizados este mes." />
         </section>
 

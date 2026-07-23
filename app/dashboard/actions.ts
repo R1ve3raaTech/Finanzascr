@@ -6,7 +6,9 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { syncGmailForUser } from "@/lib/google/sync";
 import { sendPushToUser } from "@/lib/push/send";
+import { categorizeTransactions } from "@/lib/ai/categorize";
 import { formatMoney } from "@/lib/format";
+import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from "@/lib/categories";
 import type { Currency, TransactionType } from "@/lib/types";
 
 /**
@@ -144,6 +146,71 @@ export async function syncMyGmail() {
 
   revalidatePath("/dashboard");
   return { error: hadError ? "Hubo un error. Volvé a intentarlo." : null, inserted };
+}
+
+export async function categorizeUncategorized() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const admin = createAdminClient();
+
+  const [{ data: pending }, { data: customCategories }] = await Promise.all([
+    admin
+      .from("transactions")
+      .select("id, bank_name, description, amount, currency, type")
+      .eq("user_id", user.id)
+      .eq("is_automated", true)
+      .is("category", null),
+    admin.from("user_categories").select("name, type").eq("user_id", user.id),
+  ]);
+
+  const rows = pending ?? [];
+  if (rows.length === 0) {
+    return { error: null, updated: 0 };
+  }
+
+  const expenseCategories = [
+    ...DEFAULT_EXPENSE_CATEGORIES,
+    ...(customCategories ?? []).filter((c) => c.type === "EXPENSE").map((c) => c.name),
+  ];
+  const incomeCategories = [
+    ...DEFAULT_INCOME_CATEGORIES,
+    ...(customCategories ?? []).filter((c) => c.type === "INCOME").map((c) => c.name),
+  ];
+
+  const expenseRows = rows.filter((r) => r.type === "EXPENSE");
+  const incomeRows = rows.filter((r) => r.type === "INCOME");
+
+  let assignments = new Map<string, string>();
+  try {
+    const [expenseResults, incomeResults] = await Promise.all([
+      categorizeTransactions(expenseRows, expenseCategories),
+      categorizeTransactions(incomeRows, incomeCategories),
+    ]);
+    assignments = new Map([...expenseResults, ...incomeResults]);
+  } catch (err) {
+    console.error("[categorizeUncategorized]", err);
+    return { error: "Hubo un error. Volvé a intentarlo.", updated: 0 };
+  }
+
+  if (assignments.size === 0) {
+    return { error: null, updated: 0 };
+  }
+
+  let updated = 0;
+  await Promise.all(
+    Array.from(assignments.entries()).map(async ([id, category]) => {
+      const { error } = await admin.from("transactions").update({ category }).eq("id", id);
+      if (!error) updated++;
+    })
+  );
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/insights");
+  return { error: null, updated };
 }
 
 export async function subscribeToPush(subscription: {

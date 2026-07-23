@@ -62,8 +62,8 @@ export default async function DashboardPage() {
             <Logo />
           </div>
           <div className="flex items-center gap-3">
-            <HeaderIconLink href="/dashboard/insights" label="Estadísticas">
-              <ChartBar size={18} weight="bold" />
+            <HeaderIconLink href="/dashboard/insights" label="Estadísticas" showLabel>
+              <ChartBar size={14} weight="bold" />
             </HeaderIconLink>
             <SyncGmailButton />
             <SignOutButton />
