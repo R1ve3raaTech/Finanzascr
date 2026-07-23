@@ -64,6 +64,6 @@ export const BANK_BRAND: Record<BankName, BankBrand> = {
     fg: "#ffffff",
     logo: "/logos/paypal.png",
   },
-  Efectivo: { label: "Efectivo", initials: "₡", bg: "#3f3f46", fg: "#e4e4e7" },
+  Efectivo: { label: "Efectivo", initials: "₡", bg: "#059669", fg: "#ecfdf5" },
   Otro: { label: "Otro", initials: "?", bg: "#3f3f46", fg: "#e4e4e7" },
 };

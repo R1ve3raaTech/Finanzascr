@@ -30,10 +30,10 @@ export function HeaderIconLink({
         whileHover={reduce ? undefined : { scale: 1.03 }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={tap}
-        className="flex h-8 items-center gap-1.5 rounded-full border border-white/10 px-3 text-xs font-medium text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100"
+        className="flex h-8 items-center gap-1.5 rounded-full border border-white/10 px-2.5 text-xs font-medium text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100 sm:px-3"
       >
         {children}
-        {label}
+        <span className="hidden sm:inline">{label}</span>
       </MotionLink>
     );
   }

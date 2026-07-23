@@ -68,14 +68,14 @@ export default async function DashboardPage({
   return (
     <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
       <header className="border-b border-white/10">
-        <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center justify-between px-6">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center justify-between gap-3 px-4 sm:px-6">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <HeaderIconLink href="/dashboard/settings" label="Ajustes" hoverRotate={45}>
               <GearSix size={18} weight="bold" />
             </HeaderIconLink>
             <Logo />
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
             <HeaderIconLink href="/dashboard/insights" label="Estadísticas" showLabel>
               <ChartBar size={14} weight="bold" />
             </HeaderIconLink>
@@ -86,7 +86,7 @@ export default async function DashboardPage({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
         <DateRangeFilter />
 
         <BalanceCard crc={balance.CRC} usd={balance.USD} filtered={hasRange} />

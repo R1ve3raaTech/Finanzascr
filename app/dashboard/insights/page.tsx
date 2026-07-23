@@ -65,7 +65,7 @@ export default async function InsightsPage() {
   return (
     <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
       <header className="border-b border-white/10">
-        <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center gap-3 px-6">
+        <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center gap-3 px-4 sm:px-6">
           <HeaderIconLink href="/dashboard" label="Volver al dashboard">
             <ArrowLeft size={18} weight="bold" />
           </HeaderIconLink>
@@ -73,8 +73,8 @@ export default async function InsightsPage() {
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
-        <section className="animate-fade-up grid grid-cols-3 gap-3">
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
+        <section className="animate-fade-up grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
             <p className="text-xs text-zinc-500">Ingresos</p>
             <p className="mt-1 font-mono text-lg text-emerald-400">
