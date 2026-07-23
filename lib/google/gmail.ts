@@ -1,5 +1,4 @@
 import "server-only";
-import { PDFParse } from "pdf-parse";
 
 export interface GmailMessage {
   id: string;
@@ -88,6 +87,23 @@ async function extractPdfAttachmentsText(
   payload: GmailPayloadPart
 ): Promise<string> {
   const pdfParts = findPdfParts(payload);
+  if (pdfParts.length === 0) return "";
+
+  // Import dinámico (no al tope del archivo): pdf-parse depende de un
+  // binario nativo (@napi-rs/canvas) que en algunos entornos serverless
+  // (ej. Vercel) no está disponible y hace fallar la carga del módulo. Si
+  // el import se hiciera arriba del archivo, ese fallo tumbaría cualquier
+  // acción del servidor que comparta este módulo, no solo la lectura de
+  // PDFs — con el import adentro del try, si falla, simplemente se
+  // ignoran los PDFs de este correo y todo lo demás sigue funcionando.
+  let PDFParse: typeof import("pdf-parse").PDFParse;
+  try {
+    ({ PDFParse } = await import("pdf-parse"));
+  } catch (err) {
+    console.error(`[gmail] pdf-parse no disponible en este entorno:`, err);
+    return "";
+  }
+
   const texts: string[] = [];
   for (const part of pdfParts) {
     try {
