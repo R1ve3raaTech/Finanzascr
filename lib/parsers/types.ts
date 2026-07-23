@@ -13,7 +13,7 @@ export interface EmailContext {
   /** Fecha/hora real de recepción del correo (Gmail internalDate), usada
    * como respaldo por parsers cuyo formato no incluye la hora exacta. */
   receivedAt: string;
-  /** Nombre completo del dueño de la cuenta de finanzascr (de su perfil),
+  /** Nombre completo del dueño de la cuenta de RoKoBo (de su perfil),
    * usado por parsers cuyo correo no deja claro si el usuario es quien
    * envía o quien recibe la plata (ej. notificaciones de BAC). */
   ownerName?: string;

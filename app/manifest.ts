@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "finanzascr",
-    short_name: "finanzascr",
+    name: "RoKoBo",
+    short_name: "RoKoBo",
     description: "Tus finanzas en Costa Rica, automáticas.",
     start_url: "/dashboard",
     display: "standalone",

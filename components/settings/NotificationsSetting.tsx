@@ -6,7 +6,6 @@ import { subscribeToPush } from "@/app/dashboard/actions";
 import { setNotificationsEnabled } from "@/app/dashboard/settings/actions";
 
 const knobSpring = { type: "spring", stiffness: 500, damping: 30 } as const;
-const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -17,15 +16,29 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {
   return array;
 }
 
-export function NotificationsSetting({ initial }: { initial: boolean }) {
+export function NotificationsSetting() {
   const reduce = useReducedMotion();
-  const [enabled, setEnabled] = useState(initial);
+  // El estado real es "¿este navegador tiene una suscripción push activa?",
+  // no el flag guardado en la base (que es a nivel de usuario, no de
+  // dispositivo) — por eso se revisa contra el Service Worker en vez de
+  // confiar en el valor inicial del servidor.
+  const [enabled, setEnabled] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [supported, setSupported] = useState(false);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setSupported("serviceWorker" in navigator && "PushManager" in window);
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+      setChecked(true);
+      return;
+    }
+    setSupported(true);
+    navigator.serviceWorker
+      .getRegistration()
+      .then((reg) => reg?.pushManager.getSubscription())
+      .then((sub) => setEnabled(!!sub))
+      .finally(() => setChecked(true));
   }, []);
 
   function toggle() {
@@ -77,16 +90,16 @@ export function NotificationsSetting({ initial }: { initial: boolean }) {
         <div>
           <h3 className="text-sm font-medium text-zinc-100">Notificaciones push</h3>
           <p className="text-xs text-zinc-500">
-            Avisos al celular cuando se detecta un movimiento nuevo.
+            Avisos en este dispositivo cuando se detecta un movimiento nuevo.
           </p>
         </div>
         <motion.button
           onClick={toggle}
-          disabled={pending || !supported}
+          disabled={pending || !supported || !checked}
           aria-label="Notificaciones push"
           whileTap={reduce ? undefined : { scale: 0.92 }}
-          transition={tap}
           animate={{ backgroundColor: enabled ? "#34d399" : "#3f3f46" }}
+          transition={{ backgroundColor: { duration: 0.2 } }}
           className="relative h-7 w-12 shrink-0 rounded-full disabled:opacity-40 cursor-pointer"
         >
           <motion.span
@@ -96,7 +109,7 @@ export function NotificationsSetting({ initial }: { initial: boolean }) {
           />
         </motion.button>
       </div>
-      {!supported && (
+      {!supported && checked && (
         <p className="text-xs text-zinc-600">
           Tu navegador no soporta notificaciones push.
         </p>

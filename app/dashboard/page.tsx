@@ -7,6 +7,7 @@ import { ProfileAvatar } from "@/components/dashboard/ProfileAvatar";
 import { SignOutButton } from "@/components/dashboard/SignOutButton";
 import { SyncGmailButton } from "@/components/dashboard/SyncGmailButton";
 import { TransactionList } from "@/components/dashboard/TransactionList";
+import { Logo } from "@/components/Logo";
 import { createClient } from "@/lib/supabase/server";
 import type { Currency, Transaction, UserCategory } from "@/lib/types";
 
@@ -58,9 +59,7 @@ export default async function DashboardPage() {
             <HeaderIconLink href="/dashboard/settings" label="Ajustes" hoverRotate={45}>
               <GearSix size={18} weight="bold" />
             </HeaderIconLink>
-            <span className="text-sm font-semibold tracking-tight text-zinc-50">
-              finanzas<span className="text-emerald-400">cr</span>
-            </span>
+            <Logo />
           </div>
           <div className="flex items-center gap-3">
             <SyncGmailButton />

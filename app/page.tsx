@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { Hero } from "@/components/landing/Hero";
 import { LoginButton } from "@/components/landing/LoginButton";
+import { Logo } from "@/components/Logo";
 import { createClient } from "@/lib/supabase/server";
 
 const banks = ["BAC Credomatic", "BCR", "BNCR", "Promerica", "Davivienda", "SINPE Móvil"];
@@ -31,9 +32,7 @@ export default async function LandingPage() {
     <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/80 backdrop-blur">
         <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between px-6">
-          <span className="text-sm font-semibold tracking-tight text-zinc-50">
-            finanzas<span className="text-emerald-400">cr</span>
-          </span>
+          <Logo subtitle="finanzas personales" />
           <LoginButton />
         </div>
       </header>

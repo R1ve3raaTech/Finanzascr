@@ -38,8 +38,8 @@ export default async function SettingsPage({
         .order("updated_at", { ascending: true }),
     ]);
 
-  const resolvedSettings: Pick<UserSettings, "default_currency" | "notifications_enabled"> =
-    settings ?? { default_currency: "CRC", notifications_enabled: false };
+  const resolvedSettings: Pick<UserSettings, "default_currency"> =
+    settings ?? { default_currency: "CRC" };
 
   return (
     <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
@@ -71,7 +71,7 @@ export default async function SettingsPage({
         <section
           className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:60ms]"
         >
-          <NotificationsSetting initial={resolvedSettings.notifications_enabled} />
+          <NotificationsSetting />
         </section>
 
         <section
