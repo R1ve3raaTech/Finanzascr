@@ -1,4 +1,5 @@
 import { parseBacTransfer } from "./bacTransfer";
+import { parseBnCardPurchase } from "./bnCardPurchase";
 import { parseBpServicePayment } from "./bpServicePayment";
 import { parseCardPurchase } from "./cardPurchase";
 import { parseDaviviendaCardPurchase } from "./daviviendaCardPurchase";
@@ -16,6 +17,7 @@ const parsers: EmailParser[] = [
   parseBpServicePayment,
   parseCardPurchase,
   parseDaviviendaCardPurchase,
+  parseBnCardPurchase,
   parsePayPal,
 ];
 
@@ -34,10 +36,12 @@ export function parseEmail(bodyText: string, ctx: EmailContext): ParsedTransacti
  */
 export const KNOWN_BANK_SENDERS = [
   "bpdc.fi.cr",
+  "bancopopularinforma.fi.cr",
   "baccredomatic.com",
   "intl.paypal.com",
   "davibank.cr",
   "mucap.fi.cr",
+  "bncr.fi.cr",
 ];
 
 export function buildGmailQuery(days = 3): string {

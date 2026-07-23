@@ -174,7 +174,13 @@ export async function getMessage(
 
   const payload = data.payload as GmailPayloadPart;
   const { plain, html } = extractBody(payload);
-  const textBody = plain ?? (html ? stripHtml(html) : data.snippet ?? "");
+  let textBody = plain ?? (html ? stripHtml(html) : data.snippet ?? "");
+  // Algunos correos ponen HTML crudo en la parte "text/plain" (mal armados
+  // del lado del remitente); si lo que quedó todavía tiene tags, se limpia
+  // igual, si no ningún parser lo puede leer.
+  if (/<[a-z][\s\S]*>/i.test(textBody)) {
+    textBody = stripHtml(textBody);
+  }
   const pdfText = await extractPdfAttachmentsText(accessToken, id, payload);
   const bodyText = pdfText ? `${textBody}\n${pdfText}` : textBody;
   const receivedAt = new Date(Number(data.internalDate)).toISOString();
