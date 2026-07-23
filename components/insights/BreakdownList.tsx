@@ -13,12 +13,12 @@ const CATEGORICAL_DARK = [
 
 export function BreakdownList({
   items,
-  colorFor,
+  colorMap,
   emptyLabel,
 }: {
   items: BreakdownItem[];
-  /** Color por item; si no se da, usa la paleta categórica en orden fijo. */
-  colorFor?: (label: string, index: number) => string;
+  /** Color por etiqueta; si falta una, cae a la paleta categórica en orden fijo. */
+  colorMap?: Record<string, string>;
   emptyLabel: string;
 }) {
   if (items.length === 0) {
@@ -28,7 +28,7 @@ export function BreakdownList({
   return (
     <ul className="flex flex-col gap-3">
       {items.slice(0, 8).map((item, i) => {
-        const color = colorFor ? colorFor(item.label, i) : CATEGORICAL_DARK[i % CATEGORICAL_DARK.length];
+        const color = colorMap?.[item.label] ?? CATEGORICAL_DARK[i % CATEGORICAL_DARK.length];
         return (
           <li key={item.label} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between text-sm">

@@ -122,7 +122,7 @@ export async function syncMyGmail() {
   }
 
   let inserted = 0;
-  const errors: string[] = [];
+  let hadError = false;
   for (const row of tokenRows) {
     try {
       const result = await syncGmailForUser({
@@ -132,14 +132,18 @@ export async function syncMyGmail() {
         tokenId: row.id,
       });
       inserted += result.transactionsInserted;
-      errors.push(...result.errors);
+      if (result.errors.length > 0) {
+        hadError = true;
+        console.error("[syncMyGmail]", result.errors);
+      }
     } catch (err) {
-      errors.push((err as Error).message);
+      hadError = true;
+      console.error("[syncMyGmail]", err);
     }
   }
 
   revalidatePath("/dashboard");
-  return { error: errors.length > 0 ? errors[0] : null, inserted };
+  return { error: hadError ? "Hubo un error. Volvé a intentarlo." : null, inserted };
 }
 
 export async function subscribeToPush(subscription: {

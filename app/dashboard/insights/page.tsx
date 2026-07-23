@@ -105,7 +105,12 @@ export default async function InsightsPage() {
           <h2 className="mb-4 text-sm font-medium text-zinc-400">Gasto por entidad este mes</h2>
           <BreakdownList
             items={byEntity}
-            colorFor={(label) => BANK_BRAND[label as keyof typeof BANK_BRAND]?.bg ?? "#3f3f46"}
+            colorMap={Object.fromEntries(
+              byEntity.map((item) => [
+                item.label,
+                BANK_BRAND[item.label as keyof typeof BANK_BRAND]?.bg ?? "#3f3f46",
+              ])
+            )}
             emptyLabel="Todavía no hay gastos este mes."
           />
         </section>
