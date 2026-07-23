@@ -17,7 +17,7 @@ async function handleSync(request: Request) {
 
   const url = new URL(request.url);
   const days = Number(url.searchParams.get("days")) || 3;
-  const maxResults = Number(url.searchParams.get("limit")) || 20;
+  const maxResults = Number(url.searchParams.get("limit")) || 100;
 
   const supabase = createAdminClient();
   const { data: tokens, error } = await supabase

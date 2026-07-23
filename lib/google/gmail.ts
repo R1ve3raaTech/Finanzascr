@@ -118,25 +118,40 @@ async function extractPdfAttachmentsText(
   return texts.join("\n");
 }
 
-/** Busca ids de mensajes que matcheen la query de búsqueda de Gmail. */
+/**
+ * Busca ids de mensajes que matcheen la query, paginando hasta juntar
+ * maxResults en total. Gmail limita cada página a 100 resultados como
+ * mucho; sin paginar, un usuario con mucho volumen de correo bancario
+ * perdía en silencio los mensajes más viejos que no entraban en la
+ * primera página.
+ */
 export async function listMessageIds(
   accessToken: string,
   query: string,
-  maxResults = 20
+  maxResults = 100
 ): Promise<string[]> {
-  const url = new URL("https://gmail.googleapis.com/gmail/v1/users/me/messages");
-  url.searchParams.set("q", query);
-  url.searchParams.set("maxResults", String(maxResults));
+  const ids: string[] = [];
+  let pageToken: string | undefined;
 
-  const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`Gmail list falló: ${response.status} ${body}`);
-  }
-  const data = await response.json();
-  return (data.messages ?? []).map((m: { id: string }) => m.id);
+  do {
+    const url = new URL("https://gmail.googleapis.com/gmail/v1/users/me/messages");
+    url.searchParams.set("q", query);
+    url.searchParams.set("maxResults", String(Math.min(100, maxResults - ids.length)));
+    if (pageToken) url.searchParams.set("pageToken", pageToken);
+
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error(`Gmail list falló: ${response.status} ${body}`);
+    }
+    const data = await response.json();
+    ids.push(...(data.messages ?? []).map((m: { id: string }) => m.id));
+    pageToken = data.nextPageToken;
+  } while (pageToken && ids.length < maxResults);
+
+  return ids.slice(0, maxResults);
 }
 
 /** Obtiene un mensaje completo y devuelve su texto plano y remitente. */

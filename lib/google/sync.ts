@@ -33,7 +33,7 @@ export async function syncGmailForUser({
   refreshToken,
   tokenId,
   days = 3,
-  maxResults = 20,
+  maxResults = 100,
 }: SyncOptions): Promise<SyncResult> {
   const errors: string[] = [];
   let transactionsInserted = 0;
