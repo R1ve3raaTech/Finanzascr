@@ -10,25 +10,8 @@ import {
   X,
 } from "@phosphor-icons/react";
 import { addCashTransaction } from "@/app/dashboard/actions";
+import { DEFAULT_EXPENSE_CATEGORIES as expenseCategories, DEFAULT_INCOME_CATEGORIES as incomeCategories } from "@/lib/categories";
 import type { Currency, TransactionType, UserCategory } from "@/lib/types";
-
-const expenseCategories = [
-  "Comida",
-  "Transporte",
-  "Súper",
-  "Salud",
-  "Entretenimiento",
-  "Otro",
-];
-
-const incomeCategories = [
-  "Salario",
-  "Freelance",
-  "Regalo",
-  "Reembolso",
-  "Venta",
-  "Otro",
-];
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 const bounce = { type: "spring", stiffness: 400, damping: 22 } as const;

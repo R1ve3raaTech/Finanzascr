@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { GearSix } from "@phosphor-icons/react/dist/ssr";
+import { ChartBar, GearSix } from "@phosphor-icons/react/dist/ssr";
 import { AddCashModal } from "@/components/dashboard/AddCashModal";
 import { BalanceCard } from "@/components/dashboard/BalanceCard";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
@@ -62,6 +62,9 @@ export default async function DashboardPage() {
             <Logo />
           </div>
           <div className="flex items-center gap-3">
+            <HeaderIconLink href="/dashboard/insights" label="Estadísticas">
+              <ChartBar size={18} weight="bold" />
+            </HeaderIconLink>
             <SyncGmailButton />
             <SignOutButton />
             <ProfileAvatar avatarUrl={avatarUrl} name={firstName} />

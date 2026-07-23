@@ -1,0 +1,60 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { formatMoney } from "@/lib/format";
+import type { BreakdownItem } from "@/lib/insights";
+
+// Paleta categórica validada (8 tonos, orden fijo, modo oscuro) para
+// agrupaciones sin color de marca propio (ej. categorías de gasto).
+const CATEGORICAL_DARK = [
+  "#3987e5", "#d95926", "#199e70", "#c98500",
+  "#d55181", "#008300", "#9085e9", "#e66767",
+];
+
+export function BreakdownList({
+  items,
+  colorFor,
+  emptyLabel,
+}: {
+  items: BreakdownItem[];
+  /** Color por item; si no se da, usa la paleta categórica en orden fijo. */
+  colorFor?: (label: string, index: number) => string;
+  emptyLabel: string;
+}) {
+  if (items.length === 0) {
+    return <p className="text-sm text-zinc-600">{emptyLabel}</p>;
+  }
+
+  return (
+    <ul className="flex flex-col gap-3">
+      {items.slice(0, 8).map((item, i) => {
+        const color = colorFor ? colorFor(item.label, i) : CATEGORICAL_DARK[i % CATEGORICAL_DARK.length];
+        return (
+          <li key={item.label} className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between text-sm">
+              <span className="flex items-center gap-2 text-zinc-200">
+                <span
+                  className="h-2 w-2 shrink-0 rounded-full"
+                  style={{ background: color }}
+                />
+                {item.label}
+              </span>
+              <span className="font-mono text-zinc-400">
+                {formatMoney(item.amount, "CRC")}
+              </span>
+            </div>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${item.share * 100}%` }}
+                transition={{ type: "spring", stiffness: 120, damping: 22 }}
+                className="h-full rounded-full"
+                style={{ background: color }}
+              />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}

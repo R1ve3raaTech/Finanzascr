@@ -6,6 +6,41 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Currency, TransactionType } from "@/lib/types";
 
+export async function setBudget(category: string, monthlyLimit: number, currency: Currency) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  if (!Number.isFinite(monthlyLimit) || monthlyLimit <= 0) {
+    return { error: "El límite debe ser mayor a cero." };
+  }
+
+  const { error } = await supabase.from("budgets").upsert(
+    { user_id: user.id, category, monthly_limit: monthlyLimit, currency },
+    { onConflict: "user_id,category" }
+  );
+
+  if (error) return { error: "No se pudo guardar el presupuesto." };
+  revalidatePath("/dashboard/settings");
+  revalidatePath("/dashboard/insights");
+  return { error: null };
+}
+
+export async function deleteBudget(id: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  await supabase.from("budgets").delete().eq("id", id).eq("user_id", user.id);
+  revalidatePath("/dashboard/settings");
+  revalidatePath("/dashboard/insights");
+  return { error: null };
+}
+
 export async function updateDefaultCurrency(currency: Currency) {
   const supabase = await createClient();
   const {

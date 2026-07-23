@@ -5,7 +5,53 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { syncGmailForUser } from "@/lib/google/sync";
+import { sendPushToUser } from "@/lib/push/send";
+import { formatMoney } from "@/lib/format";
 import type { Currency, TransactionType } from "@/lib/types";
+
+/**
+ * Avisa por push la primera vez que un gasto categorizado hace que el mes
+ * se pase del presupuesto de esa categoría (no en cada gasto siguiente).
+ */
+async function checkBudgetAndNotify(
+  userId: string,
+  category: string,
+  currency: Currency,
+  justSpent: number
+) {
+  const admin = createAdminClient();
+  const { data: budget } = await admin
+    .from("budgets")
+    .select("monthly_limit, currency")
+    .eq("user_id", userId)
+    .eq("category", category)
+    .maybeSingle();
+  if (!budget || budget.currency !== currency) return;
+
+  const start = new Date();
+  start.setDate(1);
+  start.setHours(0, 0, 0, 0);
+
+  const { data: rows } = await admin
+    .from("transactions")
+    .select("amount")
+    .eq("user_id", userId)
+    .eq("category", category)
+    .eq("type", "EXPENSE")
+    .eq("currency", currency)
+    .gte("transaction_date", start.toISOString());
+
+  const spent = (rows ?? []).reduce((sum, r) => sum + r.amount, 0);
+  const spentBefore = spent - justSpent;
+
+  if (spent > budget.monthly_limit && spentBefore <= budget.monthly_limit) {
+    await sendPushToUser(admin, userId, {
+      title: "Te pasaste del presupuesto",
+      body: `${category}: ${formatMoney(spent, currency)} de ${formatMoney(budget.monthly_limit, currency)} este mes.`,
+      url: "/dashboard/insights",
+    }).catch(() => {});
+  }
+}
 
 export async function addCashTransaction(input: {
   amount: number;
@@ -44,6 +90,10 @@ export async function addCashTransaction(input: {
 
   if (error) {
     return { error: "No se pudo guardar la transacción. Intentá de nuevo." };
+  }
+
+  if (input.type === "EXPENSE" && input.category) {
+    await checkBudgetAndNotify(user.id, input.category, input.currency, input.amount);
   }
 
   revalidatePath("/dashboard");

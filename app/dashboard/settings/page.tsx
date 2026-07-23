@@ -1,13 +1,15 @@
 import { redirect } from "next/navigation";
 import { ArrowLeft, DownloadSimple } from "@phosphor-icons/react/dist/ssr";
+import { BudgetManager } from "@/components/settings/BudgetManager";
 import { CategoryManager } from "@/components/settings/CategoryManager";
 import { CurrencySetting } from "@/components/settings/CurrencySetting";
 import { GmailConnections } from "@/components/settings/GmailConnections";
 import { NotificationsSetting } from "@/components/settings/NotificationsSetting";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
+import { DEFAULT_EXPENSE_CATEGORIES } from "@/lib/categories";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import type { UserCategory, UserSettings } from "@/lib/types";
+import type { Budget, UserCategory, UserSettings } from "@/lib/types";
 
 export default async function SettingsPage({
   searchParams,
@@ -23,7 +25,7 @@ export default async function SettingsPage({
   const params = await searchParams;
   const admin = createAdminClient();
 
-  const [{ data: settings }, { data: categories }, { data: gmailConnections }] =
+  const [{ data: settings }, { data: categories }, { data: gmailConnections }, { data: budgets }] =
     await Promise.all([
       supabase.from("user_settings").select("*").eq("user_id", user.id).maybeSingle(),
       supabase
@@ -36,7 +38,19 @@ export default async function SettingsPage({
         .select("id, email, last_synced_at")
         .eq("user_id", user.id)
         .order("updated_at", { ascending: true }),
+      supabase
+        .from("budgets")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: true }),
     ]);
+
+  const budgetCategories = [
+    ...new Set([
+      ...DEFAULT_EXPENSE_CATEGORIES,
+      ...(categories ?? []).filter((c) => c.type === "EXPENSE").map((c) => c.name),
+    ]),
+  ];
 
   const resolvedSettings: Pick<UserSettings, "default_currency"> =
     settings ?? { default_currency: "CRC" };
@@ -84,6 +98,12 @@ export default async function SettingsPage({
           className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:180ms]"
         >
           <CategoryManager categories={(categories ?? []) as UserCategory[]} />
+        </section>
+
+        <section
+          className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:220ms]"
+        >
+          <BudgetManager budgets={(budgets ?? []) as Budget[]} categories={budgetCategories} />
         </section>
 
         <a
