@@ -20,14 +20,37 @@ function decodeBase64Url(data: string): string {
   return Buffer.from(normalized, "base64").toString("utf-8");
 }
 
+const HTML_ENTITIES: Record<string, string> = {
+  aacute: "á", Aacute: "Á",
+  eacute: "é", Eacute: "É",
+  iacute: "í", Iacute: "Í",
+  oacute: "ó", Oacute: "Ó",
+  uacute: "ú", Uacute: "Ú",
+  ntilde: "ñ", Ntilde: "Ñ",
+  uuml: "ü", Uuml: "Ü",
+  iexcl: "¡", iquest: "¿",
+  amp: "&", quot: '"', apos: "'", lt: "<", gt: ">",
+};
+
+/** Algunos bancos (ej. BCR) mandan entidades HTML con nombre/número en vez
+ * de UTF-8 directo, y eso rompe cualquier regex con acentos si no se
+ * decodifican primero. */
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&([a-zA-Z]+);/g, (match, name) => HTML_ENTITIES[name] ?? match)
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
+}
+
 function stripHtml(html: string): string {
-  return html
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, "\n")
-    .replace(/&nbsp;/g, " ")
-    .replace(/[ \t]+/g, " ")
-    .replace(/\n{2,}/g, "\n")
-    .trim();
+  return decodeHtmlEntities(
+    html
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, "\n")
+      .replace(/&nbsp;/g, " ")
+      .replace(/[ \t]+/g, " ")
+      .replace(/\n{2,}/g, "\n")
+      .trim()
+  );
 }
 
 function extractBody(part: GmailPayloadPart): { plain?: string; html?: string } {
@@ -180,6 +203,8 @@ export async function getMessage(
   // igual, si no ningún parser lo puede leer.
   if (/<[a-z][\s\S]*>/i.test(textBody)) {
     textBody = stripHtml(textBody);
+  } else if (/&[a-zA-Z]+;|&#\d+;/.test(textBody)) {
+    textBody = decodeHtmlEntities(textBody);
   }
   const pdfText = await extractPdfAttachmentsText(accessToken, id, payload);
   const bodyText = pdfText ? `${textBody}\n${pdfText}` : textBody;
