@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
@@ -6,9 +6,19 @@ import {
   getGoogleAccountEmail,
 } from "@/lib/google/oauth";
 
-export async function GET(request: Request) {
+const STATE_COOKIE = "gmail_connect_state";
+
+function redirectAndClearState(url: string) {
+  const response = NextResponse.redirect(url);
+  response.cookies.delete(STATE_COOKIE);
+  return response;
+}
+
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
+  const state = searchParams.get("state");
+  const expectedState = request.cookies.get(STATE_COOKIE)?.value;
 
   const supabase = await createClient();
   const {
@@ -18,8 +28,8 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/`);
   }
 
-  if (!code) {
-    return NextResponse.redirect(`${origin}/dashboard/settings?gmail_error=1`);
+  if (!code || !state || !expectedState || state !== expectedState) {
+    return redirectAndClearState(`${origin}/dashboard/settings?gmail_error=1`);
   }
 
   try {
@@ -27,7 +37,7 @@ export async function GET(request: Request) {
     const tokens = await exchangeGoogleAuthCode(code, redirectUri);
 
     if (!tokens.refresh_token) {
-      return NextResponse.redirect(`${origin}/dashboard/settings?gmail_error=1`);
+      return redirectAndClearState(`${origin}/dashboard/settings?gmail_error=1`);
     }
 
     const email = await getGoogleAccountEmail(tokens.access_token);
@@ -44,11 +54,11 @@ export async function GET(request: Request) {
     );
 
     if (error) {
-      return NextResponse.redirect(`${origin}/dashboard/settings?gmail_error=1`);
+      return redirectAndClearState(`${origin}/dashboard/settings?gmail_error=1`);
     }
 
-    return NextResponse.redirect(`${origin}/dashboard/settings?gmail_connected=1`);
+    return redirectAndClearState(`${origin}/dashboard/settings?gmail_connected=1`);
   } catch {
-    return NextResponse.redirect(`${origin}/dashboard/settings?gmail_error=1`);
+    return redirectAndClearState(`${origin}/dashboard/settings?gmail_error=1`);
   }
 }

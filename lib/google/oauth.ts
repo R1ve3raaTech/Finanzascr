@@ -4,7 +4,7 @@ import "server-only";
  * Flujo de OAuth directo contra Google (no vía Supabase Auth) para conectar
  * cuentas de Gmail adicionales sin cerrar la sesión actual del usuario.
  */
-export function buildGoogleAuthUrl(redirectUri: string): string {
+export function buildGoogleAuthUrl(redirectUri: string, state: string): string {
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   url.searchParams.set("client_id", process.env.GOOGLE_CLIENT_ID!);
   url.searchParams.set("redirect_uri", redirectUri);
@@ -15,6 +15,7 @@ export function buildGoogleAuthUrl(redirectUri: string): string {
   );
   url.searchParams.set("access_type", "offline");
   url.searchParams.set("prompt", "consent");
+  url.searchParams.set("state", state);
   return url.toString();
 }
 

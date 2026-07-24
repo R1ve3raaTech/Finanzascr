@@ -3,10 +3,14 @@ import { createClient } from "@/lib/supabase/server";
 import type { Transaction } from "@/lib/types";
 
 function csvEscape(value: string): string {
-  if (/[",\n]/.test(value)) {
-    return `"${value.replace(/"/g, '""')}"`;
+  // Si la celda empieza con =, +, -, @, tab o retorno de carro, Excel/Sheets
+  // puede interpretarla como fórmula al abrir el CSV ("CSV injection"). Se
+  // antepone un apóstrofe para que quede forzada a texto plano.
+  const safe = /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+  if (/[",\n]/.test(safe)) {
+    return `"${safe.replace(/"/g, '""')}"`;
   }
-  return value;
+  return safe;
 }
 
 const HEADER = [
