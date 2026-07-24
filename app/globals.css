@@ -3,7 +3,7 @@
 :root {
   --background: #09090b; /* zinc-950 */
   --foreground: #fafafa;
-  --accent: #34d399; /* emerald-400 */
+  --accent: #38bdf8; /* sky-400 */
 }
 
 @theme inline {
@@ -26,7 +26,7 @@ body {
 }
 
 ::selection {
-  background: rgb(52 211 153 / 0.25);
+  background: rgb(56 189 248 / 0.25);
 }
 
 @keyframes fade-up {

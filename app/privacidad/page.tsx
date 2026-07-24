@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
             almacena en una base de datos de Supabase con acceso restringido a tu propia cuenta.
           </p>
           <p>
-            No guardamos el contenido completo de tus correos — solo los datos ya extraídos de la
+            No guardamos el contenido completo de tus correos, solo los datos ya extraídos de la
             transacción.
           </p>
         </Section>
@@ -84,7 +84,7 @@ export default function PrivacyPolicyPage() {
           <p>
             Si tenés dudas sobre esta política o querés que eliminemos tu cuenta y tus datos por
             completo, escribinos a{" "}
-            <a href="mailto:thecamil999@gmail.com" className="text-emerald-400 hover:underline">
+            <a href="mailto:thecamil999@gmail.com" className="text-sky-400 hover:underline">
               thecamil999@gmail.com
             </a>
             .

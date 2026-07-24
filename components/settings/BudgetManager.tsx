@@ -92,7 +92,7 @@ export function BudgetManager({
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="flex-1 rounded-lg border border-white/10 bg-zinc-950 px-3 py-1.5 text-xs text-zinc-50 outline-none focus:border-emerald-400/50"
+              className="flex-1 rounded-lg border border-white/10 bg-zinc-950 px-3 py-1.5 text-xs text-zinc-50 outline-none focus:border-sky-400/50"
             >
               {available.map((c) => (
                 <option key={c} value={c}>
@@ -121,7 +121,7 @@ export function BudgetManager({
               onKeyDown={(e) => e.key === "Enter" && submit()}
               inputMode="decimal"
               placeholder="Límite mensual"
-              className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-1.5 text-xs text-zinc-50 outline-none placeholder:text-zinc-600 focus:border-emerald-400/50"
+              className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-1.5 text-xs text-zinc-50 outline-none placeholder:text-zinc-600 focus:border-sky-400/50"
             />
             <motion.button
               onClick={submit}

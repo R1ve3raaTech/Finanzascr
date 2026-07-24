@@ -19,7 +19,7 @@ function parseBacDate(day: string, month: string, year: string, hour: string, mi
  * cuando el destinatario es otra persona (ej. transferencias familiares
  * compartiendo el mismo correo de notificaciones) — por eso la dirección
  * (ingreso/gasto) se decide comparando remitente y destinatario contra el
- * nombre del dueño de la cuenta de RoKKbo, no asumiendo que el
+ * nombre del dueño de la cuenta de TicoFinanza, no asumiendo que el
  * destinatario siempre es el usuario.
  *
  * BAC no pone separador de miles bajo 1.000 CRC ("10,00") pero sí desde

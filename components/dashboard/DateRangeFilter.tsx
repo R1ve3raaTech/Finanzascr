@@ -11,7 +11,7 @@ const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 function pillClass(active: boolean) {
   return `flex h-8 items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors cursor-pointer ${
     active
-      ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-400"
+      ? "border-sky-400/40 bg-sky-400/10 text-sky-400"
       : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
   }`;
 }
@@ -118,7 +118,7 @@ export function DateRangeFilter() {
           <button
             onClick={applyCustom}
             disabled={!customFrom || !customTo}
-            className="rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-40 cursor-pointer"
+            className="rounded-full bg-sky-400 px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-40 cursor-pointer"
           >
             Aplicar
           </button>

@@ -98,7 +98,7 @@ export function NotificationsSetting() {
           disabled={pending || !supported || !checked}
           aria-label="Notificaciones push"
           whileTap={reduce ? undefined : { scale: 0.92 }}
-          animate={{ backgroundColor: enabled ? "#34d399" : "#3f3f46" }}
+          animate={{ backgroundColor: enabled ? "#38bdf8" : "#3f3f46" }}
           transition={{ backgroundColor: { duration: 0.2 } }}
           className="relative h-7 w-12 shrink-0 rounded-full disabled:opacity-40 cursor-pointer"
         >

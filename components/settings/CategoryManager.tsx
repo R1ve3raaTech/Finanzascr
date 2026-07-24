@@ -80,7 +80,7 @@ function CategoryGroup({
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && submit()}
           placeholder="Nueva categoría"
-          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-1.5 text-xs text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-emerald-400/50"
+          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-1.5 text-xs text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-sky-400/50"
         />
         <motion.button
           onClick={submit}

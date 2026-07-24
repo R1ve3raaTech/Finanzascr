@@ -75,9 +75,9 @@ export function TransactionList({
                     ? {
                         scale: [1, 1.035, 1],
                         boxShadow: [
-                          "0 0 0 0 rgba(52,211,153,0)",
-                          "0 0 0 0 rgba(52,211,153,0.55)",
-                          "0 0 0 14px rgba(52,211,153,0)",
+                          "0 0 0 0 rgba(56,189,248,0)",
+                          "0 0 0 0 rgba(56,189,248,0.55)",
+                          "0 0 0 14px rgba(56,189,248,0)",
                         ],
                       }
                     : { scale: 1 }
@@ -94,7 +94,7 @@ export function TransactionList({
                   onClick={() => setSelected(t)}
                   className={`relative flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-colors cursor-pointer ${
                     isNew
-                      ? "border-emerald-400/40 bg-emerald-400/5"
+                      ? "border-sky-400/40 bg-sky-400/5"
                       : "border-white/10 bg-zinc-900/60 hover:border-white/20"
                   }`}
                 >
@@ -124,7 +124,7 @@ export function TransactionList({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.7 }}
                         transition={{ type: "spring", stiffness: 420, damping: 20 }}
-                        className="absolute -right-1.5 -top-1.5 rounded-full bg-emerald-400 px-2 py-0.5 text-[10px] font-bold tracking-wide text-zinc-950"
+                        className="absolute -right-1.5 -top-1.5 rounded-full bg-sky-400 px-2 py-0.5 text-[10px] font-bold tracking-wide text-zinc-950"
                       >
                         NUEVO
                       </motion.span>

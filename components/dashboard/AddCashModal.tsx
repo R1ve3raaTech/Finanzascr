@@ -119,7 +119,7 @@ export function AddCashModal({
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={spring}
         aria-label="Registrar efectivo"
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-400 text-zinc-950 shadow-[0_8px_30px_rgba(52,211,153,0.35)] cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-sky-400 text-zinc-950 shadow-[0_8px_30px_rgba(56,189,248,0.35)] cursor-pointer"
       >
         <Plus size={24} weight="bold" />
       </motion.button>
@@ -151,7 +151,7 @@ export function AddCashModal({
                       <span
                         key={s}
                         className={`h-1.5 w-5 rounded-full transition-colors ${
-                          s <= step ? "bg-emerald-400" : "bg-white/10"
+                          s <= step ? "bg-sky-400" : "bg-white/10"
                         }`}
                       />
                     ))}
@@ -266,7 +266,7 @@ export function AddCashModal({
                         onClick={() => goTo(3)}
                         disabled={!amount || Number(amount.replace(",", ".")) <= 0}
                         whileTap={reduce ? undefined : { scale: 0.98 }}
-                        className="rounded-xl bg-emerald-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                        className="rounded-xl bg-sky-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
                       >
                         Continuar
                       </motion.button>
@@ -298,7 +298,7 @@ export function AddCashModal({
                           type="datetime-local"
                           value={date}
                           onChange={(e) => setDate(e.target.value)}
-                          className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-emerald-400/50 [color-scheme:dark]"
+                          className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
                         />
                       </div>
 
@@ -311,7 +311,7 @@ export function AddCashModal({
                               onClick={() => setCategory(c)}
                               className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                                 category === c
-                                  ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-300"
+                                  ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
                                   : "border-white/10 text-zinc-400 hover:border-white/20"
                               }`}
                             >
@@ -325,7 +325,7 @@ export function AddCashModal({
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Descripción (opcional)"
-                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-emerald-400/50"
+                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-sky-400/50"
                       />
 
                       {error && <p className="text-sm text-rose-400">{error}</p>}
@@ -334,7 +334,7 @@ export function AddCashModal({
                         onClick={submit}
                         disabled={pending}
                         whileTap={reduce ? undefined : { scale: 0.98 }}
-                        className="mt-1 rounded-xl bg-emerald-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                        className="mt-1 rounded-xl bg-sky-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
                       >
                         {pending ? "Guardando..." : "Guardar movimiento"}
                       </motion.button>

@@ -97,7 +97,7 @@ export function MockupPreview() {
               style={{ top: `${i * 56}px` }}
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-800">
-                <Icon size={16} weight="bold" className="text-emerald-400" />
+                <Icon size={16} weight="bold" className="text-sky-400" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm text-zinc-100">{t.description}</p>
