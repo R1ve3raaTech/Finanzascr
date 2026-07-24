@@ -17,7 +17,7 @@ export function LoginButton({ large = false }: { large?: boolean }) {
         large ? "px-7 py-3.5 text-base" : "px-5 py-2.5 text-sm"
       }`}
     >
-      Iniciar sesión
+      Iniciar sesión con Google
     </MotionLink>
   );
 }
