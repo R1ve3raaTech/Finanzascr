@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Hero } from "@/components/landing/Hero";
 import { LoginButton } from "@/components/landing/LoginButton";
@@ -74,9 +75,12 @@ export default async function LandingPage() {
       </section>
 
       <footer className="mt-auto border-t border-white/10">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-8 text-xs text-zinc-500">
+        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-8 text-xs text-zinc-500">
           <span>Hecho en Costa Rica</span>
           <span>Tus datos son tuyos. Solo lectura de correos bancarios.</span>
+          <Link href="/privacidad" className="transition-colors hover:text-zinc-300">
+            Política de privacidad
+          </Link>
         </div>
       </footer>
     </main>

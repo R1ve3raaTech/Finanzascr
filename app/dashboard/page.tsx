@@ -33,7 +33,10 @@ export default async function DashboardPage({
     .order("transaction_date", { ascending: false });
 
   transactionsQuery = hasRange
-    ? transactionsQuery.gte("transaction_date", startOfDayISO(from!)).lte("transaction_date", endOfDayISO(to!))
+    ? transactionsQuery
+        .gte("transaction_date", startOfDayISO(from!))
+        .lte("transaction_date", endOfDayISO(to!))
+        .limit(300)
     : transactionsQuery.limit(50);
 
   const [{ data }, { data: settings }, { data: categories }] = await Promise.all([

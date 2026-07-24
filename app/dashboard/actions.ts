@@ -125,22 +125,30 @@ export async function syncMyGmail() {
 
   let inserted = 0;
   let hadError = false;
-  for (const row of tokenRows) {
-    try {
-      const result = await syncGmailForUser({
+  // Cada cuenta conectada es independiente entre sí — sincronizarlas en
+  // paralelo en vez de una por una acelera mucho el botón cuando hay
+  // varias cuentas de Gmail conectadas.
+  const results = await Promise.allSettled(
+    tokenRows.map((row) =>
+      syncGmailForUser({
         admin,
         userId: user.id,
         refreshToken: row.refresh_token,
         tokenId: row.id,
-      });
-      inserted += result.transactionsInserted;
-      if (result.errors.length > 0) {
+      })
+    )
+  );
+
+  for (const result of results) {
+    if (result.status === "fulfilled") {
+      inserted += result.value.transactionsInserted;
+      if (result.value.errors.length > 0) {
         hadError = true;
-        console.error("[syncMyGmail]", result.errors);
+        console.error("[syncMyGmail]", result.value.errors);
       }
-    } catch (err) {
+    } else {
       hadError = true;
-      console.error("[syncMyGmail]", err);
+      console.error("[syncMyGmail]", result.reason);
     }
   }
 

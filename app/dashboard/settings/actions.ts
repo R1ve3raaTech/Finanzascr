@@ -134,6 +134,22 @@ export async function disconnectGmail(tokenId: string) {
   return { error: null };
 }
 
+export async function deleteAllTransactions() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const { error } = await supabase.from("transactions").delete().eq("user_id", user.id);
+
+  if (error) return { error: "Hubo un error. Volvé a intentarlo." };
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/insights");
+  revalidatePath("/dashboard/settings");
+  return { error: null };
+}
+
 export async function deleteCategory(id: string) {
   const supabase = await createClient();
   const {

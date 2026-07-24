@@ -1,10 +1,22 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowLeft, DownloadSimple } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowLeft,
+  Bell,
+  CurrencyCircleDollar,
+  DownloadSimple,
+  EnvelopeSimple,
+  ShieldCheck,
+  Tag,
+  Wallet,
+} from "@phosphor-icons/react/dist/ssr";
 import { BudgetManager } from "@/components/settings/BudgetManager";
 import { CategoryManager } from "@/components/settings/CategoryManager";
 import { CurrencySetting } from "@/components/settings/CurrencySetting";
+import { DangerZone } from "@/components/settings/DangerZone";
 import { GmailConnections } from "@/components/settings/GmailConnections";
 import { NotificationsSetting } from "@/components/settings/NotificationsSetting";
+import { SettingsSection } from "@/components/settings/SettingsSection";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
 import { DEFAULT_EXPENSE_CATEGORIES } from "@/lib/categories";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -25,25 +37,34 @@ export default async function SettingsPage({
   const params = await searchParams;
   const admin = createAdminClient();
 
-  const [{ data: settings }, { data: categories }, { data: gmailConnections }, { data: budgets }] =
-    await Promise.all([
-      supabase.from("user_settings").select("*").eq("user_id", user.id).maybeSingle(),
-      supabase
-        .from("user_categories")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: true }),
-      admin
-        .from("gmail_tokens")
-        .select("id, email, last_synced_at")
-        .eq("user_id", user.id)
-        .order("updated_at", { ascending: true }),
-      supabase
-        .from("budgets")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: true }),
-    ]);
+  const [
+    { data: settings },
+    { data: categories },
+    { data: gmailConnections },
+    { data: budgets },
+    { count: transactionCount },
+  ] = await Promise.all([
+    supabase.from("user_settings").select("*").eq("user_id", user.id).maybeSingle(),
+    supabase
+      .from("user_categories")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: true }),
+    admin
+      .from("gmail_tokens")
+      .select("id, email, last_synced_at")
+      .eq("user_id", user.id)
+      .order("updated_at", { ascending: true }),
+    supabase
+      .from("budgets")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: true }),
+    supabase
+      .from("transactions")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id),
+  ]);
 
   const budgetCategories = [
     ...new Set([
@@ -78,41 +99,45 @@ export default async function SettingsPage({
           </p>
         )}
 
-        <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5">
-          <CurrencySetting initial={resolvedSettings.default_currency} />
-        </section>
-
-        <section
-          className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:60ms]"
-        >
-          <NotificationsSetting />
-        </section>
-
-        <section
-          className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:120ms]"
-        >
-          <GmailConnections connections={gmailConnections ?? []} />
-        </section>
-
-        <section
-          className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:180ms]"
-        >
+        <SettingsSection icon={Tag} accent="violet" delayMs={0}>
           <CategoryManager categories={(categories ?? []) as UserCategory[]} />
-        </section>
+        </SettingsSection>
 
-        <section
-          className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:220ms]"
-        >
+        <SettingsSection icon={Wallet} accent="amber" delayMs={40}>
           <BudgetManager budgets={(budgets ?? []) as Budget[]} categories={budgetCategories} />
-        </section>
+        </SettingsSection>
+
+        <SettingsSection icon={CurrencyCircleDollar} accent="emerald" delayMs={80}>
+          <CurrencySetting initial={resolvedSettings.default_currency} />
+        </SettingsSection>
+
+        <SettingsSection icon={Bell} accent="sky" delayMs={120}>
+          <NotificationsSetting />
+        </SettingsSection>
+
+        <SettingsSection icon={EnvelopeSimple} accent="sky" delayMs={160}>
+          <GmailConnections connections={gmailConnections ?? []} />
+        </SettingsSection>
 
         <a
           href="/api/export-csv"
-          className="animate-fade-up flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900/40 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 [animation-delay:240ms]"
+          className="animate-fade-up flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900/40 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 [animation-delay:200ms]"
         >
           <DownloadSimple size={16} weight="bold" />
           Exportar transacciones a CSV
         </a>
+
+        <section className="animate-fade-up rounded-2xl border border-rose-400/15 bg-zinc-900/40 p-5 [animation-delay:240ms]">
+          <DangerZone transactionCount={transactionCount ?? 0} />
+        </section>
+
+        <Link
+          href="/privacidad"
+          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-400 [animation-delay:260ms]"
+        >
+          <ShieldCheck size={14} weight="bold" />
+          Política de privacidad
+        </Link>
       </div>
     </main>
   );

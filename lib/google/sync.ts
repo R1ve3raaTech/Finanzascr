@@ -49,38 +49,60 @@ export async function syncGmailForUser({
   const query = buildGmailQuery(days);
   const messageIds = await listMessageIds(access_token, query, maxResults);
 
-  for (const id of messageIds) {
-    const message = await getMessage(access_token, id);
-    const parsed = parseEmail(message.bodyText, { receivedAt: message.receivedAt, ownerName });
-    if (!parsed) continue;
+  // Traer los correos en paralelo (en lotes) en vez de uno por uno — es la
+  // parte más lenta del sync, ya que cada correo es un round-trip a Gmail.
+  const FETCH_CONCURRENCY = 10;
+  for (let i = 0; i < messageIds.length; i += FETCH_CONCURRENCY) {
+    const batchIds = messageIds.slice(i, i + FETCH_CONCURRENCY);
+    const batch = await Promise.all(
+      batchIds.map(async (id) => {
+        try {
+          return { id, message: await getMessage(access_token, id) };
+        } catch (err) {
+          errors.push(`${id}: ${(err as Error).message}`);
+          return null;
+        }
+      })
+    );
 
-    const { error: insertError, count } = await admin
-      .from("transactions")
-      .upsert(
-        {
-          user_id: userId,
-          gmail_message_id: message.id,
-          bank_name: parsed.bank_name,
-          amount: parsed.amount,
-          currency: parsed.currency,
-          description: parsed.description,
-          type: parsed.type,
-          is_automated: true,
-          transaction_date: parsed.transaction_date,
-        },
-        { onConflict: "gmail_message_id", ignoreDuplicates: true, count: "exact" }
-      );
+    const pushes: Promise<void>[] = [];
+    for (const item of batch) {
+      if (!item) continue;
+      const { id, message } = item;
+      const parsed = parseEmail(message.bodyText, { receivedAt: message.receivedAt, ownerName });
+      if (!parsed) continue;
 
-    if (insertError) {
-      errors.push(`${id}: ${insertError.message}`);
-    } else if (count && count > 0) {
-      transactionsInserted++;
-      const title = parsed.type === "INCOME" ? "Nuevo ingreso" : "Nuevo gasto";
-      const body = `${parsed.bank_name} · ${formatMoney(parsed.amount, parsed.currency)} · ${parsed.description}`;
-      await sendPushToUser(admin, userId, { title, body, url: "/dashboard" }).catch((err) => {
-        errors.push(`push/${id}: ${(err as Error).message}`);
-      });
+      const { error: insertError, count } = await admin
+        .from("transactions")
+        .upsert(
+          {
+            user_id: userId,
+            gmail_message_id: message.id,
+            bank_name: parsed.bank_name,
+            amount: parsed.amount,
+            currency: parsed.currency,
+            description: parsed.description,
+            type: parsed.type,
+            is_automated: true,
+            transaction_date: parsed.transaction_date,
+          },
+          { onConflict: "gmail_message_id", ignoreDuplicates: true, count: "exact" }
+        );
+
+      if (insertError) {
+        errors.push(`${id}: ${insertError.message}`);
+      } else if (count && count > 0) {
+        transactionsInserted++;
+        const title = parsed.type === "INCOME" ? "Nuevo ingreso" : "Nuevo gasto";
+        const body = `${parsed.bank_name} · ${formatMoney(parsed.amount, parsed.currency)} · ${parsed.description}`;
+        pushes.push(
+          sendPushToUser(admin, userId, { title, body, url: "/dashboard" }).catch((err) => {
+            errors.push(`push/${id}: ${(err as Error).message}`);
+          })
+        );
+      }
     }
+    await Promise.all(pushes);
   }
 
   await admin

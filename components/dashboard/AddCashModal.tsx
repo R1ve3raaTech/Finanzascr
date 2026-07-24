@@ -142,10 +142,10 @@ export function AddCashModal({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.97 }}
               transition={spring}
-              className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-md flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 sm:inset-x-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2"
+              className="fixed inset-x-4 bottom-4 top-4 z-50 mx-auto flex max-h-[calc(100dvh-2rem)] max-w-md flex-col overflow-y-auto rounded-2xl border border-white/10 bg-zinc-900 sm:inset-x-0 sm:inset-y-auto sm:top-1/2 sm:max-h-[85dvh] sm:-translate-y-1/2"
             >
               {step !== 4 && (
-                <div className="flex items-center justify-between px-6 pt-5">
+                <div className="sticky top-0 z-10 flex items-center justify-between bg-zinc-900 px-6 pt-5 pb-2">
                   <div className="flex gap-1.5">
                     {[1, 2, 3].map((s) => (
                       <span
