@@ -41,7 +41,16 @@ export function Footer() {
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 md:flex-row md:items-end md:justify-between">
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
           <p className="select-none font-montserrat text-4xl font-bold leading-none tracking-tighter text-zinc-50 sm:text-5xl">
-            <span className="text-sky-400">Tico</span>Finanza
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(180deg, #4a6fa5 0 16.6%, #e9e7e0 16.6% 33.3%, #b6495a 33.3% 66.6%, #e9e7e0 66.6% 83.3%, #4a6fa5 83.3% 100%)",
+              }}
+            >
+              Tico
+            </span>
+            Finanza
           </p>
           <p className="mt-4 max-w-[36ch] text-sm leading-relaxed text-zinc-500">
             Tus movimientos bancarios, categorizados solos. Sin hojas de cálculo, sin
