@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { Differentiators } from "@/components/landing/Differentiators";
 import { FeatureShowcase } from "@/components/landing/FeatureShowcase";
 import { Footer } from "@/components/landing/Footer";
 import { Hero } from "@/components/landing/Hero";
@@ -74,6 +75,21 @@ export default async function LandingPage() {
           </p>
           <div className="mt-10">
             <FeatureShowcase />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto w-full max-w-3xl px-4 py-20 sm:px-6">
+          <h2 className="text-center text-2xl font-semibold tracking-tighter text-zinc-50 sm:text-3xl">
+            No es otra app para anotar gastos
+          </h2>
+          <p className="mx-auto mt-3 max-w-[46ch] text-center text-sm leading-relaxed text-zinc-500">
+            Muchas apps de finanzas en Costa Rica te piden trabajo extra, o no explican
+            qué hacen con tu información. Nosotros elegimos lo contrario.
+          </p>
+          <div className="mt-10">
+            <Differentiators />
           </div>
         </div>
       </section>
