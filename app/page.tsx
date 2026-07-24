@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { BankLogo } from "@/components/dashboard/BankLogo";
 import { Hero } from "@/components/landing/Hero";
 import { LoginButton } from "@/components/landing/LoginButton";
 import { Logo } from "@/components/Logo";
+import { BANK_BRAND } from "@/lib/bankBrand";
 import { createClient } from "@/lib/supabase/server";
+import type { BankName } from "@/lib/types";
 
-const banks = ["BAC Credomatic", "BCR", "BNCR", "Promerica", "Davivienda", "SINPE Móvil"];
+// Solo los bancos con parser implementado y funcionando (ver
+// lib/parsers/index.ts) — nada de prometer entidades que todavía no leemos.
+const supportedBanks: BankName[] = ["BAC", "BCR", "BNCR", "BP", "Davivienda", "MUCAP", "PayPal"];
 
 const steps = [
   {
@@ -45,14 +50,14 @@ export default async function LandingPage() {
           <p className="mb-6 text-sm text-zinc-500">
             Compatible con las entidades que ya usás
           </p>
-          <div className="flex flex-wrap gap-x-10 gap-y-4">
-            {banks.map((bank) => (
-              <span
-                key={bank}
-                className="text-lg font-medium tracking-tight text-zinc-400"
-              >
-                {bank}
-              </span>
+          <div className="flex flex-wrap gap-x-8 gap-y-6">
+            {supportedBanks.map((bank) => (
+              <div key={bank} className="flex flex-col items-center gap-2">
+                <BankLogo bank={bank} size={52} />
+                <span className="text-xs font-medium text-zinc-400">
+                  {BANK_BRAND[bank].label}
+                </span>
+              </div>
             ))}
           </div>
         </div>
