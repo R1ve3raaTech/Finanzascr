@@ -1,9 +1,8 @@
-import {
-  EnvelopeSimple,
-  ForkKnife,
-  Lightning,
-  ShoppingCart,
-} from "@phosphor-icons/react/dist/ssr";
+"use client";
+
+import type { PointerEvent } from "react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { EnvelopeSimple, ForkKnife, Lightning, ShoppingCart } from "@phosphor-icons/react";
 
 const incoming = [
   {
@@ -53,10 +52,33 @@ const incoming = [
   },
 ];
 
+const springConfig = { stiffness: 200, damping: 20, mass: 0.5 } as const;
+
 export function MockupPreview() {
+  const reduce = useReducedMotion();
+  const rotateX = useSpring(useMotionValue(0), springConfig);
+  const rotateY = useSpring(useMotionValue(0), springConfig);
+
+  function handlePointerMove(e: PointerEvent<HTMLDivElement>) {
+    if (reduce) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const offsetX = (e.clientX - rect.left) / rect.width - 0.5;
+    const offsetY = (e.clientY - rect.top) / rect.height - 0.5;
+    rotateY.set(offsetX * 10);
+    rotateX.set(offsetY * -10);
+  }
+
+  function handlePointerLeave() {
+    rotateX.set(0);
+    rotateY.set(0);
+  }
+
   return (
-    <div
+    <motion.div
       aria-hidden="true"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      style={{ rotateX, rotateY, transformPerspective: 900 }}
       className="relative w-full max-w-md rounded-2xl border border-white/10 bg-zinc-900/60 p-5 backdrop-blur"
     >
       {/* Correo entrante */}
@@ -114,6 +136,6 @@ export function MockupPreview() {
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 }

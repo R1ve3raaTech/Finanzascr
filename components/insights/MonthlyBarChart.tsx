@@ -43,10 +43,10 @@ export function MonthlyBarChart({ data }: { data: MonthTotal[] }) {
                       className="absolute inset-y-0 -inset-x-2 cursor-pointer"
                     />
                     <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: `${Math.max(heightPct, value > 0 ? 2 : 0)}%` }}
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: Math.max(heightPct, value > 0 ? 2 : 0) / 100 }}
                       transition={{ type: "spring", stiffness: 200, damping: 26 }}
-                      className={`pointer-events-none w-full rounded-t-sm ${
+                      className={`pointer-events-none h-full w-full origin-bottom rounded-t-sm ${
                         series === "income" ? "bg-emerald-400" : "bg-rose-400"
                       }`}
                     />

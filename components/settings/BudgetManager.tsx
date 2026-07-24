@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Plus, X } from "@phosphor-icons/react";
 import { deleteBudget, setBudget } from "@/app/dashboard/settings/actions";
+import { useToast } from "@/components/Toast";
 import { formatMoney } from "@/lib/format";
 import type { Budget, Currency } from "@/lib/types";
 
@@ -18,6 +19,7 @@ export function BudgetManager({
   categories: string[];
 }) {
   const reduce = useReducedMotion();
+  const toast = useToast();
   const [pending, startTransition] = useTransition();
   const [category, setCategory] = useState(categories[0] ?? "");
   const [amount, setAmount] = useState("");
@@ -31,14 +33,20 @@ export function BudgetManager({
     setError(null);
     startTransition(async () => {
       const result = await setBudget(category, Number(amount.replace(",", ".")), currency);
-      if (result.error) setError(result.error);
-      else setAmount("");
+      if (result.error) {
+        setError(result.error);
+        toast.error(result.error);
+      } else {
+        setAmount("");
+        toast.success(`Presupuesto de ${category} guardado`);
+      }
     });
   }
 
-  function remove(id: string) {
+  function remove(id: string, categoryName: string) {
     startTransition(async () => {
       await deleteBudget(id);
+      toast.success(`Presupuesto de ${categoryName} eliminado`);
     });
   }
 
@@ -69,7 +77,7 @@ export function BudgetManager({
                   {formatMoney(b.monthly_limit, b.currency)}
                 </span>
                 <motion.button
-                  onClick={() => remove(b.id)}
+                  onClick={() => remove(b.id, b.category)}
                   whileTap={reduce ? undefined : { scale: 0.85 }}
                   transition={tap}
                   aria-label={`Borrar presupuesto de ${b.category}`}

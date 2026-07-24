@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { BankLogo } from "@/components/dashboard/BankLogo";
 import { Hero } from "@/components/landing/Hero";
 import { LoginButton } from "@/components/landing/LoginButton";
+import { StepsSection } from "@/components/landing/StepsSection";
+import { SupportedBanks } from "@/components/landing/SupportedBanks";
 import { Logo } from "@/components/Logo";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { createClient } from "@/lib/supabase/server";
@@ -50,32 +51,15 @@ export default async function LandingPage() {
           <p className="mb-6 text-sm text-zinc-500">
             Compatible con las entidades que ya usás
           </p>
-          <div className="flex flex-wrap gap-x-8 gap-y-6">
-            {supportedBanks.map((bank) => (
-              <div key={bank} className="flex flex-col items-center gap-2">
-                <BankLogo bank={bank} size={52} />
-                <span className="text-xs font-medium text-zinc-400">
-                  {BANK_BRAND[bank].label}
-                </span>
-              </div>
-            ))}
-          </div>
+          <SupportedBanks
+            banks={supportedBanks.map((bank) => ({ bank, label: BANK_BRAND[bank].label }))}
+          />
         </div>
       </section>
 
       <section className="border-t border-white/10">
         <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <h2 className="max-w-[24ch] text-3xl font-semibold tracking-tighter text-zinc-50 md:text-4xl">
-            Cero anotaciones manuales
-          </h2>
-          <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
-            {steps.map((step) => (
-              <div key={step.title} className="flex flex-col gap-3 border-t border-white/10 pt-6">
-                <h3 className="text-lg font-medium text-zinc-100">{step.title}</h3>
-                <p className="text-sm leading-relaxed text-zinc-400">{step.body}</p>
-              </div>
-            ))}
-          </div>
+          <StepsSection steps={steps} />
         </div>
       </section>
 

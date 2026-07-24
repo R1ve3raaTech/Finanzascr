@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Trash, X } from "@phosphor-icons/react";
 import { deleteTransaction } from "@/app/dashboard/actions";
+import { useToast } from "@/components/Toast";
 import { formatMoney } from "@/lib/format";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { BankLogo } from "./BankLogo";
@@ -28,6 +29,7 @@ export function TransactionDetailModal({
   onClose: () => void;
 }) {
   const reduce = useReducedMotion();
+  const toast = useToast();
   const [confirming, setConfirming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -45,8 +47,10 @@ export function TransactionDetailModal({
       const result = await deleteTransaction(transaction.id);
       if (result.error) {
         setError(result.error);
+        toast.error(result.error);
         setConfirming(false);
       } else {
+        toast.success("Movimiento eliminado");
         handleClose();
       }
     });

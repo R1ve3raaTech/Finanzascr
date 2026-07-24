@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { EnvelopeSimple, Plus, X } from "@phosphor-icons/react";
 import { disconnectGmail } from "@/app/dashboard/settings/actions";
+import { useToast } from "@/components/Toast";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 const pop = { type: "spring", stiffness: 420, damping: 22 } as const;
@@ -24,11 +25,13 @@ function formatLastSync(iso: string | null): string {
 
 export function GmailConnections({ connections }: { connections: GmailConnection[] }) {
   const reduce = useReducedMotion();
+  const toast = useToast();
   const [pending, startTransition] = useTransition();
 
-  function disconnect(id: string) {
+  function disconnect(id: string, email: string | null) {
     startTransition(async () => {
       await disconnectGmail(id);
+      toast.success(`${email ?? "Cuenta"} desconectada`);
     });
   }
 
@@ -64,7 +67,7 @@ export function GmailConnections({ connections }: { connections: GmailConnection
                 <p className="text-xs text-zinc-500">{formatLastSync(c.last_synced_at)}</p>
               </div>
               <motion.button
-                onClick={() => disconnect(c.id)}
+                onClick={() => disconnect(c.id, c.email)}
                 disabled={pending}
                 aria-label={`Desconectar ${c.email}`}
                 whileTap={reduce ? undefined : { scale: 0.85 }}

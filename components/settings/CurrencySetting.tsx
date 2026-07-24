@@ -3,12 +3,14 @@
 import { useState, useTransition } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { updateDefaultCurrency } from "@/app/dashboard/settings/actions";
+import { useToast } from "@/components/Toast";
 import type { Currency } from "@/lib/types";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 
 export function CurrencySetting({ initial }: { initial: Currency }) {
   const reduce = useReducedMotion();
+  const toast = useToast();
   const [currency, setCurrency] = useState<Currency>(initial);
   const [pending, startTransition] = useTransition();
 
@@ -17,6 +19,7 @@ export function CurrencySetting({ initial }: { initial: Currency }) {
     setCurrency(c);
     startTransition(async () => {
       await updateDefaultCurrency(c);
+      toast.success(`Moneda por defecto: ${c === "CRC" ? "Colones" : "Dólares"}`);
     });
   }
 

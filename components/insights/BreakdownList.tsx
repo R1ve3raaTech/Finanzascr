@@ -45,10 +45,10 @@ export function BreakdownList({
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
               <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${item.share * 100}%` }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: item.share }}
                 transition={{ type: "spring", stiffness: 120, damping: 22 }}
-                className="h-full rounded-full"
+                className="h-full w-full origin-left rounded-full"
                 style={{ background: color }}
               />
             </div>

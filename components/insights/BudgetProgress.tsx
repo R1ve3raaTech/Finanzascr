@@ -34,10 +34,10 @@ export function BudgetProgress({
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
               <div
-                className={`h-full rounded-full transition-[width] duration-500 ${
+                className={`h-full w-full origin-left rounded-full transition-transform duration-500 ${
                   over ? "bg-rose-400" : pct > 0.8 ? "bg-amber-400" : "bg-emerald-400"
                 }`}
-                style={{ width: `${pct * 100}%` }}
+                style={{ transform: `scaleX(${pct})` }}
               />
             </div>
           </li>

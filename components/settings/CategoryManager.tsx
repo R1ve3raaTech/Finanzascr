@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Plus, X } from "@phosphor-icons/react";
 import { addCategory, deleteCategory } from "@/app/dashboard/settings/actions";
+import { useToast } from "@/components/Toast";
 import type { TransactionType, UserCategory } from "@/lib/types";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
@@ -19,26 +20,31 @@ function CategoryGroup({
   categories: UserCategory[];
 }) {
   const reduce = useReducedMotion();
+  const toast = useToast();
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
   function submit() {
     if (!name.trim()) return;
+    const submittedName = name.trim();
     setError(null);
     startTransition(async () => {
       const result = await addCategory(name, type);
       if (result.error) {
         setError(result.error);
+        toast.error(result.error);
       } else {
         setName("");
+        toast.success(`"${submittedName}" agregada`);
       }
     });
   }
 
-  function remove(id: string) {
+  function remove(id: string, categoryName: string) {
     startTransition(async () => {
       await deleteCategory(id);
+      toast.success(`"${categoryName}" eliminada`);
     });
   }
 
@@ -59,7 +65,7 @@ function CategoryGroup({
             >
               {c.name}
               <motion.button
-                onClick={() => remove(c.id)}
+                onClick={() => remove(c.id, c.name)}
                 aria-label={`Borrar ${c.name}`}
                 whileTap={reduce ? undefined : { scale: 0.8 }}
                 transition={tap}

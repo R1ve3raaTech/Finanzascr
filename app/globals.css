@@ -23,6 +23,20 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+  /* Se siente más "app" y menos "sitio web" sin poder arrastrar para
+     seleccionar texto. Los campos editables quedan afuera, si no no se
+     podría ni escribir/copiar un monto. */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
 }
 
 ::selection {

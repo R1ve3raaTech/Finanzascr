@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { subscribeToPush } from "@/app/dashboard/actions";
 import { setNotificationsEnabled } from "@/app/dashboard/settings/actions";
+import { useToast } from "@/components/Toast";
 
 const knobSpring = { type: "spring", stiffness: 500, damping: 30 } as const;
 
@@ -18,6 +19,7 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {
 
 export function NotificationsSetting() {
   const reduce = useReducedMotion();
+  const toast = useToast();
   // El estado real es "¿este navegador tiene una suscripción push activa?",
   // no el flag guardado en la base (que es a nivel de usuario, no de
   // dispositivo) — por eso se revisa contra el Service Worker en vez de
@@ -49,7 +51,9 @@ export function NotificationsSetting() {
         try {
           const permission = await Notification.requestPermission();
           if (permission !== "granted") {
-            setError("Necesitás aceptar el permiso de notificaciones del navegador.");
+            const message = "Necesitás aceptar el permiso de notificaciones del navegador.";
+            setError(message);
+            toast.error(message);
             return;
           }
           const reg = await navigator.serviceWorker.register("/sw.js");
@@ -67,12 +71,16 @@ export function NotificationsSetting() {
           });
           if (result.error) {
             setError(result.error);
+            toast.error(result.error);
             return;
           }
           await setNotificationsEnabled(true);
           setEnabled(true);
+          toast.success("Notificaciones activadas");
         } catch {
-          setError("No se pudieron activar las notificaciones en este dispositivo.");
+          const message = "No se pudieron activar las notificaciones en este dispositivo.";
+          setError(message);
+          toast.error(message);
         }
       } else {
         const reg = await navigator.serviceWorker.getRegistration();
@@ -80,6 +88,7 @@ export function NotificationsSetting() {
         await sub?.unsubscribe();
         await setNotificationsEnabled(false);
         setEnabled(false);
+        toast.success("Notificaciones desactivadas");
       }
     });
   }

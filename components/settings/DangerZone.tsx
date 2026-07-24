@@ -4,12 +4,14 @@ import { useState, useTransition } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Trash, Warning } from "@phosphor-icons/react";
 import { deleteAllTransactions } from "@/app/dashboard/settings/actions";
+import { useToast } from "@/components/Toast";
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 const CONFIRM_WORD = "ELIMINAR";
 
 export function DangerZone({ transactionCount }: { transactionCount: number }) {
   const reduce = useReducedMotion();
+  const toast = useToast();
   const [open, setOpen] = useState(false);
   const [typed, setTyped] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,8 +27,13 @@ export function DangerZone({ transactionCount }: { transactionCount: number }) {
     setError(null);
     startTransition(async () => {
       const result = await deleteAllTransactions();
-      if (result.error) setError(result.error);
-      else close();
+      if (result.error) {
+        setError(result.error);
+        toast.error(result.error);
+      } else {
+        toast.success("Todas las transacciones fueron eliminadas");
+        close();
+      }
     });
   }
 

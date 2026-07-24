@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Camera } from "@phosphor-icons/react";
 import { updateProfile } from "@/app/dashboard/settings/actions";
+import { useToast } from "@/components/Toast";
 import { createClient } from "@/lib/supabase/client";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
@@ -22,6 +23,7 @@ export function ProfileSettings({
   initialAvatarUrl: string | null;
 }) {
   const reduce = useReducedMotion();
+  const toast = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fullName, setFullName] = useState(initialFullName);
   const [birthDate, setBirthDate] = useState(initialBirthDate ?? "");
@@ -70,9 +72,16 @@ export function ProfileSettings({
         birthDate: birthDate || null,
         avatarUrl: bustedUrl,
       });
-      if (result.error) setError(result.error);
+      if (result.error) {
+        setError(result.error);
+        toast.error(result.error);
+      } else {
+        toast.success("Foto de perfil actualizada");
+      }
     } catch {
-      setError("No se pudo subir la foto. Intentá de nuevo.");
+      const message = "No se pudo subir la foto. Intentá de nuevo.";
+      setError(message);
+      toast.error(message);
     } finally {
       setUploading(false);
     }
@@ -83,8 +92,13 @@ export function ProfileSettings({
     setSaved(false);
     startTransition(async () => {
       const result = await updateProfile({ fullName, birthDate: birthDate || null, avatarUrl });
-      if (result.error) setError(result.error);
-      else setSaved(true);
+      if (result.error) {
+        setError(result.error);
+        toast.error(result.error);
+      } else {
+        setSaved(true);
+        toast.success("Perfil actualizado");
+      }
     });
   }
 
