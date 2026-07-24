@@ -3,21 +3,11 @@
 import { useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Camera, ShieldCheck } from "@phosphor-icons/react";
+import { ArrowRight, Camera } from "@phosphor-icons/react";
 import { completeOnboarding, skipOnboarding } from "@/app/bienvenida/actions";
-import { Logo } from "@/components/Logo";
 import { createClient } from "@/lib/supabase/client";
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
-
-function firstName(fullName: string): string {
-  return fullName.trim().split(/\s+/)[0] || "";
-}
-
-function memberSince(): string {
-  const label = new Date().toLocaleDateString("es-CR", { month: "long", year: "numeric" });
-  return label.charAt(0).toUpperCase() + label.slice(1);
-}
 
 export function WelcomeOnboarding({
   userId,
@@ -94,58 +84,58 @@ export function WelcomeOnboarding({
   }
 
   return (
-    <main className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-zinc-950 lg:flex-row">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="auth-blob-a absolute left-[-10%] top-[-5%] h-[28rem] w-[28rem] rounded-full bg-sky-400/10 blur-[110px]" />
-        <div className="auth-blob-b absolute bottom-[-10%] right-[-5%] h-[24rem] w-[24rem] rounded-full bg-emerald-400/[0.06] blur-[110px]" />
+    <main className="relative flex min-h-[100dvh] flex-col items-center overflow-hidden bg-zinc-950 px-6 py-16 sm:px-10">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
+      >
+        <span className="-rotate-6 select-none whitespace-nowrap font-montserrat text-[26vw] font-bold leading-none text-white/[0.025] sm:text-[20vw]">
+          TicoFinanza
+        </span>
       </div>
+      <div
+        aria-hidden="true"
+        className="auth-blob-a pointer-events-none absolute right-[-15%] top-[-10%] h-[26rem] w-[26rem] rounded-full bg-sky-400/[0.06] blur-[120px]"
+      />
 
-      <div className="relative flex w-full flex-col justify-center px-6 py-12 sm:px-10 lg:w-[55%] lg:px-20">
-        <div className="mx-auto flex w-full max-w-sm flex-col gap-8">
-          <Logo subtitle="finanzas personales" />
+      <div className="relative flex w-full max-w-2xl flex-1 flex-col justify-center gap-10">
+        <motion.span
+          initial={reduce ? undefined : { opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="inline-flex w-fit -rotate-2 items-center rounded-md border border-dashed border-white/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-zinc-400"
+        >
+          Antes de arrancar
+        </motion.span>
 
-          <motion.div
-            initial={reduce ? undefined : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-50 sm:text-3xl">
-              {firstName(initialFullName) ? `¡Qué bueno tenerte, ${firstName(initialFullName)}!` : "¡Bienvenido/a!"}
-            </h1>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-              Antes de mostrarte tus movimientos, terminemos de armar tu cuenta. Toma menos de
-              un minuto, y podés cambiar todo esto después desde Ajustes.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={reduce ? undefined : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-4"
-          >
+        <motion.div
+          initial={reduce ? undefined : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-wrap items-center gap-x-3 gap-y-4 text-3xl font-semibold leading-tight tracking-tight text-zinc-50 sm:text-4xl md:text-[2.75rem]"
+        >
+          <span>Qué bueno tenerte,</span>
+          <span className="inline-flex items-center gap-2.5">
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
               aria-label="Elegir foto de perfil"
-              className="group relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-900 cursor-pointer disabled:opacity-60"
+              className="group relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-zinc-900 cursor-pointer disabled:opacity-60 sm:h-12 sm:w-12"
             >
               {avatarUrl ? (
                 <Image
                   src={avatarUrl}
                   alt="Tu foto de perfil"
-                  width={80}
-                  height={80}
+                  width={48}
+                  height={48}
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <span className="text-2xl font-medium text-zinc-500">
-                  {fullName?.[0]?.toUpperCase() ?? "?"}
-                </span>
+                <Camera size={18} weight="bold" className="text-zinc-600" />
               )}
               <span className="absolute inset-0 flex items-center justify-center bg-zinc-950/0 text-transparent transition-colors group-hover:bg-zinc-950/50 group-hover:text-zinc-100">
-                <Camera size={20} weight="bold" />
+                <Camera size={16} weight="bold" />
               </span>
             </button>
             <input
@@ -155,116 +145,70 @@ export function WelcomeOnboarding({
               onChange={handleFileChange}
               className="hidden"
             />
-            <p className="text-xs text-zinc-500">
-              {uploading ? "Subiendo..." : "Tocá el círculo para poner una foto (opcional)."}
-            </p>
-          </motion.div>
+            <input
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="tu nombre"
+              style={{ width: `${Math.max(fullName.length || 9, 5)}ch` }}
+              className="max-w-full border-b-2 border-white/15 bg-transparent px-1 pb-0.5 text-inherit outline-none placeholder:text-zinc-700 focus:border-sky-400"
+            />
+          </span>
+          <span>.</span>
+        </motion.div>
 
-          <motion.div
-            initial={reduce ? undefined : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col gap-4"
-          >
-            <label className="flex flex-col gap-1.5">
-              <span className="text-xs font-medium text-zinc-400">¿Cómo te llamás?</span>
-              <input
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Tu nombre"
-                className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-sky-400/50"
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5">
-              <span className="text-xs font-medium text-zinc-400">
-                Fecha de nacimiento{" "}
-                <span className="font-normal text-zinc-600">
-                  (opcional, por si un día queremos saludarte 🎂)
-                </span>
-              </span>
-              <input
-                type="date"
-                value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
-                max={new Date().toISOString().slice(0, 10)}
-                className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
-              />
-            </label>
-
-            {error && <p className="text-sm text-rose-400">{error}</p>}
-
-            <div className="mt-2 flex items-center gap-4">
-              <motion.button
-                onClick={submit}
-                disabled={pending || !fullName.trim()}
-                whileHover={reduce ? undefined : { scale: 1.02 }}
-                whileTap={reduce ? undefined : { scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="inline-flex items-center gap-2 rounded-full bg-sky-400 px-6 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
-              >
-                {pending ? "Guardando..." : "Empezar a usar TicoFinanza"}
-                {!pending && <ArrowRight size={16} weight="bold" />}
-              </motion.button>
-              <button
-                onClick={skip}
-                disabled={skipping}
-                className="text-sm text-zinc-500 transition-colors hover:text-zinc-300 cursor-pointer disabled:opacity-40"
-              >
-                Ahora no
-              </button>
-            </div>
-          </motion.div>
-
-          <p className="flex items-center gap-1.5 text-xs text-zinc-600">
-            <ShieldCheck size={13} weight="bold" className="text-sky-400" />
-            Solo vos ves estos datos. Nunca los vendemos.
-          </p>
-        </div>
-      </div>
-
-      <div className="relative hidden flex-1 items-center justify-center border-l border-white/10 lg:flex">
-        <motion.div
-          initial={reduce ? undefined : { opacity: 0, scale: 0.94, rotate: -3 }}
-          animate={{ opacity: 1, scale: 1, rotate: -3 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          whileHover={reduce ? undefined : { rotate: 0, scale: 1.02 }}
-          className="flex w-72 flex-col gap-5 rounded-3xl border border-white/10 bg-zinc-900/90 p-6 shadow-[0_30px_70px_rgba(0,0,0,0.5)] backdrop-blur"
+        <motion.p
+          initial={reduce ? undefined : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-[48ch] text-sm leading-relaxed text-zinc-500"
         >
-          <div className="flex items-center justify-between">
-            <span className="font-montserrat text-xs font-bold tracking-tight text-zinc-50">
-              TicoFinanza
-            </span>
-            <span className="rounded-full border border-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-zinc-500">
-              Miembro
-            </span>
-          </div>
+          {uploading ? "Subiendo tu foto..." : "Tocá el círculo para ponerle una foto. Es opcional, como todo lo demás acá — esto toma menos de un minuto."}
+        </motion.p>
 
-          <div className="flex flex-col items-center gap-3 py-4">
-            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-950">
-              {avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt=""
-                  width={80}
-                  height={80}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <span className="text-2xl font-medium text-zinc-600">
-                  {fullName?.[0]?.toUpperCase() ?? "?"}
-                </span>
-              )}
-            </div>
-            <p className="max-w-full truncate text-base font-medium text-zinc-50">
-              {fullName.trim() || "Tu nombre acá"}
-            </p>
-            <p className="text-xs text-zinc-500">Miembro desde {memberSince()}</p>
-          </div>
+        <motion.label
+          initial={reduce ? undefined : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+          className="flex w-fit flex-col gap-1.5"
+        >
+          <span className="text-xs font-medium text-zinc-400">
+            ¿Cuándo es tu cumple? <span className="font-normal text-zinc-600">(por si un día queremos saludarte 🎂)</span>
+          </span>
+          <input
+            type="date"
+            value={birthDate}
+            onChange={(e) => setBirthDate(e.target.value)}
+            max={new Date().toISOString().slice(0, 10)}
+            className="w-56 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
+          />
+        </motion.label>
 
-          <div className="border-t border-white/5 pt-4 text-center text-[11px] text-zinc-600">
-            Costa Rica 🇨🇷
-          </div>
+        {error && <p className="text-sm text-rose-400">{error}</p>}
+
+        <motion.div
+          initial={reduce ? undefined : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-5"
+        >
+          <motion.button
+            onClick={submit}
+            disabled={pending || !fullName.trim()}
+            whileHover={reduce ? undefined : { scale: 1.02 }}
+            whileTap={reduce ? undefined : { scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="inline-flex items-center gap-2 rounded-full bg-sky-400 px-6 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+          >
+            {pending ? "Guardando..." : "Empezar a usar TicoFinanza"}
+            {!pending && <ArrowRight size={16} weight="bold" />}
+          </motion.button>
+          <button
+            onClick={skip}
+            disabled={skipping}
+            className="text-sm text-zinc-500 transition-colors hover:text-zinc-300 cursor-pointer disabled:opacity-40"
+          >
+            Ahora no
+          </button>
         </motion.div>
       </div>
     </main>

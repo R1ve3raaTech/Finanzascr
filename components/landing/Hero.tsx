@@ -1,7 +1,7 @@
 import { LoginButton } from "./LoginButton";
 import { MockupPreview } from "./MockupPreview";
 
-export function Hero() {
+export function Hero({ loggedIn = false }: { loggedIn?: boolean }) {
   return (
     <section className="relative mx-auto grid w-full max-w-6xl items-center gap-12 overflow-hidden px-6 pb-20 pt-16 md:min-h-[calc(100dvh-72px)] md:grid-cols-[1.1fr_1fr] md:gap-16 md:pb-24 md:pt-0">
       <div
@@ -25,7 +25,7 @@ export function Hero() {
         </p>
 
         <div className="animate-fade-up [animation-delay:270ms]">
-          <LoginButton large />
+          <LoginButton large loggedIn={loggedIn} />
         </div>
       </div>
 

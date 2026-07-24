@@ -137,13 +137,12 @@ export default function TermsOfServicePage() {
         <Section title="Límites de la lectura automática" icon={Warning} accent="rose">
           <p>
             La lectura automática de correos depende de que tu banco realmente envíe la
-            notificación a tu Gmail, con un formato que sepamos interpretar. En algunos bancos
-            (por ejemplo BAC) las alertas de transferencias llegan por SMS por defecto, no por
-            correo: hay que activar el correo electrónico como medio de notificación desde los
-            ajustes de seguridad de la app del banco para que también se pueda leer acá. Correos
-            filtrados a otra carpeta, eliminados antes de sincronizar, de bancos que todavía no
-            soportamos, o de efectivo (que nunca genera correo), tampoco se van a registrar solos:
-            esos los agregás vos manualmente, eligiendo el banco real si aplica.
+            notificación a tu Gmail, con un formato que sepamos interpretar. Algunos bancos
+            mandan sus alertas por SMS por defecto en vez de por correo: si notás que algo no se
+            registró solo, vale la pena revisar los ajustes de notificaciones dentro de la app de
+            tu banco. Correos filtrados a otra carpeta, eliminados antes de sincronizar, de bancos
+            que todavía no soportamos, o de efectivo (que nunca genera correo), tampoco se van a
+            registrar solos: esos los agregás vos manualmente, eligiendo el banco real si aplica.
           </p>
           <p>
             Los bancos también cambian el formato de sus correos de vez en cuando, lo que puede

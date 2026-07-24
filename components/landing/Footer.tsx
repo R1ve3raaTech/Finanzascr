@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, ShieldCheck } from "@phosphor-icons/react";
+import { ArrowUpRight, ShieldCheck, SquaresFour } from "@phosphor-icons/react";
 import { BankLogo } from "@/components/dashboard/BankLogo";
 import { GoogleMark } from "@/components/GoogleMark";
 import type { BankName } from "@/lib/types";
@@ -16,7 +16,7 @@ const links = [
 
 const marqueeBanks: BankName[] = ["BAC", "BCR", "BNCR", "BP", "Davivienda", "MUCAP", "PayPal"];
 
-export function Footer() {
+export function Footer({ loggedIn = false }: { loggedIn?: boolean }) {
   const reduce = useReducedMotion();
   const year = new Date().getFullYear();
   const MotionLink = motion.create(Link);
@@ -48,14 +48,18 @@ export function Footer() {
             anotar nada a mano.
           </p>
           <MotionLink
-            href="/entrar"
+            href={loggedIn ? "/dashboard" : "/entrar"}
             whileHover={reduce ? undefined : { x: 2 }}
             className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 py-2 pl-2 pr-4 text-sm text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-50"
           >
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-50">
-              <GoogleMark size={13} />
+              {loggedIn ? (
+                <SquaresFour size={13} weight="bold" className="text-sky-500" />
+              ) : (
+                <GoogleMark size={13} />
+              )}
             </span>
-            Iniciar sesión
+            {loggedIn ? "Ir al dashboard" : "Iniciar sesión"}
             <ArrowUpRight size={14} weight="bold" className="text-sky-400" />
           </MotionLink>
         </div>

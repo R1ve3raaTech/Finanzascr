@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { Differentiators } from "@/components/landing/Differentiators";
 import { FeatureShowcase } from "@/components/landing/FeatureShowcase";
 import { Footer } from "@/components/landing/Footer";
@@ -36,18 +35,18 @@ export default async function LandingPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user) redirect("/dashboard");
+  const loggedIn = Boolean(user);
 
   return (
     <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/80 backdrop-blur">
         <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between px-4 sm:px-6">
           <Logo subtitle="finanzas personales" />
-          <LoginButton />
+          <LoginButton loggedIn={loggedIn} />
         </div>
       </header>
 
-      <Hero />
+      <Hero loggedIn={loggedIn} />
 
       <section className="border-t border-white/10">
         <div className="mx-auto w-full max-w-6xl px-4 py-14 text-center sm:px-6 sm:text-left">
@@ -109,7 +108,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <Footer />
+      <Footer loggedIn={loggedIn} />
     </main>
   );
 }
