@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { syncGmailForUser } from "@/lib/google/sync";
+import { checkStaleSyncAndNotify } from "@/lib/google/staleReminder";
 import { decryptToken } from "@/lib/tokenCrypto";
 
 /**
@@ -23,7 +24,7 @@ async function handleSync(request: Request) {
   const supabase = createAdminClient();
   const { data: tokens, error } = await supabase
     .from("gmail_tokens")
-    .select("id, user_id, refresh_token");
+    .select("id, user_id, refresh_token, last_stale_reminder_at");
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -46,6 +47,8 @@ async function handleSync(request: Request) {
       transactionsInserted += result.transactionsInserted;
       errors.push(...result.errors.map((e) => `${row.user_id}/${e}`));
       usersProcessed++;
+
+      await checkStaleSyncAndNotify(supabase, row.user_id, row.id, row.last_stale_reminder_at);
     } catch (err) {
       errors.push(`${row.user_id}: ${(err as Error).message}`);
     }

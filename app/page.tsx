@@ -3,6 +3,7 @@ import { Differentiators } from "@/components/landing/Differentiators";
 import { FeatureShowcase } from "@/components/landing/FeatureShowcase";
 import { Footer } from "@/components/landing/Footer";
 import { Hero } from "@/components/landing/Hero";
+import { HowItReallyWorks } from "@/components/landing/HowItReallyWorks";
 import { LoginButton } from "@/components/landing/LoginButton";
 import { StepsSection } from "@/components/landing/StepsSection";
 import { SupportedBanks } from "@/components/landing/SupportedBanks";
@@ -62,6 +63,20 @@ export default async function LandingPage() {
       <section className="border-t border-white/10">
         <div className="mx-auto w-full max-w-6xl px-4 py-20 text-center sm:px-6 sm:text-left">
           <StepsSection steps={steps} />
+        </div>
+      </section>
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
+          <h2 className="text-2xl font-semibold tracking-tighter text-zinc-50 sm:text-3xl">
+            Antes de conectar tu Gmail, esto es justo que sepas
+          </h2>
+          <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-zinc-500">
+            Preferimos que sepas exactamente qué esperar, en vez de prometer magia.
+          </p>
+          <div className="mt-10">
+            <HowItReallyWorks />
+          </div>
         </div>
       </section>
 

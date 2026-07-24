@@ -136,11 +136,21 @@ export default function TermsOfServicePage() {
 
         <Section title="Límites de la lectura automática" icon={Warning} accent="rose">
           <p>
-            La lectura automática de correos depende de que tu banco envíe notificaciones por
-            Gmail con un formato que sepamos interpretar, y de que tengas conexión activa a Gmail.
-            Correos reenviados, filtrados a otra carpeta, eliminados antes de sincronizar, o de
-            bancos que todavía no soportamos, no se van a registrar solos. No garantizamos que el
-            100% de tus movimientos bancarios se detecten automáticamente.
+            La lectura automática de correos depende de que tu banco realmente envíe la
+            notificación a tu Gmail, con un formato que sepamos interpretar. En algunos bancos
+            (por ejemplo BAC) esa notificación no siempre llega sola: puede que tengas que
+            activarla o reenviar el comprobante por correo desde la app o el sitio del banco
+            después de cada movimiento. Correos filtrados a otra carpeta, eliminados antes de
+            sincronizar, de bancos que todavía no soportamos, o de efectivo (que nunca genera
+            correo), no se van a registrar solos: esos los agregás vos manualmente, eligiendo el
+            banco real si aplica.
+          </p>
+          <p>
+            Los bancos también cambian el formato de sus correos de vez en cuando, lo que puede
+            romper la lectura automática hasta que actualicemos el sistema. Si detectamos que dejó
+            de llegar algo automático por varios días seguidos, te avisamos por notificación push
+            para que sepas revisar a mano mientras tanto. No garantizamos que el 100% de tus
+            movimientos bancarios se detecten automáticamente.
           </p>
         </Section>
 

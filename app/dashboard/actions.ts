@@ -11,7 +11,7 @@ import { formatMoney } from "@/lib/format";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { decryptToken } from "@/lib/tokenCrypto";
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from "@/lib/categories";
-import type { Currency, TransactionType } from "@/lib/types";
+import type { BankName, Currency, TransactionType } from "@/lib/types";
 
 /**
  * Avisa por push la primera vez que un gasto categorizado hace que el mes
@@ -64,6 +64,7 @@ export async function addCashTransaction(input: {
   category: string;
   type: TransactionType;
   transactionDate: string;
+  bank?: BankName;
 }) {
   const supabase = await createClient();
   const {
@@ -82,7 +83,7 @@ export async function addCashTransaction(input: {
 
   const { error } = await supabase.from("transactions").insert({
     user_id: user.id,
-    bank_name: "Efectivo",
+    bank_name: input.bank ?? "Efectivo",
     amount: input.amount,
     currency: input.currency,
     description: input.description || null,

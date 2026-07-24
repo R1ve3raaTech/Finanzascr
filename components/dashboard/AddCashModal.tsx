@@ -10,8 +10,25 @@ import {
   X,
 } from "@phosphor-icons/react";
 import { addCashTransaction } from "@/app/dashboard/actions";
+import { BankLogo } from "@/components/dashboard/BankLogo";
+import { BANK_BRAND } from "@/lib/bankBrand";
 import { DEFAULT_EXPENSE_CATEGORIES as expenseCategories, DEFAULT_INCOME_CATEGORIES as incomeCategories } from "@/lib/categories";
-import type { Currency, TransactionType, UserCategory } from "@/lib/types";
+import type { BankName, Currency, TransactionType, UserCategory } from "@/lib/types";
+
+// Mismos bancos que soporta la lectura automática (ver lib/parsers/index.ts)
+// — si a alguno no le llegó el correo, puede registrarlo a mano bajo el
+// banco real en vez de que quede mezclado con "Efectivo".
+const manualBankOptions: BankName[] = [
+  "Efectivo",
+  "BAC",
+  "BCR",
+  "BNCR",
+  "BP",
+  "Davivienda",
+  "MUCAP",
+  "PayPal",
+  "Otro",
+];
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 const bounce = { type: "spring", stiffness: 400, damping: 22 } as const;
@@ -55,6 +72,7 @@ export function AddCashModal({
   const [type, setType] = useState<TransactionType>("EXPENSE");
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState<Currency>(defaultCurrency);
+  const [bank, setBank] = useState<BankName>("Efectivo");
   const [category, setCategory] = useState(allExpenseCategories[0]);
   const categories = type === "EXPENSE" ? allExpenseCategories : allIncomeCategories;
   const [description, setDescription] = useState("");
@@ -68,6 +86,7 @@ export function AddCashModal({
     setType("EXPENSE");
     setAmount("");
     setCurrency(defaultCurrency);
+    setBank("Efectivo");
     setCategory(allExpenseCategories[0]);
     setDescription("");
     setDate(nowForInput());
@@ -101,6 +120,7 @@ export function AddCashModal({
         category,
         type,
         transactionDate: new Date(date).toISOString(),
+        bank,
       });
       if (result?.error) {
         setError(result.error);
@@ -292,6 +312,28 @@ export function AddCashModal({
                         ← Atrás
                       </button>
                       <h2 className="text-base font-semibold text-zinc-50">¿Cuándo fue?</h2>
+
+                      <div className="flex flex-col gap-2">
+                        <span className="text-xs font-medium text-zinc-400">
+                          ¿De dónde salió? (si no te llegó solo)
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          {manualBankOptions.map((b) => (
+                            <button
+                              key={b}
+                              onClick={() => setBank(b)}
+                              className={`flex items-center gap-1.5 rounded-full border py-1 pl-1 pr-3 text-xs font-medium transition-colors cursor-pointer ${
+                                bank === b
+                                  ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                                  : "border-white/10 text-zinc-400 hover:border-white/20"
+                              }`}
+                            >
+                              <BankLogo bank={b} size={18} />
+                              {BANK_BRAND[b].initials}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
 
                       <div className="flex flex-col gap-2">
                         <input
