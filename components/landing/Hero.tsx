@@ -9,7 +9,7 @@ export function Hero() {
         className="pointer-events-none absolute -right-40 top-1/2 h-[36rem] w-[36rem] -translate-y-1/2 rounded-full bg-sky-400/10 blur-[120px]"
       />
 
-      <div className="relative flex flex-col items-start gap-6">
+      <div className="relative flex flex-col items-center gap-6 text-center md:items-start md:text-left">
         <span className="animate-fade-up rounded-full border border-white/10 bg-zinc-900 px-3.5 py-1.5 text-xs font-medium text-zinc-300">
           100% Automático para Costa Rica 🇨🇷
         </span>

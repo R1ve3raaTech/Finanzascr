@@ -38,7 +38,7 @@ export default async function LandingPage() {
   return (
     <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/80 backdrop-blur">
-        <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between px-6">
+        <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between px-4 sm:px-6">
           <Logo subtitle="finanzas personales" />
           <LoginButton />
         </div>
@@ -47,7 +47,7 @@ export default async function LandingPage() {
       <Hero />
 
       <section className="border-t border-white/10">
-        <div className="mx-auto w-full max-w-6xl px-6 py-14">
+        <div className="mx-auto w-full max-w-6xl px-4 py-14 text-center sm:px-6 sm:text-left">
           <p className="mb-6 text-sm text-zinc-500">
             Compatible con las entidades que ya usás
           </p>
@@ -58,13 +58,13 @@ export default async function LandingPage() {
       </section>
 
       <section className="border-t border-white/10">
-        <div className="mx-auto w-full max-w-6xl px-6 py-20">
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 text-center sm:px-6 sm:text-left">
           <StepsSection steps={steps} />
         </div>
       </section>
 
       <footer className="mt-auto border-t border-white/10">
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-8 text-xs text-zinc-500">
+        <div className="mx-auto flex w-full max-w-6xl flex-col flex-wrap items-center justify-center gap-3 px-4 py-8 text-center text-xs text-zinc-500 sm:flex-row sm:justify-between sm:px-6 sm:text-left">
           <span>Hecho en Costa Rica</span>
           <span>Tus datos son tuyos. Solo lectura de correos bancarios.</span>
           <Link href="/privacidad" className="transition-colors hover:text-zinc-300">

@@ -8,7 +8,7 @@ export function SupportedBanks({ banks }: { banks: { bank: BankName; label: stri
   const reduce = useReducedMotion();
 
   return (
-    <div className="flex flex-wrap gap-x-8 gap-y-6">
+    <div className="flex flex-wrap justify-center gap-x-8 gap-y-6 sm:justify-start">
       {banks.map(({ bank, label }, i) => (
         <motion.div
           key={bank}
