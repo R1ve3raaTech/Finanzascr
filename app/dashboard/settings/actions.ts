@@ -6,6 +6,40 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Currency, TransactionType } from "@/lib/types";
 
+export async function updateProfile(input: {
+  fullName: string;
+  birthDate: string | null;
+  avatarUrl: string | null;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const fullName = input.fullName.trim();
+  if (!fullName) return { error: "El nombre no puede estar vacío." };
+
+  if (input.birthDate && Number.isNaN(new Date(input.birthDate).getTime())) {
+    return { error: "La fecha de nacimiento no es válida." };
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      full_name: fullName,
+      birth_date: input.birthDate || null,
+      avatar_url: input.avatarUrl,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", user.id);
+
+  if (error) return { error: "No se pudo guardar el perfil. Intentá de nuevo." };
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/settings");
+  return { error: null };
+}
+
 export async function setBudget(category: string, monthlyLimit: number, currency: Currency) {
   const supabase = await createClient();
   const {

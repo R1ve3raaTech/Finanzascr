@@ -8,6 +8,7 @@ import {
   EnvelopeSimple,
   ShieldCheck,
   Tag,
+  User,
   Wallet,
 } from "@phosphor-icons/react/dist/ssr";
 import { BudgetManager } from "@/components/settings/BudgetManager";
@@ -16,6 +17,7 @@ import { CurrencySetting } from "@/components/settings/CurrencySetting";
 import { DangerZone } from "@/components/settings/DangerZone";
 import { GmailConnections } from "@/components/settings/GmailConnections";
 import { NotificationsSetting } from "@/components/settings/NotificationsSetting";
+import { ProfileSettings } from "@/components/settings/ProfileSettings";
 import { SettingsSection } from "@/components/settings/SettingsSection";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
 import { DEFAULT_EXPENSE_CATEGORIES } from "@/lib/categories";
@@ -38,12 +40,14 @@ export default async function SettingsPage({
   const admin = createAdminClient();
 
   const [
+    { data: profile },
     { data: settings },
     { data: categories },
     { data: gmailConnections },
     { data: budgets },
     { count: transactionCount },
   ] = await Promise.all([
+    supabase.from("profiles").select("full_name, avatar_url, birth_date").eq("id", user.id).maybeSingle(),
     supabase.from("user_settings").select("*").eq("user_id", user.id).maybeSingle(),
     supabase
       .from("user_categories")
@@ -76,6 +80,17 @@ export default async function SettingsPage({
   const resolvedSettings: Pick<UserSettings, "default_currency"> =
     settings ?? { default_currency: "CRC" };
 
+  const initialFullName =
+    profile?.full_name ??
+    (user.user_metadata?.full_name as string | undefined) ??
+    user.email ??
+    "";
+  const initialAvatarUrl =
+    profile?.avatar_url ??
+    (user.user_metadata?.avatar_url as string | undefined) ??
+    (user.user_metadata?.picture as string | undefined) ??
+    null;
+
   return (
     <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
       <header className="border-b border-white/10">
@@ -99,41 +114,50 @@ export default async function SettingsPage({
           </p>
         )}
 
-        <SettingsSection icon={Tag} accent="violet" delayMs={0}>
+        <SettingsSection icon={User} accent="violet" delayMs={0}>
+          <ProfileSettings
+            userId={user.id}
+            initialFullName={initialFullName}
+            initialBirthDate={profile?.birth_date ?? null}
+            initialAvatarUrl={initialAvatarUrl}
+          />
+        </SettingsSection>
+
+        <SettingsSection icon={Tag} accent="amber" delayMs={40}>
           <CategoryManager categories={(categories ?? []) as UserCategory[]} />
         </SettingsSection>
 
-        <SettingsSection icon={Wallet} accent="amber" delayMs={40}>
+        <SettingsSection icon={Wallet} accent="zinc" delayMs={80}>
           <BudgetManager budgets={(budgets ?? []) as Budget[]} categories={budgetCategories} />
         </SettingsSection>
 
-        <SettingsSection icon={CurrencyCircleDollar} accent="emerald" delayMs={80}>
+        <SettingsSection icon={CurrencyCircleDollar} accent="emerald" delayMs={120}>
           <CurrencySetting initial={resolvedSettings.default_currency} />
         </SettingsSection>
 
-        <SettingsSection icon={Bell} accent="sky" delayMs={120}>
+        <SettingsSection icon={Bell} accent="sky" delayMs={160}>
           <NotificationsSetting />
         </SettingsSection>
 
-        <SettingsSection icon={EnvelopeSimple} accent="sky" delayMs={160}>
+        <SettingsSection icon={EnvelopeSimple} accent="sky" delayMs={200}>
           <GmailConnections connections={gmailConnections ?? []} />
         </SettingsSection>
 
         <a
           href="/api/export-csv"
-          className="animate-fade-up flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900/40 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 [animation-delay:200ms]"
+          className="animate-fade-up flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900/40 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 [animation-delay:240ms]"
         >
           <DownloadSimple size={16} weight="bold" />
           Exportar transacciones a CSV
         </a>
 
-        <section className="animate-fade-up rounded-2xl border border-rose-400/15 bg-zinc-900/40 p-5 [animation-delay:240ms]">
+        <section className="animate-fade-up rounded-2xl border border-rose-400/15 bg-zinc-900/40 p-5 [animation-delay:280ms]">
           <DangerZone transactionCount={transactionCount ?? 0} />
         </section>
 
         <Link
           href="/privacidad"
-          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-400 [animation-delay:260ms]"
+          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-400 [animation-delay:300ms]"
         >
           <ShieldCheck size={14} weight="bold" />
           Política de privacidad

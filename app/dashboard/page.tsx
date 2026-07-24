@@ -39,19 +39,21 @@ export default async function DashboardPage({
         .limit(300)
     : transactionsQuery.limit(50);
 
-  const [{ data }, { data: settings }, { data: categories }] = await Promise.all([
-    transactionsQuery,
-    supabase
-      .from("user_settings")
-      .select("default_currency")
-      .eq("user_id", user.id)
-      .maybeSingle(),
-    supabase
-      .from("user_categories")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: true }),
-  ]);
+  const [{ data }, { data: settings }, { data: categories }, { data: profile }] =
+    await Promise.all([
+      transactionsQuery,
+      supabase
+        .from("user_settings")
+        .select("default_currency")
+        .eq("user_id", user.id)
+        .maybeSingle(),
+      supabase
+        .from("user_categories")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: true }),
+      supabase.from("profiles").select("full_name, avatar_url").eq("id", user.id).maybeSingle(),
+    ]);
 
   const transactions = (data ?? []) as Transaction[];
   const userCategories = (categories ?? []) as UserCategory[];
@@ -62,11 +64,12 @@ export default async function DashboardPage({
     balance[t.currency] += t.type === "INCOME" ? t.amount : -t.amount;
   }
 
-  const firstName =
-    (user.user_metadata?.full_name as string | undefined)?.split(" ")[0] ??
-    user.email;
-  const avatarUrl = (user.user_metadata?.avatar_url ??
-    user.user_metadata?.picture) as string | undefined;
+  const fullName =
+    profile?.full_name ?? (user.user_metadata?.full_name as string | undefined) ?? user.email;
+  const firstName = fullName?.split(" ")[0];
+  const avatarUrl =
+    profile?.avatar_url ??
+    ((user.user_metadata?.avatar_url ?? user.user_metadata?.picture) as string | undefined);
 
   return (
     <main className="flex min-h-[100dvh] flex-col bg-zinc-950">

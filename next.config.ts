@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
   // cual como en Node.
   serverExternalPackages: ["pdf-parse", "pdfjs-dist"],
   images: {
-    remotePatterns: [{ hostname: "lh3.googleusercontent.com" }],
+    remotePatterns: [
+      { hostname: "lh3.googleusercontent.com" },
+      { hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
+    ],
   },
   async headers() {
     return [
