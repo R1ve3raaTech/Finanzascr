@@ -11,14 +11,6 @@ export function Hero() {
 
       <div className="relative flex flex-col items-center gap-6 text-center md:items-start md:text-left">
         <span className="animate-fade-up inline-flex -rotate-2 items-center gap-2 rounded-md border border-dashed border-white/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-zinc-400">
-          <span
-            aria-hidden="true"
-            className="h-2.5 w-2.5 rounded-[2px]"
-            style={{
-              backgroundImage:
-                "linear-gradient(180deg, #4a6fa5 0 16.6%, #e9e7e0 16.6% 33.3%, #b6495a 33.3% 66.6%, #e9e7e0 66.6% 83.3%, #4a6fa5 83.3% 100%)",
-            }}
-          />
           100% automático · hecho en Costa Rica
         </span>
 
