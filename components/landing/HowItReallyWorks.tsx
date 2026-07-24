@@ -12,7 +12,7 @@ const notes = [
   {
     icon: EnvelopeSimple,
     title: "Solo leemos lo que tu banco realmente manda por correo",
-    body: "Si la notificación no llega a tu Gmail, no existe para nosotros. En BAC, por ejemplo, a veces hay que activar o reenviar el comprobante por correo desde su app — si no, ese movimiento no se puede detectar.",
+    body: "Si la notificación no llega a tu Gmail, no existe para nosotros. En BAC, por ejemplo, las alertas de transferencias suelen llegar por SMS por defecto — hay que activar el correo electrónico como medio de notificación en Ajustes de la app (Seguridad → Alertas) para que también llegue ahí.",
   },
   {
     icon: PencilSimple,
