@@ -55,8 +55,13 @@ export const BANK_BRAND: Record<BankName, BankBrand> = {
     logo: "/logos/bp.svg",
     chipBg: "#F58220",
   },
-  // Sin logo confiable disponible con licencia clara: queda con badge de color.
-  MUCAP: { label: "MUCAP", initials: "MU", bg: "#7A1F2B", fg: "#ffffff" },
+  MUCAP: {
+    label: "MUCAP",
+    initials: "MU",
+    bg: "#7A1F2B",
+    fg: "#ffffff",
+    logo: "/logos/mucap.jpg",
+  },
   PayPal: {
     label: "PayPal",
     initials: "PP",
