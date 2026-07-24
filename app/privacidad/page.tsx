@@ -3,13 +3,18 @@ import {
   ArrowLeft,
   Baby,
   Clock,
+  Cookie,
   EnvelopeSimple,
+  Gavel,
+  IdentificationCard,
   Lock,
   Sparkle,
   Database,
   ShareNetwork,
   ArrowsClockwise,
   SlidersHorizontal,
+  Scales,
+  ShieldCheck,
 } from "@phosphor-icons/react/dist/ssr";
 import { Logo } from "@/components/Logo";
 import type { Icon } from "@phosphor-icons/react";
@@ -72,48 +77,122 @@ export default function PrivacyPolicyPage() {
           <h1 className="text-xl font-semibold tracking-tight text-zinc-50">
             Política de privacidad
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">Última actualización: julio de 2026.</p>
+          <p className="mt-1 text-sm text-zinc-500">Última actualización: 24 de julio de 2026.</p>
+          <p className="mt-1 text-sm text-zinc-500">
+            Esta política se rige por la Ley N.º 8968, Ley de Protección de la Persona frente al
+            tratamiento de sus datos personales, de Costa Rica. También aplican los{" "}
+            <Link href="/terminos" className="text-sky-400 hover:underline">
+              términos de servicio
+            </Link>
+            .
+          </p>
         </div>
 
         <div className="rounded-2xl border border-sky-400/20 bg-sky-400/5 p-5">
           <p className="text-sm font-medium text-sky-300">Resumen, por si no leés todo esto</p>
           <ul className="mt-2 flex flex-col gap-1.5 text-sm leading-relaxed text-zinc-300">
             <li>• Solo leemos correos de bancos. Nada más de tu Gmail.</li>
-            <li>• No vendemos tus datos, a nadie, nunca.</li>
+            <li>• No vendemos ni alquilamos tus datos, a nadie, nunca.</li>
             <li>• Podés borrar tu cuenta y todo tu historial cuando quieras.</li>
             <li>• Tus tokens de acceso a Gmail se guardan cifrados.</li>
+            <li>• Tenés derechos ARCO y podés reclamar ante PRODHAB si algo no cuadra.</li>
           </ul>
         </div>
 
-        <Section title="Qué datos leemos de tu Gmail" icon={EnvelopeSimple} accent="sky">
+        <Section title="Responsable de la base de datos" icon={IdentificationCard} accent="sky">
           <p>
-            Cuando conectás tu cuenta de Google, pedimos el permiso{" "}
-            <span className="font-mono text-xs text-zinc-300">gmail.readonly</span>. Lo usamos
-            exclusivamente para buscar correos de notificación de bancos y billeteras (BAC, BCR,
-            Banco Nacional, Banco Popular, Davivienda, MUCAP y PayPal) y extraer de ahí el monto,
-            la fecha y la descripción de cada movimiento.
+            TicoFinanza es un proyecto operado por una persona física (no una empresa
+            constituida), identificada como{" "}
+            <span className="text-zinc-300">Camil</span>, responsable del tratamiento de los
+            datos personales recolectados a través de esta aplicación.
           </p>
           <p>
-            No leemos, guardamos ni procesamos ningún otro correo de tu bandeja: no buscamos
-            correos personales, no los indexamos, no los usamos para nada que no sea detectar una
-            notificación bancaria.
-          </p>
-        </Section>
-
-        <Section title="Qué guardamos" icon={Database} accent="violet">
-          <p>
-            Guardamos las transacciones que detectamos (banco, monto, moneda, descripción,
-            categoría y fecha), las que registrás manualmente, tus categorías y presupuestos
-            personalizados, tu suscripción a notificaciones push si las activás, y los datos de
-            perfil que cargues vos mismo (nombre, foto, fecha de nacimiento).
-          </p>
-          <p>
-            No guardamos el contenido completo de tus correos, solo los datos ya extraídos de la
-            transacción. Nunca guardamos el texto original del correo bancario.
+            Contacto directo para cualquier consulta, solicitud o reclamo relacionado con tus
+            datos personales:{" "}
+            <a href="mailto:thecamil999@gmail.com" className="text-sky-400 hover:underline">
+              thecamil999@gmail.com
+            </a>
+            . No se mantiene un domicilio físico de atención al público; toda gestión se realiza
+            por correo electrónico.
           </p>
         </Section>
 
-        <Section title="Categorización con Inteligencia Artificial" icon={Sparkle} accent="amber">
+        <Section title="Qué datos personales recolectamos" icon={Database} accent="violet">
+          <p>Recolectamos exactamente estos datos, y ningún otro:</p>
+          <ul className="ml-4 list-disc space-y-1.5">
+            <li>
+              <span className="text-zinc-300">Datos de identidad y autenticación de Google</span>:
+              tu nombre, dirección de correo y foto de perfil de Google, y un identificador único
+              de tu cuenta, al iniciar sesión con Google.
+            </li>
+            <li>
+              <span className="text-zinc-300">Token de acceso a Gmail</span>: un token de
+              autorización (cifrado) que nos permite leer, en tu nombre, únicamente los correos de
+              notificación bancaria que vos autorizaste.
+            </li>
+            <li>
+              <span className="text-zinc-300">Datos financieros derivados de tus correos</span>:
+              monto, moneda, fecha, descripción y banco de origen de cada movimiento detectado en
+              tus notificaciones bancarias.
+            </li>
+            <li>
+              <span className="text-zinc-300">Datos financieros ingresados manualmente</span>:
+              transacciones en efectivo, categorías y presupuestos que vos creás a mano.
+            </li>
+            <li>
+              <span className="text-zinc-300">Datos de perfil opcionales</span>: fecha de
+              nacimiento y foto de perfil, si decidís cargarlos en Ajustes.
+            </li>
+            <li>
+              <span className="text-zinc-300">Datos técnicos de sesión</span>: cookies necesarias
+              para mantener tu sesión iniciada y prevenir ataques (ver sección de cookies más
+              abajo).
+            </li>
+          </ul>
+        </Section>
+
+        <Section title="Para qué usamos cada dato" icon={SlidersHorizontal} accent="amber">
+          <ul className="ml-4 list-disc space-y-1.5">
+            <li>
+              <span className="text-zinc-300">Nombre, correo y foto de Google</span>: identificarte
+              y mostrarte tu propia información en la app.
+            </li>
+            <li>
+              <span className="text-zinc-300">Token de Gmail</span>: buscar y leer, de forma
+              automática, únicamente los correos de bancos que vos autorizaste, para registrar tus
+              movimientos sin que tengas que anotarlos a mano.
+            </li>
+            <li>
+              <span className="text-zinc-300">Datos financieros (automáticos y manuales)</span>:
+              mostrarte tu saldo, tus gráficos de gasto, y avisarte cuando te acercás a un límite
+              de presupuesto.
+            </li>
+            <li>
+              <span className="text-zinc-300">Fecha de nacimiento y foto de perfil</span>:
+              personalizar tu cuenta; son enteramente opcionales y no se usan para ningún otro fin.
+            </li>
+            <li>
+              <span className="text-zinc-300">Cookies de sesión</span>: mantenerte con la sesión
+              iniciada y proteger el proceso de login contra falsificación de solicitudes (CSRF).
+            </li>
+          </ul>
+          <p>
+            No usamos ninguno de estos datos para publicidad, ni los combinamos con datos de
+            terceros para crear perfiles de consumo.
+          </p>
+        </Section>
+
+        <Section title="Consentimiento" icon={Gavel} accent="rose">
+          <p>
+            El tratamiento de tus datos se basa en tu consentimiento informado y expreso: al
+            iniciar sesión con Google, la propia pantalla de consentimiento de Google te muestra
+            exactamente qué permisos pedimos (identidad y lectura de Gmail) antes de que autorices
+            nada. Podés retirar ese consentimiento en cualquier momento, sin que eso afecte la
+            licitud del tratamiento hecho antes del retiro.
+          </p>
+        </Section>
+
+        <Section title="Categorización con inteligencia artificial" icon={Sparkle} accent="amber">
           <p>
             Si usás la función de categorizar transacciones automáticamente, el banco, el monto y
             la descripción de esas transacciones (sin ningún otro dato tuyo) se envían al modelo
@@ -135,24 +214,37 @@ export default function PrivacyPolicyPage() {
 
         <Section title="Con quién compartimos tus datos" icon={ShareNetwork} accent="rose">
           <p>No vendemos ni alquilamos tus datos a nadie, bajo ninguna circunstancia.</p>
-          <p>Los únicos servicios externos que procesan información en tu nombre son:</p>
+          <p>
+            Los únicos terceros que procesan información en tu nombre, como encargados del
+            tratamiento, son:
+          </p>
           <ul className="ml-4 list-disc space-y-1">
             <li>
-              <span className="text-zinc-300">Google</span>, para leer los correos bancarios que
-              vos autorizaste.
+              <span className="text-zinc-300">Google</span>, para autenticarte y para leer los
+              correos bancarios que vos autorizaste (Google LLC, Estados Unidos).
             </li>
             <li>
               <span className="text-zinc-300">Supabase</span>, donde vive la base de datos y el
-              sistema de autenticación.
+              sistema de autenticación (Supabase Inc., con infraestructura alojada en Estados
+              Unidos).
             </li>
             <li>
               <span className="text-zinc-300">Anthropic</span>, solo si usás la categorización
-              automática con IA, y solo con los datos de esa transacción puntual.
+              automática con IA, y solo con los datos de esa transacción puntual (Anthropic, PBC,
+              Estados Unidos).
             </li>
             <li>
-              <span className="text-zinc-300">Vercel</span>, donde corre la aplicación (hosting).
+              <span className="text-zinc-300">Vercel</span>, donde corre la aplicación, es decir
+              el hosting (Vercel Inc., Estados Unidos).
             </li>
           </ul>
+          <p>
+            Esto implica una transferencia internacional de datos fuera de Costa Rica, hacia
+            proveedores ubicados principalmente en Estados Unidos. Estos proveedores operan bajo
+            sus propios compromisos contractuales de protección de datos y cifran la información
+            en tránsito y en reposo. No compartimos datos con ninguna otra entidad, ni pública ni
+            privada, salvo obligación legal.
+          </p>
         </Section>
 
         <Section title="Cuánto tiempo guardamos tus datos" icon={Clock} accent="sky">
@@ -164,18 +256,71 @@ export default function PrivacyPolicyPage() {
           </p>
         </Section>
 
-        <Section title="Tus opciones y derechos" icon={SlidersHorizontal} accent="violet">
+        <Section title="Cookies y tecnologías similares" icon={Cookie} accent="violet">
           <p>
-            Desde Ajustes podés, en cualquier momento y sin pedirle nada a nadie: desconectar
-            cualquier cuenta de Gmail vinculada, borrar transacciones individuales, borrar todo tu
-            historial de movimientos, exportar tus transacciones a CSV, y editar o borrar tu
-            información de perfil.
+            Usamos únicamente cookies estrictamente necesarias para el funcionamiento del sitio:
+            una cookie de sesión (para mantenerte con la sesión iniciada) y cookies temporales de
+            seguridad usadas solo durante el proceso de inicio de sesión con Google, que expiran a
+            los pocos minutos.
+          </p>
+          <p>
+            No usamos cookies de publicidad, de rastreo entre sitios, ni herramientas de analítica
+            de terceros. No vas a ver un banner de cookies porque no usamos ninguna que requiera tu
+            consentimiento adicional.
+          </p>
+        </Section>
+
+        <Section title="Tus derechos ARCO" icon={Scales} accent="emerald">
+          <p>
+            Como titular de tus datos, la Ley 8968 te reconoce el derecho a Acceder, Rectificar,
+            Cancelar y Oponerte al tratamiento de tu información (derechos ARCO):
+          </p>
+          <ul className="ml-4 list-disc space-y-1.5">
+            <li>
+              <span className="text-zinc-300">Acceso</span>: pedir una copia de qué datos tuyos
+              tenemos guardados.
+            </li>
+            <li>
+              <span className="text-zinc-300">Rectificación</span>: corregir datos tuyos que estén
+              incorrectos o desactualizados.
+            </li>
+            <li>
+              <span className="text-zinc-300">Cancelación</span>: pedir que borremos tus datos.
+            </li>
+            <li>
+              <span className="text-zinc-300">Oposición</span>: oponerte a que usemos tus datos
+              para un fin específico (por ejemplo, la categorización automática con IA).
+            </li>
+          </ul>
+          <p>
+            Desde Ajustes podés ejercer varios de estos derechos vos mismo, sin pedirle nada a
+            nadie: desconectar cualquier cuenta de Gmail vinculada, borrar transacciones
+            individuales o todo tu historial, exportar tus transacciones a CSV, y editar o borrar
+            tu información de perfil.
+          </p>
+          <p>
+            Para cualquier otra solicitud (incluyendo el acceso completo a tus datos o la
+            cancelación total de tu cuenta), escribinos a{" "}
+            <a href="mailto:thecamil999@gmail.com" className="text-sky-400 hover:underline">
+              thecamil999@gmail.com
+            </a>
+            . Respondemos dentro de un plazo máximo de 5 días hábiles, y ejercer estos derechos
+            nunca tiene costo alguno para vos.
           </p>
           <p>
             También podés revocar el acceso a Gmail directamente desde{" "}
             <span className="text-zinc-300">myaccount.google.com/permissions</span>, sin pasar por
-            la app. Si querés que eliminemos tu cuenta por completo, escribinos (abajo tenés el
-            correo).
+            la app.
+          </p>
+        </Section>
+
+        <Section title="Autoridad de control: PRODHAB" icon={ShieldCheck} accent="sky">
+          <p>
+            Si considerás que no atendimos correctamente tu solicitud, o que tus datos personales
+            fueron tratados de forma indebida, podés presentar un reclamo ante la Agencia de
+            Protección de Datos de los Habitantes (PRODHAB), la autoridad de control en Costa Rica
+            en materia de protección de datos personales, independientemente de cualquier gestión
+            que hagas con nosotros directamente.
           </p>
         </Section>
 
@@ -189,16 +334,16 @@ export default function PrivacyPolicyPage() {
 
         <Section title="Menores de edad" icon={Baby} accent="rose">
           <p>
-            RoKKbo/TicoFinanza no está dirigido a menores de 13 años, y no recolectamos a
-            sabiendas información de niños. Si sos padre/madre y creés que tu hijo/a nos dio
-            información, escribinos y la borramos.
+            TicoFinanza no está dirigido a menores de 13 años, y no recolectamos a sabiendas
+            información de niños. Si sos padre/madre y creés que tu hijo/a nos dio información,
+            escribinos y la borramos.
           </p>
         </Section>
 
         <Section title="Contacto" icon={EnvelopeSimple} accent="emerald">
           <p>
-            Si tenés dudas sobre esta política, sobre cómo usamos tus datos, o querés que
-            eliminemos tu cuenta por completo, escribinos a{" "}
+            Si tenés dudas sobre esta política, sobre cómo usamos tus datos, o querés ejercer tus
+            derechos ARCO, escribinos a{" "}
             <a href="mailto:thecamil999@gmail.com" className="text-sky-400 hover:underline">
               thecamil999@gmail.com
             </a>

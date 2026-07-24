@@ -10,6 +10,7 @@ import type { BankName } from "@/lib/types";
 const links = [
   { label: "Cómo funciona", href: "#como-funciona" },
   { label: "Política de privacidad", href: "/privacidad" },
+  { label: "Términos de servicio", href: "/terminos" },
   { label: "Escribinos", href: "mailto:thecamil999@gmail.com" },
 ];
 
