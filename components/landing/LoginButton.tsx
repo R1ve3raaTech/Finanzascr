@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { signInWithGoogle } from "@/lib/supabase/client";
+import { EmailAuthModal } from "./EmailAuthModal";
 
 function GoogleMark() {
   return (
@@ -28,19 +30,31 @@ function GoogleMark() {
 
 export function LoginButton({ large = false }: { large?: boolean }) {
   const reduce = useReducedMotion();
+  const [showEmailAuth, setShowEmailAuth] = useState(false);
 
   return (
-    <motion.button
-      onClick={() => signInWithGoogle()}
-      whileHover={reduce ? undefined : { scale: 1.02 }}
-      whileTap={reduce ? undefined : { scale: 0.97 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className={`inline-flex items-center gap-3 rounded-full bg-zinc-50 text-zinc-950 font-medium shadow-[0_8px_30px_rgba(56,189,248,0.12)] hover:shadow-[0_8px_40px_rgba(56,189,248,0.2)] transition-shadow cursor-pointer ${
-        large ? "px-7 py-3.5 text-base" : "px-5 py-2.5 text-sm"
-      }`}
-    >
-      <GoogleMark />
-      Iniciar sesión con Google
-    </motion.button>
+    <div className={`flex flex-col ${large ? "items-center gap-3 md:items-start" : "items-end gap-1"}`}>
+      <motion.button
+        onClick={() => signInWithGoogle()}
+        whileHover={reduce ? undefined : { scale: 1.02 }}
+        whileTap={reduce ? undefined : { scale: 0.97 }}
+        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        className={`inline-flex items-center gap-3 rounded-full bg-zinc-50 text-zinc-950 font-medium shadow-[0_8px_30px_rgba(56,189,248,0.12)] hover:shadow-[0_8px_40px_rgba(56,189,248,0.2)] transition-shadow cursor-pointer ${
+          large ? "px-7 py-3.5 text-base" : "px-5 py-2.5 text-sm"
+        }`}
+      >
+        <GoogleMark />
+        Iniciar sesión con Google
+      </motion.button>
+
+      <button
+        onClick={() => setShowEmailAuth(true)}
+        className="text-xs text-zinc-500 underline-offset-2 transition-colors hover:text-zinc-300 hover:underline cursor-pointer"
+      >
+        o con tu correo
+      </button>
+
+      {showEmailAuth && <EmailAuthModal onClose={() => setShowEmailAuth(false)} />}
+    </div>
   );
 }
