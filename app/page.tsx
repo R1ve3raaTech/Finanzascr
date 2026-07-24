@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import { FeatureShowcase } from "@/components/landing/FeatureShowcase";
+import { Footer } from "@/components/landing/Footer";
 import { Hero } from "@/components/landing/Hero";
 import { LoginButton } from "@/components/landing/LoginButton";
 import { StepsSection } from "@/components/landing/StepsSection";
@@ -63,15 +64,21 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <footer className="mt-auto border-t border-white/10">
-        <div className="mx-auto flex w-full max-w-6xl flex-col flex-wrap items-center justify-center gap-3 px-4 py-8 text-center text-xs text-zinc-500 sm:flex-row sm:justify-between sm:px-6 sm:text-left">
-          <span>Hecho en Costa Rica</span>
-          <span>Tus datos son tuyos. Solo lectura de correos bancarios.</span>
-          <Link href="/privacidad" className="transition-colors hover:text-zinc-300">
-            Política de privacidad
-          </Link>
+      <section id="como-funciona" className="border-t border-white/10 scroll-mt-[68px]">
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
+          <h2 className="text-3xl font-semibold tracking-tighter text-zinc-50 md:text-4xl">
+            Todo lo que hace por vos
+          </h2>
+          <p className="mt-3 max-w-[50ch] text-sm leading-relaxed text-zinc-500 md:text-base">
+            No es solo leer correos. Es que nunca más tengas que pensar en anotar un gasto.
+          </p>
+          <div className="mt-10">
+            <FeatureShowcase />
+          </div>
         </div>
-      </footer>
+      </section>
+
+      <Footer />
     </main>
   );
 }

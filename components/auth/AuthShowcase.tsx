@@ -11,7 +11,7 @@ const cards = [
     amount: "-₡8.450",
     income: false,
     rotate: -6,
-    x: -18,
+    x: -20,
     y: 0,
     delay: 0,
   },
@@ -21,8 +21,8 @@ const cards = [
     amount: "+₡25.000",
     income: true,
     rotate: 4,
-    x: 30,
-    y: 64,
+    x: 44,
+    y: 102,
     delay: 0.6,
   },
   {
@@ -31,8 +31,8 @@ const cards = [
     amount: "-$12,90",
     income: false,
     rotate: -3,
-    x: -10,
-    y: 132,
+    x: -6,
+    y: 204,
     delay: 1.2,
   },
 ];
@@ -62,7 +62,7 @@ export function AuthShowcase() {
           categorizado, en tiempo real.
         </p>
 
-        <div className="relative mt-16 h-[230px] w-[300px]">
+        <div className="relative mt-14 h-[280px] w-[320px]">
           {cards.map((card) => (
             <motion.div
               key={card.bank}

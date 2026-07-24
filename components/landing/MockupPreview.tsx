@@ -105,7 +105,7 @@ export function MockupPreview() {
       </p>
 
       {/* Lista de transacciones generadas */}
-      <div className="relative h-44">
+      <div className="relative h-[212px]">
         <p className="mockup-placeholder absolute inset-x-0 top-0 rounded-xl border border-dashed border-white/10 p-3 text-center text-xs text-zinc-600">
           Esperando correos bancarios
         </p>
@@ -116,7 +116,7 @@ export function MockupPreview() {
             <div
               key={entry.id}
               className={`absolute inset-x-0 flex items-center gap-3 rounded-xl border border-white/10 bg-zinc-900 p-3 ${entry.resultClass}`}
-              style={{ top: `${i * 56}px` }}
+              style={{ top: `${i * 70}px` }}
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-800">
                 <Icon size={16} weight="bold" className="text-sky-400" />
