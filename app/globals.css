@@ -125,3 +125,31 @@ textarea,
     transform: none;
   }
 }
+
+/* Panel de la página de login/registro: blobs a la deriva + marquee de
+   bancos, ambos en loop infinito y solo con transform (sin animar
+   width/height/top/left) para que no traben en pantallas de 120Hz. */
+@keyframes auth-blob-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6%, 8%) scale(1.08); }
+}
+@keyframes auth-blob-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-8%, -6%) scale(1.1); }
+}
+@keyframes auth-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.auth-blob-a { animation: auth-blob-a 16s ease-in-out infinite; }
+.auth-blob-b { animation: auth-blob-b 18s ease-in-out infinite; }
+.auth-marquee { animation: auth-marquee 28s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-blob-a,
+  .auth-blob-b,
+  .auth-marquee {
+    animation: none;
+  }
+}
