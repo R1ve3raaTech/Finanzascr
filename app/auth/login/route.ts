@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import { NextResponse } from "next/server";
 import { buildGoogleAuthUrl, LOGIN_SCOPE } from "@/lib/google/oauth";
 
@@ -15,10 +16,16 @@ export async function GET(request: Request) {
   const redirectUri = `${origin}/auth/callback`;
 
   const state = crypto.randomUUID();
-  const nonce = crypto.randomUUID();
+  // Supabase's signInWithIdToken hashea el nonce que le pasás y lo compara
+  // contra el claim "nonce" del id_token — así que a Google hay que
+  // mandarle el hash, y guardar el nonce SIN hashear para dárselo a
+  // Supabase después. Mandarle el mismo valor a los dos (como estaba antes)
+  // rompe la verificación con "Nonces mismatch".
+  const rawNonce = crypto.randomUUID();
+  const hashedNonce = createHash("sha256").update(rawNonce).digest("hex");
 
   const response = NextResponse.redirect(
-    buildGoogleAuthUrl(redirectUri, state, LOGIN_SCOPE, nonce)
+    buildGoogleAuthUrl(redirectUri, state, LOGIN_SCOPE, hashedNonce)
   );
   const cookieOptions = {
     httpOnly: true,
@@ -28,6 +35,6 @@ export async function GET(request: Request) {
     path: "/auth",
   };
   response.cookies.set(STATE_COOKIE, state, cookieOptions);
-  response.cookies.set(NONCE_COOKIE, nonce, cookieOptions);
+  response.cookies.set(NONCE_COOKIE, rawNonce, cookieOptions);
   return response;
 }
