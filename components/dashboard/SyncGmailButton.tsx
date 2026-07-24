@@ -44,7 +44,7 @@ export function SyncGmailButton() {
         whileHover={reduce ? undefined : { scale: 1.03 }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={tap}
-        className="flex h-8 items-center gap-1.5 rounded-full border border-white/10 px-2.5 text-xs font-medium text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100 disabled:opacity-50 cursor-pointer sm:px-3"
+        className="flex h-8 items-center gap-1.5 rounded-full bg-sky-400/10 px-3 text-xs font-semibold text-sky-300 shadow-[0_0_0_1px_rgba(56,189,248,0.3)] transition-colors hover:bg-sky-400/15 disabled:opacity-50 cursor-pointer"
       >
         <motion.span
           animate={pending ? { rotate: 360 } : { rotate: 0 }}
@@ -57,7 +57,7 @@ export function SyncGmailButton() {
         >
           <ArrowsClockwise size={14} weight="bold" />
         </motion.span>
-        <span className="hidden sm:inline">{pending ? "Leyendo..." : "Leer correos"}</span>
+        <span>{pending ? "Leyendo..." : "Leer correos"}</span>
       </motion.button>
     </div>
   );

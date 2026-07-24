@@ -33,7 +33,7 @@ export function HeaderIconLink({
         className="flex h-8 items-center gap-1.5 rounded-full border border-white/10 px-2.5 text-xs font-medium text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100 sm:px-3"
       >
         {children}
-        <span className="hidden sm:inline">{label}</span>
+        <span>{label}</span>
       </MotionLink>
     );
   }

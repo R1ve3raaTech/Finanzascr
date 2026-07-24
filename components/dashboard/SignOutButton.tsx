@@ -40,11 +40,11 @@ export function SignOutButton() {
               role="alertdialog"
               aria-modal="true"
               aria-label="Confirmar cierre de sesión"
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
               transition={spring}
-              className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-sm rounded-2xl border border-white/10 bg-zinc-900 p-6 sm:inset-x-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2"
+              className="fixed inset-x-4 top-1/2 z-50 mx-auto max-w-sm -translate-y-1/2 rounded-2xl border border-white/10 bg-zinc-900 p-6 sm:inset-x-0"
             >
               <h2 className="text-base font-semibold text-zinc-50">
                 ¿Cerrar sesión?

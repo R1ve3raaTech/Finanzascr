@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ChartBar, GearSix } from "@phosphor-icons/react/dist/ssr";
 import { AddCashModal } from "@/components/dashboard/AddCashModal";
@@ -86,13 +87,14 @@ export default async function DashboardPage({
             <HeaderIconLink href="/dashboard/settings" label="Ajustes" hoverRotate={45}>
               <GearSix size={18} weight="bold" />
             </HeaderIconLink>
-            <Logo />
+            <Link href="/" aria-label="Ir a la landing de TicoFinanza">
+              <Logo />
+            </Link>
           </div>
           <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
             <HeaderIconLink href="/dashboard/insights" label="Estadísticas" showLabel>
               <ChartBar size={14} weight="bold" />
             </HeaderIconLink>
-            <SyncGmailButton />
             <SignOutButton />
             <ProfileAvatar avatarUrl={avatarUrl} name={firstName} />
           </div>
@@ -105,9 +107,12 @@ export default async function DashboardPage({
         <BalanceCard crc={balance.CRC} usd={balance.USD} filtered={hasRange} />
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-sm font-medium text-zinc-400">
-            {hasRange ? "Movimientos del período" : "Últimas transacciones"}
-          </h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-sm font-medium text-zinc-400">
+              {hasRange ? "Movimientos del período" : "Últimas transacciones"}
+            </h2>
+            <SyncGmailButton />
+          </div>
           <TransactionList transactions={transactions} />
         </section>
       </div>
