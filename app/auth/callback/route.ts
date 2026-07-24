@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { encryptToken } from "@/lib/tokenCrypto";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -23,7 +24,7 @@ export async function GET(request: Request) {
           {
             user_id: data.user.id,
             email: data.user.email,
-            refresh_token: refreshToken,
+            refresh_token: encryptToken(refreshToken),
             updated_at: new Date().toISOString(),
           },
           { onConflict: "user_id,email" }

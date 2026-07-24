@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { syncGmailForUser } from "@/lib/google/sync";
+import { decryptToken } from "@/lib/tokenCrypto";
 
 /**
  * Disparado por un cron externo (Vercel Cron llama con GET; cron-job.org u
@@ -37,7 +38,7 @@ async function handleSync(request: Request) {
       const result = await syncGmailForUser({
         admin: supabase,
         userId: row.user_id,
-        refreshToken: row.refresh_token,
+        refreshToken: decryptToken(row.refresh_token),
         tokenId: row.id,
         days,
         maxResults,

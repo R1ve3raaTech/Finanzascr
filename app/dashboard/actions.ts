@@ -8,6 +8,8 @@ import { syncGmailForUser } from "@/lib/google/sync";
 import { sendPushToUser } from "@/lib/push/send";
 import { categorizeTransactions } from "@/lib/ai/categorize";
 import { formatMoney } from "@/lib/format";
+import { checkRateLimit } from "@/lib/rateLimit";
+import { decryptToken } from "@/lib/tokenCrypto";
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from "@/lib/categories";
 import type { Currency, TransactionType } from "@/lib/types";
 
@@ -110,6 +112,18 @@ export async function syncMyGmail() {
   if (!user) redirect("/");
 
   const admin = createAdminClient();
+
+  const rateLimit = await checkRateLimit(admin, user.id, "sync_gmail", {
+    maxCalls: 1,
+    windowSeconds: 30,
+  });
+  if (!rateLimit.allowed) {
+    return {
+      error: `Espera ${rateLimit.retryAfterSeconds}s antes de volver a leer los correos.`,
+      inserted: 0,
+    };
+  }
+
   const { data: tokenRows, error: tokenError } = await admin
     .from("gmail_tokens")
     .select("id, refresh_token")
@@ -133,7 +147,7 @@ export async function syncMyGmail() {
       syncGmailForUser({
         admin,
         userId: user.id,
-        refreshToken: row.refresh_token,
+        refreshToken: decryptToken(row.refresh_token),
         tokenId: row.id,
       })
     )
@@ -186,6 +200,17 @@ export async function categorizeUncategorized() {
   if (!user) redirect("/");
 
   const admin = createAdminClient();
+
+  const rateLimit = await checkRateLimit(admin, user.id, "categorize_ai", {
+    maxCalls: 1,
+    windowSeconds: 60,
+  });
+  if (!rateLimit.allowed) {
+    return {
+      error: `Espera ${rateLimit.retryAfterSeconds}s antes de volver a categorizar.`,
+      updated: 0,
+    };
+  }
 
   const [{ data: pending }, { data: customCategories }] = await Promise.all([
     admin

@@ -5,6 +5,7 @@ import {
   exchangeGoogleAuthCode,
   getGoogleAccountEmail,
 } from "@/lib/google/oauth";
+import { encryptToken } from "@/lib/tokenCrypto";
 
 const STATE_COOKIE = "gmail_connect_state";
 
@@ -47,7 +48,7 @@ export async function GET(request: NextRequest) {
       {
         user_id: user.id,
         email,
-        refresh_token: tokens.refresh_token,
+        refresh_token: encryptToken(tokens.refresh_token),
         updated_at: new Date().toISOString(),
       },
       { onConflict: "user_id,email" }
