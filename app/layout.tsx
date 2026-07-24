@@ -19,10 +19,10 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "RoKoBo | Todas tus entidades bancarias y tu dinero en un solo lugar",
+  title: "RoKKbo | Todas tus entidades bancarias y tu dinero en un solo lugar",
   description:
-    "Lee automáticamente tus correos de BAC, BCR, BNCR, Promerica, Davivienda y SINPE Móvil. Controlá tus finanzas sin mover un solo dedo. Hecho para Costa Rica.",
-  appleWebApp: { title: "RoKoBo" },
+    "Lee automáticamente tus correos de BAC, BCR, Banco Nacional, Banco Popular, Davivienda, MUCAP y PayPal. Controlá tus finanzas sin mover un solo dedo. Hecho para Costa Rica.",
+  appleWebApp: { title: "RoKKbo" },
   icons: { apple: "/icon-192.png" },
 };
 
