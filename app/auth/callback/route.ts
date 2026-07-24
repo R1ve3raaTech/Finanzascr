@@ -67,7 +67,14 @@ export async function GET(request: NextRequest) {
       console.warn("[auth/callback] Google no devolvió refresh_token en este login.");
     }
 
-    return redirectAndClearState(`${origin}/dashboard`);
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("onboarding_completed_at")
+      .eq("id", data.user.id)
+      .maybeSingle();
+
+    const destination = profile?.onboarding_completed_at ? "/dashboard" : "/bienvenida";
+    return redirectAndClearState(`${origin}${destination}`);
   } catch (err) {
     console.error("[auth/callback]", err);
     return redirectAndClearState(`${origin}/?error=auth`);

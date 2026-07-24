@@ -27,6 +27,13 @@ export default async function DashboardPage({
   } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
+  const { data: onboarding } = await supabase
+    .from("profiles")
+    .select("onboarding_completed_at")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (!onboarding?.onboarding_completed_at) redirect("/bienvenida");
+
   let transactionsQuery = supabase
     .from("transactions")
     .select("*")

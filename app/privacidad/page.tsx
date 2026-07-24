@@ -141,7 +141,8 @@ export default function PrivacyPolicyPage() {
             </li>
             <li>
               <span className="text-zinc-300">Datos de perfil opcionales</span>: fecha de
-              nacimiento y foto de perfil, si decidís cargarlos en Ajustes.
+              nacimiento y foto de perfil, si decidís cargarlos en la pantalla de bienvenida al
+              registrarte o después en Ajustes. Podés saltarte ese paso sin problema.
             </li>
             <li>
               <span className="text-zinc-300">Datos técnicos de sesión</span>: cookies necesarias
