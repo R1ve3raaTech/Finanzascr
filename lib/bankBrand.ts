@@ -60,7 +60,7 @@ export const BANK_BRAND: Record<BankName, BankBrand> = {
     initials: "MU",
     bg: "#7A1F2B",
     fg: "#ffffff",
-    logo: "/logos/mucap.jpg",
+    logo: "/logos/mucap.png",
   },
   PayPal: {
     label: "PayPal",

@@ -29,7 +29,7 @@ export function BankLogo({
       <div
         title={brand.label}
         style={{ width: size, height: size, background: brand.chipBg ?? "#ffffff" }}
-        className="flex shrink-0 items-center justify-center rounded-full p-1.5"
+        className="flex shrink-0 items-center justify-center overflow-hidden rounded-full p-1.5"
       >
         <Image
           src={brand.logo}
