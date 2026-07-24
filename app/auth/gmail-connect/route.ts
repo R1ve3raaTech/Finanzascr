@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { buildGoogleAuthUrl } from "@/lib/google/oauth";
+import { buildGoogleAuthUrl, GMAIL_CONNECT_SCOPE } from "@/lib/google/oauth";
 
 const STATE_COOKIE = "gmail_connect_state";
 
@@ -26,7 +26,9 @@ export async function GET(request: Request) {
   // tuya. Se guarda en una cookie httpOnly de corta vida y se valida en el
   // callback antes de canjear el code.
   const state = crypto.randomUUID();
-  const response = NextResponse.redirect(buildGoogleAuthUrl(redirectUri, state));
+  const response = NextResponse.redirect(
+    buildGoogleAuthUrl(redirectUri, state, GMAIL_CONNECT_SCOPE)
+  );
   response.cookies.set(STATE_COOKIE, state, {
     httpOnly: true,
     secure: true,

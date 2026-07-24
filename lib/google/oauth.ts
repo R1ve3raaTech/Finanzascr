@@ -1,27 +1,40 @@
 import "server-only";
 
 /**
- * Flujo de OAuth directo contra Google (no vía Supabase Auth) para conectar
- * cuentas de Gmail adicionales sin cerrar la sesión actual del usuario.
+ * Flujo de OAuth directo contra Google (no vía Supabase Auth) — tanto para
+ * el login principal como para conectar cuentas de Gmail adicionales sin
+ * cerrar la sesión actual. No pasar por Supabase Auth para esto es lo que
+ * evita que la pantalla de Google muestre "...continuar a tu-proyecto.
+ * supabase.co" en vez del dominio real de la app.
  */
-export function buildGoogleAuthUrl(redirectUri: string, state: string): string {
+export function buildGoogleAuthUrl(
+  redirectUri: string,
+  state: string,
+  scope: string,
+  nonce?: string
+): string {
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   url.searchParams.set("client_id", process.env.GOOGLE_CLIENT_ID!);
   url.searchParams.set("redirect_uri", redirectUri);
   url.searchParams.set("response_type", "code");
-  url.searchParams.set(
-    "scope",
-    "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email"
-  );
+  url.searchParams.set("scope", scope);
   url.searchParams.set("access_type", "offline");
   url.searchParams.set("prompt", "consent");
   url.searchParams.set("state", state);
+  if (nonce) url.searchParams.set("nonce", nonce);
   return url.toString();
 }
+
+export const GMAIL_CONNECT_SCOPE =
+  "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email";
+
+export const LOGIN_SCOPE =
+  "openid email profile https://www.googleapis.com/auth/gmail.readonly";
 
 interface GoogleTokenResponse {
   access_token: string;
   refresh_token?: string;
+  id_token?: string;
   expires_in: number;
 }
 

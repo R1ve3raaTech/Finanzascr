@@ -1,45 +1,75 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { exchangeGoogleAuthCode } from "@/lib/google/oauth";
 import { encryptToken } from "@/lib/tokenCrypto";
 
-export async function GET(request: Request) {
+const STATE_COOKIE = "login_state";
+const NONCE_COOKIE = "login_nonce";
+
+function redirectAndClearState(url: string) {
+  const response = NextResponse.redirect(url);
+  response.cookies.delete(STATE_COOKIE);
+  response.cookies.delete(NONCE_COOKIE);
+  return response;
+}
+
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
+  const state = searchParams.get("state");
+  const expectedState = request.cookies.get(STATE_COOKIE)?.value;
+  const nonce = request.cookies.get(NONCE_COOKIE)?.value;
 
-  if (code) {
-    const supabase = await createClient();
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
-    if (!error) {
-      // Google solo manda refresh_token la primera vez (o con prompt=consent,
-      // que forzamos en el login). Si no viene, dejamos el que ya teníamos.
-      const refreshToken = data.session?.provider_refresh_token;
-      if (refreshToken && data.user) {
-        // Se usa el cliente admin porque el JWT recién emitido por
-        // exchangeCodeForSession no se propaga a tiempo para pasar RLS
-        // en esta misma request. El usuario ya fue verificado arriba.
-        const admin = createAdminClient();
-        const { error: tokenError } = await admin.from("gmail_tokens").upsert(
-          {
-            user_id: data.user.id,
-            email: data.user.email,
-            refresh_token: encryptToken(refreshToken),
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: "user_id,email" }
-        );
-        if (tokenError) {
-          console.error("[auth/callback] no se pudo guardar gmail_tokens:", tokenError);
-        }
-      } else {
-        console.warn(
-          "[auth/callback] Google no devolvió provider_refresh_token en este login."
-        );
-      }
-      return NextResponse.redirect(`${origin}/dashboard`);
-    }
+  if (!code || !state || !expectedState || state !== expectedState) {
+    return redirectAndClearState(`${origin}/?error=auth`);
   }
 
-  return NextResponse.redirect(`${origin}/?error=auth`);
+  try {
+    const redirectUri = `${origin}/auth/callback`;
+    const tokens = await exchangeGoogleAuthCode(code, redirectUri);
+
+    if (!tokens.id_token) {
+      console.error("[auth/callback] Google no devolvió id_token.");
+      return redirectAndClearState(`${origin}/?error=auth`);
+    }
+
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signInWithIdToken({
+      provider: "google",
+      token: tokens.id_token,
+      access_token: tokens.access_token,
+      nonce,
+    });
+
+    if (error || !data.user) {
+      console.error("[auth/callback] signInWithIdToken falló:", error);
+      return redirectAndClearState(`${origin}/?error=auth`);
+    }
+
+    // Google solo manda refresh_token la primera vez (o con prompt=consent,
+    // que forzamos siempre). Si no viene, dejamos el que ya teníamos.
+    if (tokens.refresh_token) {
+      const admin = createAdminClient();
+      const { error: tokenError } = await admin.from("gmail_tokens").upsert(
+        {
+          user_id: data.user.id,
+          email: data.user.email,
+          refresh_token: encryptToken(tokens.refresh_token),
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id,email" }
+      );
+      if (tokenError) {
+        console.error("[auth/callback] no se pudo guardar gmail_tokens:", tokenError);
+      }
+    } else {
+      console.warn("[auth/callback] Google no devolvió refresh_token en este login.");
+    }
+
+    return redirectAndClearState(`${origin}/dashboard`);
+  } catch (err) {
+    console.error("[auth/callback]", err);
+    return redirectAndClearState(`${origin}/?error=auth`);
+  }
 }
