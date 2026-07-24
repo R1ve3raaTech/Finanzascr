@@ -89,7 +89,7 @@ export default async function DashboardPage({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pb-28 pt-8 sm:px-6 sm:pb-32 sm:pt-10">
         <DateRangeFilter />
 
         <BalanceCard crc={balance.CRC} usd={balance.USD} filtered={hasRange} />

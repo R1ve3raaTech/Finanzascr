@@ -31,15 +31,15 @@ export function BreakdownList({
         const color = colorMap?.[item.label] ?? CATEGORICAL_DARK[i % CATEGORICAL_DARK.length];
         return (
           <li key={item.label} className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-2 text-zinc-200">
+            <div className="flex items-center justify-between gap-3 text-sm">
+              <span className="flex min-w-0 items-center gap-2 text-zinc-200">
                 <span
                   className="h-2 w-2 shrink-0 rounded-full"
                   style={{ background: color }}
                 />
-                {item.label}
+                <span className="truncate">{item.label}</span>
               </span>
-              <span className="font-mono text-zinc-400">
+              <span className="shrink-0 font-mono text-zinc-400">
                 {formatMoney(item.amount, "CRC")}
               </span>
             </div>

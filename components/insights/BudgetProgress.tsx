@@ -24,9 +24,11 @@ export function BudgetProgress({
         const over = spent > b.monthly_limit;
         return (
           <li key={b.id} className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-zinc-200">{b.category}</span>
-              <span className={`font-mono ${over ? "text-rose-400" : "text-zinc-400"}`}>
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-sm">
+              <span className="min-w-0 truncate text-zinc-200">{b.category}</span>
+              <span
+                className={`shrink-0 font-mono text-xs sm:text-sm ${over ? "text-rose-400" : "text-zinc-400"}`}
+              >
                 {formatMoney(spent, b.currency)} / {formatMoney(b.monthly_limit, b.currency)}
               </span>
             </div>
