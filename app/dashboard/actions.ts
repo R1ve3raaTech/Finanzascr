@@ -105,6 +105,71 @@ export async function addCashTransaction(input: {
   return { error: null };
 }
 
+/**
+ * Sugiere una categoría para un movimiento que el usuario todavía está
+ * escribiendo a mano (antes de guardarlo), usando la misma IA que categoriza
+ * las transacciones automáticas. Se llama mientras el usuario tipea la
+ * descripción, así que falla en silencio (sin `error` visible) si no hay
+ * suficiente texto o si se pasó del límite de tasa.
+ */
+export async function suggestCategory(input: {
+  description: string;
+  type: TransactionType;
+  amount: number;
+  currency: Currency;
+  bank: BankName;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { category: null };
+
+  if (!input.description.trim()) return { category: null };
+
+  const admin = createAdminClient();
+  const rateLimit = await checkRateLimit(admin, user.id, "suggest_category_ai", {
+    maxCalls: 20,
+    windowSeconds: 60,
+  });
+  if (!rateLimit.allowed) return { category: null };
+
+  const { data: customCategories } = await admin
+    .from("user_categories")
+    .select("name, type")
+    .eq("user_id", user.id);
+
+  const categories =
+    input.type === "EXPENSE"
+      ? [
+          ...DEFAULT_EXPENSE_CATEGORIES,
+          ...(customCategories ?? []).filter((c) => c.type === "EXPENSE").map((c) => c.name),
+        ]
+      : [
+          ...DEFAULT_INCOME_CATEGORIES,
+          ...(customCategories ?? []).filter((c) => c.type === "INCOME").map((c) => c.name),
+        ];
+
+  try {
+    const assignments = await categorizeTransactions(
+      [
+        {
+          id: "draft",
+          bank_name: input.bank,
+          description: input.description,
+          amount: input.amount || 0,
+          currency: input.currency,
+        },
+      ],
+      categories
+    );
+    return { category: assignments.get("draft") ?? null };
+  } catch (err) {
+    console.error("[suggestCategory]", err);
+    return { category: null };
+  }
+}
+
 export async function syncMyGmail() {
   const supabase = await createClient();
   const {
