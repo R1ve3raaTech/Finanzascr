@@ -18,6 +18,9 @@ import type { BankName, Currency, TransactionType, UserCategory } from "@/lib/ty
 // Mismos bancos que soporta la lectura automática (ver lib/parsers/index.ts)
 // — si a alguno no le llegó el correo, puede registrarlo a mano bajo el
 // banco real en vez de que quede mezclado con "Efectivo".
+const CURRENCY_SYMBOL: Record<Currency, string> = { CRC: "₡", USD: "$", NIC: "C$" };
+const CURRENCY_LABEL: Record<Currency, string> = { CRC: "Colones", USD: "Dólares", NIC: "Córdobas" };
+
 const manualBankOptions: BankName[] = [
   "Efectivo",
   "BAC",
@@ -256,7 +259,7 @@ export function AddCashModal({
                       </h2>
                       <div className="flex items-center justify-center gap-2">
                         <span className="font-mono text-3xl text-zinc-500">
-                          {currency === "CRC" ? "₡" : "$"}
+                          {CURRENCY_SYMBOL[currency]}
                         </span>
                         <input
                           autoFocus
@@ -268,7 +271,7 @@ export function AddCashModal({
                         />
                       </div>
                       <div className="mx-auto flex rounded-xl border border-white/10 p-1">
-                        {(["CRC", "USD"] as const).map((c) => (
+                        {(["CRC", "USD", "NIC"] as const).map((c) => (
                           <button
                             key={c}
                             onClick={() => setCurrency(c)}
@@ -278,7 +281,7 @@ export function AddCashModal({
                                 : "text-zinc-500 hover:text-zinc-300"
                             }`}
                           >
-                            {c === "CRC" ? "₡ Colones" : "$ Dólares"}
+                            {CURRENCY_SYMBOL[c]} {CURRENCY_LABEL[c]}
                           </button>
                         ))}
                       </div>

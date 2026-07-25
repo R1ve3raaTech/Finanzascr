@@ -1,4 +1,4 @@
-export type Currency = "CRC" | "USD";
+export type Currency = "CRC" | "USD" | "NIC";
 export type TransactionType = "INCOME" | "EXPENSE";
 export type BankName =
   | "BAC"

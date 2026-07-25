@@ -11,6 +11,13 @@ const formatters: Record<Currency, Intl.NumberFormat> = {
     currency: "USD",
     maximumFractionDigits: 2,
   }),
+  // "NIC" es la etiqueta que usan los bancos costarricenses en sus correos;
+  // el código ISO 4217 real del córdoba nicaragüense es "NIO".
+  NIC: new Intl.NumberFormat("es-CR", {
+    style: "currency",
+    currency: "NIO",
+    maximumFractionDigits: 2,
+  }),
 };
 
 export function formatMoney(amount: number, currency: Currency): string {

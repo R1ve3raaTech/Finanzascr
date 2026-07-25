@@ -67,7 +67,7 @@ export default async function DashboardPage({
   const userCategories = (categories ?? []) as UserCategory[];
   const defaultCurrency: Currency = settings?.default_currency ?? "CRC";
 
-  const balance = { CRC: 0, USD: 0 };
+  const balance = { CRC: 0, USD: 0, NIC: 0 };
   for (const t of transactions) {
     balance[t.currency] += t.type === "INCOME" ? t.amount : -t.amount;
   }
@@ -104,7 +104,7 @@ export default async function DashboardPage({
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pb-28 pt-8 sm:px-6 sm:pb-32 sm:pt-10">
         <DateRangeFilter />
 
-        <BalanceCard crc={balance.CRC} usd={balance.USD} filtered={hasRange} />
+        <BalanceCard crc={balance.CRC} usd={balance.USD} nic={balance.NIC} filtered={hasRange} />
 
         <section className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-3">

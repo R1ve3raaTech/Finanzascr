@@ -1,4 +1,4 @@
-import type { Transaction } from "./types";
+import type { Currency, Transaction } from "./types";
 
 export interface MonthTotal {
   monthKey: string;
@@ -70,7 +70,7 @@ export function currentMonthKey(): string {
 export interface RecurringItem {
   description: string;
   bankName: string;
-  currency: "CRC" | "USD";
+  currency: Currency;
   averageAmount: number;
   occurrences: number;
   lastDate: string;

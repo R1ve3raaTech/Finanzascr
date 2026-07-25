@@ -15,15 +15,17 @@ function parseCardDate(raw: string): string {
 }
 
 /**
- * Notificación de compra con tarjeta (débito/crédito) en el formato de
- * tabla clave-valor usado por Banco Popular: Comercio / Fecha / Visa /
- * Autorización / Tipo de Transacción / Monto.
+ * Notificación de compra con tarjeta (débito/crédito) de BAC Credomatic
+ * (notificacion@notificacionesbaccr.com): tabla clave-valor Comercio /
+ * Ciudad y país / Fecha / Visa / Autorización / Referencia / Tipo de
+ * Transacción / Monto. El monto puede venir en CRC, USD o NIC (compras
+ * hechas en Nicaragua con la misma tarjeta).
  */
-export const parseCardPurchase: EmailParser = (bodyText) => {
+export const parseBacCardPurchase: EmailParser = (bodyText) => {
   const comercio = bodyText.match(/Comercio:\s*([^\n]+)/i)?.[1]?.trim();
   const fecha = bodyText.match(/Fecha:\s*([^\n]+)/i)?.[1]?.trim();
   const tipo = bodyText.match(/Tipo de Transacci[oó]n:\s*([^\n]+)/i)?.[1]?.trim();
-  const montoMatch = bodyText.match(/Monto:\s*(CRC|USD|₡|\$)\s*([\d,.]+)/i);
+  const montoMatch = bodyText.match(/Monto:\s*(CRC|USD|NIC|₡|\$)\s*([\d,.]+)/i);
 
   if (!comercio || !montoMatch || !/COMPRA/i.test(tipo ?? "")) return null;
 
@@ -33,10 +35,14 @@ export const parseCardPurchase: EmailParser = (bodyText) => {
   if (/paypal/i.test(comercio)) return null;
 
   const [, currencyRaw, amountRaw] = montoMatch;
-  const currency = /USD|\$/i.test(currencyRaw) ? "USD" : "CRC";
+  const currency = /USD|\$/i.test(currencyRaw)
+    ? "USD"
+    : /NIC/i.test(currencyRaw)
+      ? "NIC"
+      : "CRC";
 
   return {
-    bank_name: "BP",
+    bank_name: "BAC",
     amount: parseCRAmount(amountRaw),
     currency,
     description: comercio,

@@ -1,9 +1,9 @@
+import { parseBacCardPurchase } from "./bacCardPurchase";
 import { parseBacTransfer } from "./bacTransfer";
 import { parseBcrCardPurchase } from "./bcrCardPurchase";
 import { parseBcrSinpe } from "./bcrSinpe";
 import { parseBnCardPurchase } from "./bnCardPurchase";
 import { parseBpServicePayment } from "./bpServicePayment";
-import { parseCardPurchase } from "./cardPurchase";
 import { parseDaviviendaCardPurchase } from "./daviviendaCardPurchase";
 import { parseInternalTransfer } from "./internalTransfer";
 import { parseMucapSinpe } from "./mucapSinpe";
@@ -18,7 +18,7 @@ const parsers: EmailParser[] = [
   parseMucapSinpe,
   parseBcrSinpe,
   parseBpServicePayment,
-  parseCardPurchase,
+  parseBacCardPurchase,
   parseDaviviendaCardPurchase,
   parseBnCardPurchase,
   parseBcrCardPurchase,
@@ -42,6 +42,7 @@ export const KNOWN_BANK_SENDERS = [
   "bpdc.fi.cr",
   "bancopopularinforma.fi.cr",
   "baccredomatic.com",
+  "notificacionesbaccr.com",
   "intl.paypal.com",
   "davibank.cr",
   "mucap.fi.cr",

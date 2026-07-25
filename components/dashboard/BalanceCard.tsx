@@ -6,13 +6,23 @@ import { formatMoney } from "@/lib/format";
 export function BalanceCard({
   crc,
   usd,
+  nic = 0,
   filtered = false,
 }: {
   crc: number;
   usd: number;
+  nic?: number;
   filtered?: boolean;
 }) {
   const reduce = useReducedMotion();
+
+  const columns = [
+    { code: "CRC" as const, label: "Colones", value: crc },
+    { code: "USD" as const, label: "Dólares", value: usd },
+    // El córdoba solo aparece cuando hay movimientos reales en esa moneda
+    // (viajes a Nicaragua) — no le agrega ruido al resto de los usuarios.
+    ...(nic !== 0 ? [{ code: "NIC" as const, label: "Córdobas", value: nic }] : []),
+  ];
 
   return (
     <motion.section
@@ -25,27 +35,23 @@ export function BalanceCard({
       <h2 className="text-sm font-medium text-zinc-400">
         {filtered ? "Neto del período seleccionado" : "Saldo consolidado"}
       </h2>
-      <div className="mt-4 grid gap-6 sm:grid-cols-2">
-        <div>
-          <p className="text-xs text-zinc-500">Colones</p>
-          <p
-            className={`mt-1 font-mono text-3xl tracking-tight ${
-              crc < 0 ? "text-rose-400" : "text-zinc-50"
-            }`}
-          >
-            {formatMoney(crc, "CRC")}
-          </p>
-        </div>
-        <div>
-          <p className="text-xs text-zinc-500">Dólares</p>
-          <p
-            className={`mt-1 font-mono text-3xl tracking-tight ${
-              usd < 0 ? "text-rose-400" : "text-zinc-50"
-            }`}
-          >
-            {formatMoney(usd, "USD")}
-          </p>
-        </div>
+      <div
+        className={`mt-4 grid gap-6 ${
+          columns.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+        }`}
+      >
+        {columns.map((c) => (
+          <div key={c.code}>
+            <p className="text-xs text-zinc-500">{c.label}</p>
+            <p
+              className={`mt-1 font-mono text-3xl tracking-tight ${
+                c.value < 0 ? "text-rose-400" : "text-zinc-50"
+              }`}
+            >
+              {formatMoney(c.value, c.code)}
+            </p>
+          </div>
+        ))}
       </div>
     </motion.section>
   );
