@@ -6,14 +6,16 @@ import { EnvelopeSimple } from "@phosphor-icons/react";
 import { formatDate, formatMoney } from "@/lib/format";
 import { BankLogo } from "./BankLogo";
 import { TransactionDetailModal } from "./TransactionDetailModal";
-import type { Transaction } from "@/lib/types";
+import type { Transaction, UserCategory } from "@/lib/types";
 
 const HIGHLIGHT_MS = 2600;
 
 export function TransactionList({
   transactions,
+  customCategories = [],
 }: {
   transactions: Transaction[];
+  customCategories?: UserCategory[];
 }) {
   const [selected, setSelected] = useState<Transaction | null>(null);
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
@@ -136,7 +138,11 @@ export function TransactionList({
           })}
         </AnimatePresence>
       </ul>
-      <TransactionDetailModal transaction={selected} onClose={() => setSelected(null)} />
+      <TransactionDetailModal
+        transaction={selected}
+        customCategories={customCategories}
+        onClose={() => setSelected(null)}
+      />
     </>
   );
 }

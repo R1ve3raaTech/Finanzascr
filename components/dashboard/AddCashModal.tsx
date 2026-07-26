@@ -15,25 +15,8 @@ import { addCashTransaction, suggestCategory } from "@/app/dashboard/actions";
 import { BankLogo } from "@/components/dashboard/BankLogo";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { DEFAULT_EXPENSE_CATEGORIES as expenseCategories, DEFAULT_INCOME_CATEGORIES as incomeCategories } from "@/lib/categories";
+import { CURRENCY_LABEL, CURRENCY_SYMBOL, manualBankOptions } from "@/lib/transactionFormOptions";
 import type { BankName, Currency, TransactionType, UserCategory } from "@/lib/types";
-
-const CURRENCY_SYMBOL: Record<Currency, string> = { CRC: "₡", USD: "$", NIC: "C$" };
-const CURRENCY_LABEL: Record<Currency, string> = { CRC: "Colones", USD: "Dólares", NIC: "Córdobas" };
-
-// Mismos bancos que soporta la lectura automática (ver lib/parsers/index.ts)
-// — si a alguno no le llegó el correo, puede registrarlo a mano bajo el
-// banco real en vez de que quede mezclado con "Efectivo".
-const manualBankOptions: BankName[] = [
-  "Efectivo",
-  "BAC",
-  "BCR",
-  "BNCR",
-  "BP",
-  "Davivienda",
-  "MUCAP",
-  "PayPal",
-  "Otro",
-];
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 const bounce = { type: "spring", stiffness: 400, damping: 22 } as const;

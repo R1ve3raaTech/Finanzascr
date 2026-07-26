@@ -113,7 +113,7 @@ export default async function DashboardPage({
             </h2>
             <SyncGmailButton />
           </div>
-          <TransactionList transactions={transactions} />
+          <TransactionList transactions={transactions} customCategories={userCategories} />
         </section>
       </div>
 

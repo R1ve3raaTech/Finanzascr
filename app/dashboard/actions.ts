@@ -236,6 +236,56 @@ export async function syncMyGmail() {
   return { error: hadError ? "Hubo un error. Volvé a intentarlo." : null, inserted };
 }
 
+export async function updateTransaction(
+  id: string,
+  input: {
+    amount: number;
+    currency: Currency;
+    description: string;
+    category: string;
+    type: TransactionType;
+    transactionDate: string;
+    bank: BankName;
+  }
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  if (!Number.isFinite(input.amount) || input.amount <= 0) {
+    return { error: "El monto debe ser mayor a cero." };
+  }
+
+  const transactionDate = new Date(input.transactionDate);
+  if (Number.isNaN(transactionDate.getTime())) {
+    return { error: "La fecha no es válida." };
+  }
+
+  const { error } = await supabase
+    .from("transactions")
+    .update({
+      bank_name: input.bank,
+      amount: input.amount,
+      currency: input.currency,
+      description: input.description || null,
+      category: input.category || null,
+      type: input.type,
+      transaction_date: transactionDate.toISOString(),
+    })
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { error: "No se pudo guardar el cambio. Intentá de nuevo." };
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/insights");
+  return { error: null };
+}
+
 export async function deleteTransaction(id: string) {
   const supabase = await createClient();
   const {
