@@ -103,7 +103,7 @@ export function NotificationsSetting() {
             Avisos en este dispositivo cuando se detecta un movimiento nuevo.
           </p>
           <p
-            className={`mt-1 text-[11px] font-medium ${enabled ? "text-sky-400" : "text-zinc-600"}`}
+            className={`mt-1 text-[11px] font-medium ${enabled ? "text-orange-400" : "text-zinc-600"}`}
           >
             {checked ? (enabled ? "Activadas en este dispositivo" : "Desactivadas") : ""}
           </p>
@@ -114,8 +114,8 @@ export function NotificationsSetting() {
           aria-label="Notificaciones push"
           whileTap={reduce ? undefined : { scale: 0.92 }}
           animate={{
-            backgroundColor: enabled ? "rgba(56,189,248,0.15)" : "rgba(63,63,70,0.6)",
-            borderColor: enabled ? "rgba(56,189,248,0.4)" : "rgba(255,255,255,0.1)",
+            backgroundColor: enabled ? "rgba(251,146,60,0.15)" : "rgba(63,63,70,0.6)",
+            borderColor: enabled ? "rgba(251,146,60,0.4)" : "rgba(255,255,255,0.1)",
           }}
           transition={{ duration: 0.2 }}
           className="relative h-8 w-14 shrink-0 rounded-full border disabled:opacity-40 cursor-pointer"
@@ -124,7 +124,7 @@ export function NotificationsSetting() {
             animate={{ x: enabled ? 26 : 3 }}
             transition={knobSpring}
             className={`absolute top-1 flex h-6 w-6 items-center justify-center rounded-full shadow-sm ${
-              enabled ? "bg-sky-400 text-zinc-950" : "bg-zinc-200 text-zinc-500"
+              enabled ? "bg-orange-400 text-zinc-950" : "bg-zinc-200 text-zinc-500"
             }`}
           >
             {enabled ? (

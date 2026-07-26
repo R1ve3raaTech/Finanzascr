@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ChartBar, GearSix } from "@phosphor-icons/react/dist/ssr";
@@ -12,6 +13,8 @@ import { Logo } from "@/components/Logo";
 import { endOfDayISO, startOfDayISO } from "@/lib/dateRange";
 import { createClient } from "@/lib/supabase/server";
 import type { Currency, Transaction, UserCategory } from "@/lib/types";
+
+export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage({
   searchParams,

@@ -22,9 +22,9 @@ export function AiSummary({ snapshot }: { snapshot: FinanceSnapshot }) {
   }
 
   return (
-    <section className="animate-fade-up rounded-2xl border border-sky-400/20 bg-gradient-to-br from-sky-400/[0.06] to-transparent p-5">
+    <section className="animate-fade-up rounded-2xl border border-orange-400/20 bg-gradient-to-br from-orange-400/[0.06] to-transparent p-5">
       <div className="flex items-center gap-2">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-400/10 text-sky-400">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-400/10 text-orange-400">
           <Sparkle size={14} weight="fill" />
         </div>
         <h2 className="text-sm font-medium text-zinc-300">Resumen con IA</h2>
@@ -44,7 +44,7 @@ export function AiSummary({ snapshot }: { snapshot: FinanceSnapshot }) {
             </p>
             <button
               onClick={generate}
-              className="flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-sky-400/10 px-3 text-xs font-semibold text-sky-300 transition-colors hover:bg-sky-400/15 cursor-pointer"
+              className="flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-orange-400/10 px-3 text-xs font-semibold text-orange-300 transition-colors hover:bg-orange-400/15 cursor-pointer"
             >
               <Sparkle size={13} weight="fill" />
               Generar resumen
@@ -58,7 +58,7 @@ export function AiSummary({ snapshot }: { snapshot: FinanceSnapshot }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="mt-3 flex items-center gap-2 text-xs text-sky-400"
+            className="mt-3 flex items-center gap-2 text-xs text-orange-400"
           >
             <motion.span
               animate={reduce ? undefined : { rotate: 360 }}

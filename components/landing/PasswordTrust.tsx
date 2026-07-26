@@ -13,9 +13,9 @@ export function PasswordTrust() {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, amount: 0.6 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="relative flex h-16 w-16 items-center justify-center rounded-full border border-sky-400/25 bg-sky-400/10"
+        className="relative flex h-16 w-16 items-center justify-center rounded-full border border-orange-400/25 bg-orange-400/10"
       >
-        <LockKey size={26} weight="bold" className="text-sky-400" />
+        <LockKey size={26} weight="bold" className="text-orange-400" />
         <span className="absolute -bottom-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full border border-zinc-950 bg-rose-400 text-zinc-950">
           <Prohibit size={14} weight="bold" />
         </span>

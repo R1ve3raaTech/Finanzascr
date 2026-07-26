@@ -80,14 +80,14 @@ export function MockupPreview() {
           puede leerse apagado. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 rounded-[2rem] bg-sky-400/20 blur-[60px]"
+        className="pointer-events-none absolute inset-0 -z-10 rounded-[2rem] bg-orange-400/20 blur-[60px]"
       />
       <motion.div
         aria-hidden="true"
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         style={{ rotateX, rotateY, transformPerspective: 900 }}
-        className="relative w-full rounded-2xl border border-white/15 bg-zinc-900/95 p-5 shadow-[0_25px_70px_-20px_rgba(56,189,248,0.45),0_0_0_1px_rgba(255,255,255,0.04)_inset]"
+        className="relative w-full rounded-2xl border border-white/15 bg-zinc-900/95 p-5 shadow-[0_25px_70px_-20px_rgba(251,146,60,0.45),0_0_0_1px_rgba(255,255,255,0.04)_inset]"
       >
         {/* Correo entrante */}
       <div className="relative h-24">
@@ -127,7 +127,7 @@ export function MockupPreview() {
               style={{ top: `${i * 70}px` }}
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-800">
-                <Icon size={16} weight="bold" className="text-sky-400" />
+                <Icon size={16} weight="bold" className="text-orange-400" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm text-zinc-100">{t.description}</p>

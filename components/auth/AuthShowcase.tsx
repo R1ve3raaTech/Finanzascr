@@ -49,7 +49,7 @@ export function AuthShowcase() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <div className="auth-blob-a absolute left-[-10%] top-[10%] h-[28rem] w-[28rem] rounded-full bg-sky-400/10 blur-[110px]" />
+        <div className="auth-blob-a absolute left-[-10%] top-[10%] h-[28rem] w-[28rem] rounded-full bg-orange-400/10 blur-[110px]" />
         <div className="auth-blob-b absolute bottom-[-10%] right-[-5%] h-[24rem] w-[24rem] rounded-full bg-emerald-400/[0.06] blur-[110px]" />
       </div>
 

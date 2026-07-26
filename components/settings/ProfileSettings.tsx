@@ -154,7 +154,7 @@ export function ProfileSettings({
             setFullName(e.target.value);
             setSaved(false);
           }}
-          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50"
+          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50"
         />
       </label>
 
@@ -168,7 +168,7 @@ export function ProfileSettings({
             setSaved(false);
           }}
           max={new Date().toISOString().slice(0, 10)}
-          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
+          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
         />
       </label>
 
@@ -179,7 +179,7 @@ export function ProfileSettings({
         disabled={pending || !fullName.trim()}
         whileTap={reduce ? undefined : { scale: 0.98 }}
         transition={tap}
-        className="self-start rounded-full bg-sky-400 px-4 py-2 text-xs font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+        className="self-start rounded-full bg-orange-400 px-4 py-2 text-xs font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
       >
         {pending ? "Guardando..." : saved ? "Guardado" : "Guardar"}
       </motion.button>

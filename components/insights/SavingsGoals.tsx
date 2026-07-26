@@ -44,7 +44,7 @@ export function SavingsGoals({
         </p>
         <button
           onClick={openCreate}
-          className="flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-sky-400/10 px-3 text-xs font-semibold text-sky-300 transition-colors hover:bg-sky-400/15 cursor-pointer"
+          className="flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-orange-400/10 px-3 text-xs font-semibold text-orange-300 transition-colors hover:bg-orange-400/15 cursor-pointer"
         >
           <Plus size={14} weight="bold" />
           Nueva meta
@@ -77,7 +77,7 @@ export function SavingsGoals({
                   <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
                     <div
                       className={`h-full w-full origin-left rounded-full transition-transform duration-500 ${
-                        reached ? "bg-emerald-400" : "bg-sky-400"
+                        reached ? "bg-emerald-400" : "bg-orange-400"
                       }`}
                       style={{ transform: `scaleX(${pct})` }}
                     />

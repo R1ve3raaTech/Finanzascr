@@ -31,11 +31,11 @@ export function Footer({ loggedIn = false }: { loggedIn?: boolean }) {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent"
+        className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-orange-400/40 to-transparent"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-24 left-1/2 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-sky-400/[0.05] blur-[120px]"
+        className="pointer-events-none absolute -bottom-24 left-1/2 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-orange-400/[0.05] blur-[120px]"
       />
 
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 md:flex-row md:items-end md:justify-between">
@@ -54,13 +54,13 @@ export function Footer({ loggedIn = false }: { loggedIn?: boolean }) {
           >
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-50">
               {loggedIn ? (
-                <SquaresFour size={13} weight="bold" className="text-sky-500" />
+                <SquaresFour size={13} weight="bold" className="text-orange-500" />
               ) : (
                 <GoogleMark size={13} />
               )}
             </span>
             {loggedIn ? "Ir al dashboard" : "Iniciar sesión"}
-            <ArrowUpRight size={14} weight="bold" className="text-sky-400" />
+            <ArrowUpRight size={14} weight="bold" className="text-orange-400" />
           </MotionLink>
         </div>
 
@@ -97,7 +97,7 @@ export function Footer({ loggedIn = false }: { loggedIn?: boolean }) {
       <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-zinc-600 sm:flex-row sm:px-6">
         <span>© {year} TicoFinanza. Hecho en Costa Rica 🇨🇷</span>
         <span className="flex items-center gap-1.5">
-          <ShieldCheck size={14} weight="bold" className="text-sky-400" />
+          <ShieldCheck size={14} weight="bold" className="text-orange-400" />
           Solo lectura de correos bancarios. Nunca vendemos tus datos.
         </span>
       </div>

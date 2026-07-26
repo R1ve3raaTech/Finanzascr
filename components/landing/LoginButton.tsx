@@ -21,12 +21,12 @@ export function LoginButton({
       whileHover={reduce ? undefined : { scale: 1.02 }}
       whileTap={reduce ? undefined : { scale: 0.97 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className={`inline-flex items-center gap-3 rounded-full bg-zinc-50 text-zinc-950 font-medium shadow-[0_8px_30px_rgba(56,189,248,0.12)] hover:shadow-[0_8px_40px_rgba(56,189,248,0.2)] transition-shadow cursor-pointer ${
+      className={`inline-flex items-center gap-3 rounded-full bg-zinc-50 text-zinc-950 font-medium shadow-[0_8px_30px_rgba(251,146,60,0.12)] hover:shadow-[0_8px_40px_rgba(251,146,60,0.2)] transition-shadow cursor-pointer ${
         large ? "px-7 py-3.5 text-base" : "px-5 py-2.5 text-sm"
       }`}
     >
       {loggedIn ? (
-        <SquaresFour size={large ? 20 : 18} weight="bold" className="text-sky-500" />
+        <SquaresFour size={large ? 20 : 18} weight="bold" className="text-orange-500" />
       ) : (
         <GoogleMark size={large ? 20 : 18} />
       )}

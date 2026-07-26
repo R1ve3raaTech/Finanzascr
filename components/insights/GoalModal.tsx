@@ -144,7 +144,7 @@ export function GoalModal({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="¿Para qué? (ej. Viaje a Nicaragua)"
-                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-sky-400/50"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-orange-400/50"
               />
 
               <div className="flex flex-col items-center gap-3">
@@ -185,7 +185,7 @@ export function GoalModal({
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
+                  className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
                 />
               </label>
 
@@ -205,7 +205,7 @@ export function GoalModal({
                 <button
                   onClick={handleSave}
                   disabled={isPending}
-                  className="flex-1 rounded-xl bg-sky-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                  className="flex-1 rounded-xl bg-orange-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
                 >
                   {isPending ? "Guardando..." : goal ? "Guardar cambios" : "Crear meta"}
                 </button>

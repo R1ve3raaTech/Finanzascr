@@ -64,10 +64,10 @@ export function DateRangeFilter() {
                   <motion.span
                     layoutId="date-range-active"
                     transition={slide}
-                    className="absolute inset-0 rounded-full bg-sky-400/15"
+                    className="absolute inset-0 rounded-full bg-orange-400/15"
                   />
                 )}
-                <span className={`relative ${active ? "text-sky-400" : "text-zinc-400 hover:text-zinc-100"}`}>
+                <span className={`relative ${active ? "text-orange-400" : "text-zinc-400 hover:text-zinc-100"}`}>
                   {s.label}
                 </span>
               </button>
@@ -83,7 +83,7 @@ export function DateRangeFilter() {
           aria-label="Rango personalizado"
           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors cursor-pointer ${
             hasFilter && !activePreset
-              ? "border-sky-400/40 bg-sky-400/10 text-sky-400"
+              ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
               : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
           }`}
         >
@@ -116,7 +116,7 @@ export function DateRangeFilter() {
           <button
             onClick={applyCustom}
             disabled={!customFrom || !customTo}
-            className="rounded-full bg-sky-400 px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-40 cursor-pointer"
+            className="rounded-full bg-orange-400 px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-40 cursor-pointer"
           >
             Aplicar
           </button>

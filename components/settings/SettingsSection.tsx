@@ -4,7 +4,7 @@ import type { Icon } from "@phosphor-icons/react";
 const ACCENTS = {
   emerald: "bg-emerald-400/10 text-emerald-400",
   amber: "bg-amber-400/10 text-amber-400",
-  sky: "bg-sky-400/10 text-sky-400",
+  orange: "bg-orange-400/10 text-orange-400",
   violet: "bg-violet-400/10 text-violet-400",
   rose: "bg-rose-400/10 text-rose-400",
   zinc: "bg-zinc-400/10 text-zinc-300",

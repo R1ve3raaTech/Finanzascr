@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
@@ -25,6 +26,8 @@ import { DEFAULT_EXPENSE_CATEGORIES } from "@/lib/categories";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import type { Budget, UserCategory, UserSettings } from "@/lib/types";
+
+export const metadata: Metadata = { title: "Ajustes" };
 
 export default async function SettingsPage({
   searchParams,
@@ -139,10 +142,10 @@ export default async function SettingsPage({
         </SettingsGroup>
 
         <SettingsGroup label="Alertas y correo" delayMs={140}>
-          <SettingsSection icon={Bell} accent="sky">
+          <SettingsSection icon={Bell} accent="orange">
             <NotificationsSetting />
           </SettingsSection>
-          <SettingsSection icon={EnvelopeSimple} accent="sky">
+          <SettingsSection icon={EnvelopeSimple} accent="orange">
             <GmailConnections connections={gmailConnections ?? []} />
           </SettingsSection>
         </SettingsGroup>

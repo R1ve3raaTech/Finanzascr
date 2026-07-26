@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
@@ -18,6 +19,8 @@ import {
 } from "@/lib/insights";
 import { createClient } from "@/lib/supabase/server";
 import type { Budget, SavingsGoal, Transaction } from "@/lib/types";
+
+export const metadata: Metadata = { title: "Estadísticas" };
 
 export default async function InsightsPage() {
   const supabase = await createClient();

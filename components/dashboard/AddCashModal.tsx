@@ -171,7 +171,7 @@ export function AddCashModal({
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={spring}
         aria-label="Registrar efectivo"
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-sky-400 text-zinc-950 shadow-[0_8px_30px_rgba(56,189,248,0.35)] cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-zinc-950 shadow-[0_8px_30px_rgba(251,146,60,0.35)] cursor-pointer"
       >
         <Plus size={24} weight="bold" />
       </motion.button>
@@ -284,7 +284,7 @@ export function AddCashModal({
                         value={description}
                         onChange={(e) => handleDescriptionChange(e.target.value)}
                         placeholder={type === "EXPENSE" ? "¿En qué? (ej. Uber, súper...)" : "¿De dónde? (opcional)"}
-                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-sky-400/50"
+                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-orange-400/50"
                       />
 
                       <div className="flex flex-col gap-2">
@@ -294,14 +294,14 @@ export function AddCashModal({
                             <motion.span
                               animate={{ opacity: [0.4, 1, 0.4] }}
                               transition={{ repeat: Infinity, duration: 1.2 }}
-                              className="flex items-center gap-1 text-sky-400"
+                              className="flex items-center gap-1 text-orange-400"
                             >
                               <Sparkle size={12} weight="fill" />
                               pensando...
                             </motion.span>
                           )}
                           {!suggesting && categoryIsAiPick && (
-                            <span className="flex items-center gap-1 text-sky-400">
+                            <span className="flex items-center gap-1 text-orange-400">
                               <Sparkle size={12} weight="fill" />
                               sugerido por IA
                             </span>
@@ -314,7 +314,7 @@ export function AddCashModal({
                               onClick={() => pickCategory(c)}
                               className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                                 category === c
-                                  ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                                  ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
                                   : "border-white/10 text-zinc-400 hover:border-white/20"
                               }`}
                             >
@@ -358,7 +358,7 @@ export function AddCashModal({
                                         onClick={() => setBank(b)}
                                         className={`flex items-center gap-1.5 rounded-full border py-1 pl-1 pr-3 text-xs font-medium transition-colors cursor-pointer ${
                                           bank === b
-                                            ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                                            ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
                                             : "border-white/10 text-zinc-400 hover:border-white/20"
                                         }`}
                                       >
@@ -372,7 +372,7 @@ export function AddCashModal({
                                   type="datetime-local"
                                   value={date}
                                   onChange={(e) => setDate(e.target.value)}
-                                  className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
+                                  className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
                                 />
                               </div>
                             </motion.div>
@@ -386,7 +386,7 @@ export function AddCashModal({
                         onClick={submit}
                         disabled={pending}
                         whileTap={reduce ? undefined : { scale: 0.98 }}
-                        className="rounded-xl bg-sky-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                        className="rounded-xl bg-orange-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
                       >
                         {pending ? "Guardando..." : "Guardar movimiento"}
                       </motion.button>

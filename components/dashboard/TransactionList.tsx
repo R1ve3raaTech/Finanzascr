@@ -144,7 +144,7 @@ export function TransactionList({
               onClick={() => (pickMode ? exitPickMode() : setPickMode(true))}
               className={`flex h-8 items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors cursor-pointer ${
                 pickMode
-                  ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                  ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
                   : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
               }`}
             >
@@ -181,13 +181,13 @@ export function TransactionList({
               aria-label="Filtros"
               className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-colors cursor-pointer ${
                 showFilters || activeFilterCount > 0
-                  ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                  ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
                   : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
               }`}
             >
               <Funnel size={15} weight="bold" />
               {activeFilterCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-sky-400 text-[10px] font-bold text-zinc-950">
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-orange-400 text-[10px] font-bold text-zinc-950">
                   {activeFilterCount}
                 </span>
               )}
@@ -214,7 +214,7 @@ export function TransactionList({
                             onClick={() => setFilterCategory(filterCategory === c ? null : c)}
                             className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                               filterCategory === c
-                                ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                                ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
                                 : "border-white/10 text-zinc-400 hover:border-white/20"
                             }`}
                           >
@@ -233,7 +233,7 @@ export function TransactionList({
                           onClick={() => setFilterBank(filterBank === b ? null : b)}
                           className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                             filterBank === b
-                              ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                              ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
                               : "border-white/10 text-zinc-400 hover:border-white/20"
                           }`}
                         >
@@ -279,7 +279,7 @@ export function TransactionList({
               setQuery("");
               clearFilters();
             }}
-            className="text-xs font-medium text-sky-400 hover:text-sky-300 cursor-pointer"
+            className="text-xs font-medium text-orange-400 hover:text-orange-300 cursor-pointer"
           >
             Quitar búsqueda y filtros
           </button>
@@ -301,9 +301,9 @@ export function TransactionList({
                       ? {
                           scale: [1, 1.035, 1],
                           boxShadow: [
-                            "0 0 0 0 rgba(56,189,248,0)",
-                            "0 0 0 0 rgba(56,189,248,0.55)",
-                            "0 0 0 14px rgba(56,189,248,0)",
+                            "0 0 0 0 rgba(251,146,60,0)",
+                            "0 0 0 0 rgba(251,146,60,0.55)",
+                            "0 0 0 14px rgba(251,146,60,0)",
                           ],
                         }
                       : { scale: 1 }
@@ -320,9 +320,9 @@ export function TransactionList({
                     onClick={() => handleRowClick(t)}
                     className={`relative flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-colors cursor-pointer ${
                       isPicked
-                        ? "border-sky-400/50 bg-sky-400/5"
+                        ? "border-orange-400/50 bg-orange-400/5"
                         : isNew
-                          ? "border-sky-400/40 bg-sky-400/5"
+                          ? "border-orange-400/40 bg-orange-400/5"
                           : "border-white/10 bg-zinc-900/60 hover:border-white/20"
                     }`}
                   >
@@ -330,7 +330,7 @@ export function TransactionList({
                       <span
                         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors ${
                           isPicked
-                            ? "border-sky-400 bg-sky-400 text-zinc-950"
+                            ? "border-orange-400 bg-orange-400 text-zinc-950"
                             : "border-white/20 text-transparent"
                         }`}
                       >
@@ -365,7 +365,7 @@ export function TransactionList({
                           animate={{ opacity: 1, scale: 1, y: 0 }}
                           exit={{ opacity: 0, scale: 0.7 }}
                           transition={{ type: "spring", stiffness: 420, damping: 20 }}
-                          className="absolute -right-1.5 -top-1.5 rounded-full bg-sky-400 px-2 py-0.5 text-[10px] font-bold tracking-wide text-zinc-950"
+                          className="absolute -right-1.5 -top-1.5 rounded-full bg-orange-400 px-2 py-0.5 text-[10px] font-bold tracking-wide text-zinc-950"
                         >
                           NUEVO
                         </motion.span>

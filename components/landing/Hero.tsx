@@ -6,7 +6,7 @@ export function Hero({ loggedIn = false }: { loggedIn?: boolean }) {
     <section className="relative mx-auto grid w-full max-w-6xl items-center gap-12 overflow-hidden px-6 pb-20 pt-16 md:min-h-[calc(100dvh-72px)] md:grid-cols-[1.1fr_1fr] md:gap-16 md:pb-24 md:pt-0">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-40 top-1/2 h-[36rem] w-[36rem] -translate-y-1/2 rounded-full bg-sky-400/10 blur-[120px]"
+        className="pointer-events-none absolute -right-40 top-1/2 h-[36rem] w-[36rem] -translate-y-1/2 rounded-full bg-orange-400/10 blur-[120px]"
       />
 
       <div className="relative flex flex-col items-center gap-6 text-center md:items-start md:text-left">

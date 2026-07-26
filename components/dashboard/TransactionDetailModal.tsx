@@ -338,7 +338,7 @@ export function TransactionDetailModal({
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Opcional"
-                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-sky-400/50"
+                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-orange-400/50"
                       />
                     </div>
 
@@ -351,7 +351,7 @@ export function TransactionDetailModal({
                             onClick={() => setCategory(c)}
                             className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                               category === c
-                                ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                                ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
                                 : "border-white/10 text-zinc-400 hover:border-white/20"
                             }`}
                           >
@@ -370,7 +370,7 @@ export function TransactionDetailModal({
                             onClick={() => setBank(b)}
                             className={`flex items-center gap-1.5 rounded-full border py-1 pl-1 pr-3 text-xs font-medium transition-colors cursor-pointer ${
                               bank === b
-                                ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                                ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
                                 : "border-white/10 text-zinc-400 hover:border-white/20"
                             }`}
                           >
@@ -387,7 +387,7 @@ export function TransactionDetailModal({
                         type="datetime-local"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
-                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
+                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
                       />
                     </div>
 
@@ -404,7 +404,7 @@ export function TransactionDetailModal({
                       <button
                         onClick={handleSave}
                         disabled={isPending}
-                        className="flex-1 rounded-xl bg-sky-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                        className="flex-1 rounded-xl bg-orange-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
                       >
                         {isPending ? "Guardando..." : "Guardar cambios"}
                       </button>

@@ -21,11 +21,14 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "TicoFinanza | Todas tus entidades bancarias y tu dinero en un solo lugar",
+  title: {
+    default: "TicoFinanza | Todas tus entidades bancarias y tu dinero en un solo lugar",
+    template: "%s · TicoFinanza",
+  },
   description:
     "Lee automáticamente tus correos de BAC, BCR, Banco Nacional, Banco Popular, DaviBank, MUCAP y PayPal. Controlá tus finanzas sin mover un solo dedo. Hecho para Costa Rica.",
   appleWebApp: { title: "TicoFinanza" },
-  icons: { apple: "/icon-192.png" },
+  icons: { icon: "/favicon.ico", apple: "/icon-192.png" },
 };
 
 export const viewport = {

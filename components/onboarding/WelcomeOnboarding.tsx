@@ -87,7 +87,7 @@ export function WelcomeOnboarding({
     <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-zinc-950 px-6 py-16 sm:px-10">
       <div
         aria-hidden="true"
-        className="auth-blob-a pointer-events-none absolute right-[-15%] top-[-10%] h-[26rem] w-[26rem] rounded-full bg-sky-400/[0.07] blur-[120px]"
+        className="auth-blob-a pointer-events-none absolute right-[-15%] top-[-10%] h-[26rem] w-[26rem] rounded-full bg-orange-400/[0.07] blur-[120px]"
       />
       <div
         aria-hidden="true"
@@ -158,7 +158,7 @@ export function WelcomeOnboarding({
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Tu nombre"
-              className="w-full border-b border-white/15 bg-transparent pb-1 text-base font-medium text-zinc-50 outline-none placeholder:text-zinc-600 focus:border-sky-400"
+              className="w-full border-b border-white/15 bg-transparent pb-1 text-base font-medium text-zinc-50 outline-none placeholder:text-zinc-600 focus:border-orange-400"
             />
             <span className="text-xs text-zinc-600">
               {uploading ? "Subiendo tu foto..." : "Tocá el círculo para ponerle una foto (opcional)"}
@@ -180,7 +180,7 @@ export function WelcomeOnboarding({
             value={birthDate}
             onChange={(e) => setBirthDate(e.target.value)}
             max={new Date().toISOString().slice(0, 10)}
-            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
+            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
           />
         </motion.label>
 
@@ -198,7 +198,7 @@ export function WelcomeOnboarding({
             whileHover={reduce ? undefined : { scale: 1.02 }}
             whileTap={reduce ? undefined : { scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="inline-flex items-center gap-2 rounded-full bg-sky-400 px-6 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-full bg-orange-400 px-6 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
           >
             {pending ? "Guardando..." : "Empezar a usar TicoFinanza"}
             {!pending && <ArrowRight size={16} weight="bold" />}

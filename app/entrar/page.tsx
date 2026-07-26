@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { AuthShowcase } from "@/components/auth/AuthShowcase";
 import { Logo } from "@/components/Logo";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = { title: "Iniciar sesión" };
 
 export default async function EntrarPage() {
   const supabase = await createClient();
