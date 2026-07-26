@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, EnvelopeSimple, Trash, X } from "@phosphor-icons/react";
+import { Check, EnvelopeSimple, ListChecks, Trash, X } from "@phosphor-icons/react";
 import { deleteTransactions } from "@/app/dashboard/actions";
 import { useToast } from "@/components/Toast";
 import { formatDate, formatMoney } from "@/lib/format";
@@ -107,12 +107,17 @@ export function TransactionList({
 
   return (
     <>
-      <div className="flex items-center justify-end">
+      <div className="mb-3 flex items-center justify-end">
         <button
           onClick={() => (pickMode ? exitPickMode() : setPickMode(true))}
-          className="rounded-full px-2 py-1 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-200 cursor-pointer"
+          className={`flex h-8 items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors cursor-pointer ${
+            pickMode
+              ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+              : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
+          }`}
         >
-          {pickMode ? "Cancelar" : "Seleccionar"}
+          {pickMode ? <X size={14} weight="bold" /> : <ListChecks size={14} weight="bold" />}
+          {pickMode ? "Cancelar selección" : "Seleccionar"}
         </button>
       </div>
 
