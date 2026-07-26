@@ -41,11 +41,11 @@ export const BANK_BRAND: Record<BankName, BankBrand> = {
     logo: "/logos/promerica.svg",
   },
   Davivienda: {
-    label: "Davivienda",
-    initials: "DV",
-    bg: "#EF3340",
+    label: "DaviBank",
+    initials: "DB",
+    bg: "#E30518",
     fg: "#ffffff",
-    logo: "/logos/davivienda.png",
+    logo: "/logos/davibank.svg",
   },
   BP: {
     label: "Banco Popular",

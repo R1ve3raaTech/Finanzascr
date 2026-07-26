@@ -25,11 +25,16 @@ export function BankLogo({
   }
 
   if (brand.logo) {
+    // El padding tiene que ser proporcional al tamaño del círculo — un
+    // padding fijo (ej. 6px) se come casi un tercio de un círculo chico de
+    // 40px, dejando el logo diminuto. Con un % del tamaño, el logo siempre
+    // ocupa la mayor parte del círculo sin importar en qué lugar se use.
+    const padding = Math.round(size * 0.1);
     return (
       <div
         title={brand.label}
-        style={{ width: size, height: size, background: brand.chipBg ?? "#ffffff" }}
-        className="flex shrink-0 items-center justify-center overflow-hidden rounded-full p-1.5"
+        style={{ width: size, height: size, background: brand.chipBg ?? "#ffffff", padding }}
+        className="flex shrink-0 items-center justify-center overflow-hidden rounded-full"
       >
         <Image
           src={brand.logo}
