@@ -57,3 +57,13 @@ export interface Budget {
   currency: Currency;
   created_at: string;
 }
+
+export interface SavingsGoal {
+  id: string;
+  user_id: string;
+  name: string;
+  target_amount: number;
+  currency: Currency;
+  target_date: string | null;
+  created_at: string;
+}

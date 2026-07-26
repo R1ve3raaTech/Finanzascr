@@ -1,4 +1,4 @@
-import type { Currency, Transaction } from "./types";
+import type { Currency, SavingsGoal, Transaction } from "./types";
 
 export interface MonthTotal {
   monthKey: string;
@@ -117,4 +117,23 @@ export function detectRecurring(transactions: Transaction[]): RecurringItem[] {
   }
 
   return results.sort((a, b) => b.averageAmount - a.averageAmount);
+}
+
+/**
+ * Progreso de una meta de ahorro: se calcula solo, sumando ingresos y
+ * restando gastos en la moneda de la meta desde que se creó — no hay
+ * "aportes" manuales que llevar por separado. Si el usuario tiene varias
+ * metas activas en la misma moneda, cada una mide el mismo dinero de forma
+ * independiente (no se reparte entre metas), así que la suma de progresos
+ * no es literalmente plata apartada en cajitas separadas.
+ */
+export function goalProgress(transactions: Transaction[], goal: SavingsGoal): number {
+  const since = new Date(goal.created_at).getTime();
+  let net = 0;
+  for (const t of transactions) {
+    if (t.currency !== goal.currency) continue;
+    if (new Date(t.transaction_date).getTime() < since) continue;
+    net += t.type === "INCOME" ? t.amount : -t.amount;
+  }
+  return Math.max(0, Math.min(net, goal.target_amount));
 }

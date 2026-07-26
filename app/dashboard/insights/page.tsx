@@ -5,6 +5,7 @@ import { BreakdownList } from "@/components/insights/BreakdownList";
 import { BudgetProgress } from "@/components/insights/BudgetProgress";
 import { CategorizeButton } from "@/components/insights/CategorizeButton";
 import { MonthlyBarChart } from "@/components/insights/MonthlyBarChart";
+import { SavingsGoals } from "@/components/insights/SavingsGoals";
 import { SubscriptionsList } from "@/components/insights/SubscriptionsList";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { formatMoney } from "@/lib/format";
@@ -15,7 +16,7 @@ import {
   monthlyTotals,
 } from "@/lib/insights";
 import { createClient } from "@/lib/supabase/server";
-import type { Budget, Transaction } from "@/lib/types";
+import type { Budget, SavingsGoal, Transaction } from "@/lib/types";
 
 export default async function InsightsPage() {
   const supabase = await createClient();
@@ -24,17 +25,23 @@ export default async function InsightsPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  const [{ data }, { data: budgetsData }] = await Promise.all([
+  const [{ data }, { data: budgetsData }, { data: goalsData }] = await Promise.all([
     supabase
       .from("transactions")
       .select("*")
       .order("transaction_date", { ascending: false })
       .limit(500),
     supabase.from("budgets").select("*").eq("user_id", user.id),
+    supabase
+      .from("savings_goals")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false }),
   ]);
 
   const transactions = (data ?? []) as Transaction[];
   const budgets = (budgetsData ?? []) as Budget[];
+  const goals = (goalsData ?? []) as SavingsGoal[];
 
   const months = monthlyTotals(transactions, 6);
   const thisMonth = months[months.length - 1];
@@ -101,6 +108,11 @@ export default async function InsightsPage() {
         </section>
 
         <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:60ms]">
+          <h2 className="mb-4 text-sm font-medium text-zinc-400">Metas de ahorro</h2>
+          <SavingsGoals goals={goals} transactions={transactions} />
+        </section>
+
+        <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:90ms]">
           <h2 className="mb-4 text-sm font-medium text-zinc-400">Últimos 6 meses (₡)</h2>
           <MonthlyBarChart data={months} />
         </section>

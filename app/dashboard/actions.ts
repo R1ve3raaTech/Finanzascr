@@ -431,6 +431,87 @@ export async function subscribeToPush(subscription: {
   return { error: error ? "No se pudieron activar las notificaciones." : null };
 }
 
+export async function createSavingsGoal(input: {
+  name: string;
+  targetAmount: number;
+  currency: Currency;
+  targetDate: string | null;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const name = input.name.trim();
+  if (!name) return { error: "Ponele un nombre a la meta." };
+  if (!Number.isFinite(input.targetAmount) || input.targetAmount <= 0) {
+    return { error: "El monto debe ser mayor a cero." };
+  }
+
+  const { error } = await supabase.from("savings_goals").insert({
+    user_id: user.id,
+    name,
+    target_amount: input.targetAmount,
+    currency: input.currency,
+    target_date: input.targetDate || null,
+  });
+
+  if (error) return { error: "No se pudo crear la meta. Intentá de nuevo." };
+  revalidatePath("/dashboard/insights");
+  return { error: null };
+}
+
+export async function updateSavingsGoal(
+  id: string,
+  input: { name: string; targetAmount: number; currency: Currency; targetDate: string | null }
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const name = input.name.trim();
+  if (!name) return { error: "Ponele un nombre a la meta." };
+  if (!Number.isFinite(input.targetAmount) || input.targetAmount <= 0) {
+    return { error: "El monto debe ser mayor a cero." };
+  }
+
+  const { error } = await supabase
+    .from("savings_goals")
+    .update({
+      name,
+      target_amount: input.targetAmount,
+      currency: input.currency,
+      target_date: input.targetDate || null,
+    })
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) return { error: "No se pudo guardar el cambio. Intentá de nuevo." };
+  revalidatePath("/dashboard/insights");
+  return { error: null };
+}
+
+export async function deleteSavingsGoal(id: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const { error } = await supabase
+    .from("savings_goals")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) return { error: "No se pudo eliminar la meta." };
+  revalidatePath("/dashboard/insights");
+  return { error: null };
+}
+
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
