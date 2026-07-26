@@ -1,8 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, EnvelopeSimple, ListChecks, Trash, X } from "@phosphor-icons/react";
+import {
+  Check,
+  EnvelopeSimple,
+  Funnel,
+  ListChecks,
+  MagnifyingGlass,
+  Trash,
+  X,
+} from "@phosphor-icons/react";
 import { deleteTransactions } from "@/app/dashboard/actions";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useToast } from "@/components/Toast";
@@ -33,6 +41,39 @@ export function TransactionList({
   const [pickedIds, setPickedIds] = useState<Set<string>>(new Set());
   const [confirmingBulkDelete, setConfirmingBulkDelete] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  const [query, setQuery] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterCategory, setFilterCategory] = useState<string | null>(null);
+  const [filterBank, setFilterBank] = useState<string | null>(null);
+
+  const availableCategories = useMemo(
+    () => Array.from(new Set(transactions.map((t) => t.category).filter((c): c is string => Boolean(c)))).sort(),
+    [transactions]
+  );
+  const availableBanks = useMemo(
+    () => Array.from(new Set(transactions.map((t) => t.bank_name))).sort(),
+    [transactions]
+  );
+
+  const normalizedQuery = query.trim().toLowerCase();
+  const activeFilterCount = (filterCategory ? 1 : 0) + (filterBank ? 1 : 0);
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter((t) => {
+      if (filterCategory && t.category !== filterCategory) return false;
+      if (filterBank && t.bank_name !== filterBank) return false;
+      if (normalizedQuery) {
+        const haystack = `${t.description ?? ""} ${t.bank_name} ${t.category ?? ""}`.toLowerCase();
+        if (!haystack.includes(normalizedQuery)) return false;
+      }
+      return true;
+    });
+  }, [transactions, filterCategory, filterBank, normalizedQuery]);
+
+  function clearFilters() {
+    setFilterCategory(null);
+    setFilterBank(null);
+  }
 
   // Solo se resaltan transacciones que aparecen DESPUÉS del primer render
   // (ej. tras un sync o un registro de efectivo) — en la carga inicial nada
@@ -114,6 +155,108 @@ export function TransactionList({
         </div>
       </div>
 
+      {transactions.length > 0 && (
+        <div className="mt-3 flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <div className="flex h-9 flex-1 items-center gap-2 rounded-xl border border-white/10 bg-zinc-950 px-3">
+              <MagnifyingGlass size={14} className="shrink-0 text-zinc-500" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar por descripción, banco o categoría..."
+                className="w-full bg-transparent text-sm text-zinc-100 outline-none placeholder:text-zinc-600"
+              />
+              {query && (
+                <button
+                  onClick={() => setQuery("")}
+                  aria-label="Limpiar búsqueda"
+                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-zinc-500 hover:text-zinc-200 cursor-pointer"
+                >
+                  <X size={12} weight="bold" />
+                </button>
+              )}
+            </div>
+            <button
+              onClick={() => setShowFilters((v) => !v)}
+              aria-label="Filtros"
+              className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-colors cursor-pointer ${
+                showFilters || activeFilterCount > 0
+                  ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                  : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
+              }`}
+            >
+              <Funnel size={15} weight="bold" />
+              {activeFilterCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-sky-400 text-[10px] font-bold text-zinc-950">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+          </div>
+
+          <AnimatePresence initial={false}>
+            {showFilters && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-zinc-900/60 p-3">
+                  {availableCategories.length > 0 && (
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-xs font-medium text-zinc-500">Categoría</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {availableCategories.map((c) => (
+                          <button
+                            key={c}
+                            onClick={() => setFilterCategory(filterCategory === c ? null : c)}
+                            className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+                              filterCategory === c
+                                ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                                : "border-white/10 text-zinc-400 hover:border-white/20"
+                            }`}
+                          >
+                            {c}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-xs font-medium text-zinc-500">Banco</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {availableBanks.map((b) => (
+                        <button
+                          key={b}
+                          onClick={() => setFilterBank(filterBank === b ? null : b)}
+                          className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+                            filterBank === b
+                              ? "border-sky-400/50 bg-sky-400/10 text-sky-300"
+                              : "border-white/10 text-zinc-400 hover:border-white/20"
+                          }`}
+                        >
+                          {b}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {activeFilterCount > 0 && (
+                    <button
+                      onClick={clearFilters}
+                      className="self-start text-xs text-zinc-500 transition-colors hover:text-zinc-300 cursor-pointer"
+                    >
+                      Limpiar filtros
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
+
       {transactions.length === 0 ? (
         <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-white/10 px-6 py-16 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900">
@@ -125,10 +268,26 @@ export function TransactionList({
             podés registrar una compra en efectivo con el botón (+).
           </p>
         </div>
+      ) : filteredTransactions.length === 0 ? (
+        <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-white/10 px-6 py-12 text-center">
+          <p className="text-sm font-medium text-zinc-300">Sin resultados</p>
+          <p className="max-w-[38ch] text-sm text-zinc-500">
+            Ningún movimiento coincide con la búsqueda o los filtros.
+          </p>
+          <button
+            onClick={() => {
+              setQuery("");
+              clearFilters();
+            }}
+            className="text-xs font-medium text-sky-400 hover:text-sky-300 cursor-pointer"
+          >
+            Quitar búsqueda y filtros
+          </button>
+        </div>
       ) : (
         <ul className="mt-4 flex flex-col gap-2">
           <AnimatePresence initial={false}>
-            {transactions.map((t, i) => {
+            {filteredTransactions.map((t, i) => {
               const income = t.type === "INCOME";
               const isNew = newIds.has(t.id);
               const isPicked = pickedIds.has(t.id);
