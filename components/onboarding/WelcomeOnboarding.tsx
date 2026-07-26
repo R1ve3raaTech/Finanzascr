@@ -84,21 +84,17 @@ export function WelcomeOnboarding({
   }
 
   return (
-    <main className="relative flex min-h-[100dvh] flex-col items-center overflow-hidden bg-zinc-950 px-6 py-16 sm:px-10">
+    <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-zinc-950 px-6 py-16 sm:px-10">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
-      >
-        <span className="-rotate-6 select-none whitespace-nowrap font-montserrat text-[26vw] font-bold leading-none text-white/[0.025] sm:text-[20vw]">
-          TicoFinanza
-        </span>
-      </div>
+        className="auth-blob-a pointer-events-none absolute right-[-15%] top-[-10%] h-[26rem] w-[26rem] rounded-full bg-sky-400/[0.07] blur-[120px]"
+      />
       <div
         aria-hidden="true"
-        className="auth-blob-a pointer-events-none absolute right-[-15%] top-[-10%] h-[26rem] w-[26rem] rounded-full bg-sky-400/[0.06] blur-[120px]"
+        className="pointer-events-none absolute bottom-[-15%] left-[-10%] h-[22rem] w-[22rem] rounded-full bg-emerald-400/[0.04] blur-[120px]"
       />
 
-      <div className="relative flex w-full max-w-2xl flex-1 flex-col justify-center gap-10">
+      <div className="relative flex w-full max-w-md flex-col gap-8">
         <motion.span
           initial={reduce ? undefined : { opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -112,81 +108,86 @@ export function WelcomeOnboarding({
           initial={reduce ? undefined : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-wrap items-center gap-x-3 gap-y-4 text-3xl font-semibold leading-tight tracking-tight text-zinc-50 sm:text-4xl md:text-[2.75rem]"
+          className="flex flex-col gap-1"
         >
-          <span>Qué bueno tenerte,</span>
-          <span className="inline-flex items-center gap-2.5">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              aria-label="Elegir foto de perfil"
-              className="group relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-zinc-900 cursor-pointer disabled:opacity-60 sm:h-12 sm:w-12"
-            >
-              {avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt="Tu foto de perfil"
-                  width={48}
-                  height={48}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <Camera size={18} weight="bold" className="text-zinc-600" />
-              )}
-              <span className="absolute inset-0 flex items-center justify-center bg-zinc-950/0 text-transparent transition-colors group-hover:bg-zinc-950/50 group-hover:text-zinc-100">
-                <Camera size={16} weight="bold" />
-              </span>
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-            />
+          <h1 className="text-3xl font-semibold leading-tight tracking-tight text-zinc-50 sm:text-4xl">
+            Qué bueno tenerte.
+          </h1>
+          <p className="text-sm leading-relaxed text-zinc-500">
+            Dos datos opcionales y listo — menos de un minuto.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={reduce ? undefined : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-4 rounded-2xl border border-white/10 bg-zinc-900/60 p-4"
+        >
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            aria-label="Elegir foto de perfil"
+            className="group relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-zinc-950 cursor-pointer disabled:opacity-60"
+          >
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt="Tu foto de perfil"
+                width={56}
+                height={56}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <Camera size={20} weight="bold" className="text-zinc-600" />
+            )}
+            <span className="absolute inset-0 flex items-center justify-center bg-zinc-950/0 text-transparent transition-colors group-hover:bg-zinc-950/50 group-hover:text-zinc-100">
+              <Camera size={18} weight="bold" />
+            </span>
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
             <input
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="tu nombre"
-              style={{ width: `${Math.max(fullName.length || 9, 5)}ch` }}
-              className="max-w-full border-b-2 border-white/15 bg-transparent px-1 pb-0.5 text-inherit outline-none placeholder:text-zinc-700 focus:border-sky-400"
+              placeholder="Tu nombre"
+              className="w-full border-b border-white/15 bg-transparent pb-1 text-base font-medium text-zinc-50 outline-none placeholder:text-zinc-600 focus:border-sky-400"
             />
-          </span>
-          <span>.</span>
+            <span className="text-xs text-zinc-600">
+              {uploading ? "Subiendo tu foto..." : "Tocá el círculo para ponerle una foto (opcional)"}
+            </span>
+          </div>
         </motion.div>
 
-        <motion.p
-          initial={reduce ? undefined : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-[48ch] text-sm leading-relaxed text-zinc-500"
-        >
-          {uploading ? "Subiendo tu foto..." : "Tocá el círculo para ponerle una foto. Es opcional, como todo lo demás acá — esto toma menos de un minuto."}
-        </motion.p>
-
         <motion.label
-          initial={reduce ? undefined : { opacity: 0, y: 12 }}
+          initial={reduce ? undefined : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-          className="flex w-fit flex-col gap-1.5"
+          className="flex flex-col gap-1.5"
         >
           <span className="text-xs font-medium text-zinc-400">
-            ¿Cuándo es tu cumple? <span className="font-normal text-zinc-600">(por si un día queremos saludarte 🎂)</span>
+            ¿Cuándo es tu cumple? <span className="font-normal text-zinc-600">(opcional — por si un día te queremos saludar)</span>
           </span>
           <input
             type="date"
             value={birthDate}
             onChange={(e) => setBirthDate(e.target.value)}
             max={new Date().toISOString().slice(0, 10)}
-            className="w-56 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
+            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-sky-400/50 [color-scheme:dark]"
           />
         </motion.label>
 
         {error && <p className="text-sm text-rose-400">{error}</p>}
 
         <motion.div
-          initial={reduce ? undefined : { opacity: 0, y: 12 }}
+          initial={reduce ? undefined : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
           className="flex items-center gap-5"
