@@ -36,5 +36,10 @@ export function formatDate(iso: string): string {
     month: "short",
     hour: "2-digit",
     minute: "2-digit",
+    // Fija la zona horaria: sin esto, el servidor (UTC) y el navegador del
+    // usuario (Costa Rica, UTC-6) formatean horas distintas para el mismo
+    // instante, y React tira un error de hidratación porque el texto
+    // generado en el servidor no coincide con el del cliente.
+    timeZone: "America/Costa_Rica",
   }).format(new Date(iso));
 }

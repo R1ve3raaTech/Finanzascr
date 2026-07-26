@@ -226,6 +226,7 @@ export function TransactionDetailModal({
                       value={new Intl.DateTimeFormat("es-CR", {
                         dateStyle: "long",
                         timeStyle: "short",
+                        timeZone: "America/Costa_Rica",
                       }).format(new Date(transaction.transaction_date))}
                     />
                     <Row
@@ -233,6 +234,7 @@ export function TransactionDetailModal({
                       value={new Intl.DateTimeFormat("es-CR", {
                         dateStyle: "medium",
                         timeStyle: "short",
+                        timeZone: "America/Costa_Rica",
                       }).format(new Date(transaction.created_at))}
                     />
                     <Row label="ID" value={transaction.id} />
