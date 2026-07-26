@@ -7,7 +7,6 @@ import { DateRangeFilter } from "@/components/dashboard/DateRangeFilter";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
 import { ProfileAvatar } from "@/components/dashboard/ProfileAvatar";
 import { SignOutButton } from "@/components/dashboard/SignOutButton";
-import { SyncGmailButton } from "@/components/dashboard/SyncGmailButton";
 import { TransactionList } from "@/components/dashboard/TransactionList";
 import { Logo } from "@/components/Logo";
 import { endOfDayISO, startOfDayISO } from "@/lib/dateRange";
@@ -106,14 +105,12 @@ export default async function DashboardPage({
 
         <BalanceCard crc={balance.CRC} usd={balance.USD} nic={balance.NIC} filtered={hasRange} />
 
-        <section className="flex flex-col gap-4">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-sm font-medium text-zinc-400">
-              {hasRange ? "Movimientos del período" : "Últimas transacciones"}
-            </h2>
-            <SyncGmailButton />
-          </div>
-          <TransactionList transactions={transactions} customCategories={userCategories} />
+        <section className="flex flex-col">
+          <TransactionList
+            title={hasRange ? "Movimientos del período" : "Últimas transacciones"}
+            transactions={transactions}
+            customCategories={userCategories}
+          />
         </section>
       </div>
 

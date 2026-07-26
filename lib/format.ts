@@ -1,6 +1,6 @@
 import type { Currency } from "./types";
 
-const formatters: Record<Currency, Intl.NumberFormat> = {
+const formatters: Record<"CRC" | "USD", Intl.NumberFormat> = {
   CRC: new Intl.NumberFormat("es-CR", {
     style: "currency",
     currency: "CRC",
@@ -11,16 +11,22 @@ const formatters: Record<Currency, Intl.NumberFormat> = {
     currency: "USD",
     maximumFractionDigits: 2,
   }),
-  // "NIC" es la etiqueta que usan los bancos costarricenses en sus correos;
-  // el código ISO 4217 real del córdoba nicaragüense es "NIO".
-  NIC: new Intl.NumberFormat("es-CR", {
-    style: "currency",
-    currency: "NIO",
-    maximumFractionDigits: 2,
-  }),
 };
 
+// El código ISO 4217 real del córdoba nicaragüense es "NIO", pero Intl no
+// tiene un símbolo corto para esa moneda en es-CR (imprime "NIO" en vez de
+// un símbolo) — se formatea a mano para que se vea como las demás (símbolo
+// + número), con "C$" que es como la gente realmente lo escribe.
+const nicNumberFormat = new Intl.NumberFormat("es-CR", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 export function formatMoney(amount: number, currency: Currency): string {
+  if (currency === "NIC") {
+    const sign = amount < 0 ? "-" : "";
+    return `${sign}C$${nicNumberFormat.format(Math.abs(amount))}`;
+  }
   return formatters[currency].format(amount);
 }
 

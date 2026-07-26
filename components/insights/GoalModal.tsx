@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Trash, X } from "@phosphor-icons/react";
 import { createSavingsGoal, deleteSavingsGoal, updateSavingsGoal } from "@/app/dashboard/actions";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useToast } from "@/components/Toast";
 import { CURRENCY_LABEL, CURRENCY_SYMBOL } from "@/lib/transactionFormOptions";
 import type { Currency, SavingsGoal } from "@/lib/types";
@@ -101,6 +102,7 @@ export function GoalModal({
   if (!mounted) return null;
 
   return createPortal(
+    <>
     <AnimatePresence>
       {open && (
         <>
@@ -188,25 +190,16 @@ export function GoalModal({
               {error && <p className="text-sm text-rose-400">{error}</p>}
 
               <div className="flex gap-2">
-                {goal &&
-                  (!confirmingDelete ? (
-                    <button
-                      onClick={() => setConfirmingDelete(true)}
-                      disabled={isPending}
-                      aria-label="Eliminar meta"
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-400/20 text-rose-400 transition-colors hover:border-rose-400/40 hover:bg-rose-400/10 disabled:opacity-50 cursor-pointer"
-                    >
-                      <Trash size={16} weight="bold" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleDelete}
-                      disabled={isPending}
-                      className="shrink-0 rounded-xl bg-rose-400 px-4 py-3 text-sm font-semibold text-zinc-950 disabled:opacity-50 cursor-pointer"
-                    >
-                      ¿Seguro?
-                    </button>
-                  ))}
+                {goal && (
+                  <button
+                    onClick={() => setConfirmingDelete(true)}
+                    disabled={isPending}
+                    aria-label="Eliminar meta"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-400/20 text-rose-400 transition-colors hover:border-rose-400/40 hover:bg-rose-400/10 disabled:opacity-50 cursor-pointer"
+                  >
+                    <Trash size={16} weight="bold" />
+                  </button>
+                )}
                 <button
                   onClick={handleSave}
                   disabled={isPending}
@@ -219,7 +212,16 @@ export function GoalModal({
           </motion.div>
         </>
       )}
-    </AnimatePresence>,
+    </AnimatePresence>
+    <ConfirmDialog
+      open={confirmingDelete}
+      title="¿Eliminar esta meta?"
+      description="Esta acción no se puede deshacer."
+      pending={isPending}
+      onConfirm={handleDelete}
+      onCancel={() => setConfirmingDelete(false)}
+    />
+    </>,
     document.body
   );
 }

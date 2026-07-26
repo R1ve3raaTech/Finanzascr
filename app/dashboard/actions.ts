@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { syncGmailForUser } from "@/lib/google/sync";
 import { sendPushToUser } from "@/lib/push/send";
 import { categorizeTransactions } from "@/lib/ai/categorize";
+import { summarizeFinances, type FinanceSnapshot } from "@/lib/ai/insightsSummary";
 import { formatMoney } from "@/lib/format";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { decryptToken } from "@/lib/tokenCrypto";
@@ -406,6 +407,29 @@ export async function categorizeUncategorized() {
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/insights");
   return { error: null, updated };
+}
+
+export async function generateInsightsSummary(snapshot: FinanceSnapshot) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const admin = createAdminClient();
+  const rateLimit = await checkRateLimit(admin, user.id, "ai_insights_summary", {
+    maxCalls: 8,
+    windowSeconds: 60,
+  });
+  if (!rateLimit.allowed) {
+    return {
+      summary: null,
+      error: `Espera ${rateLimit.retryAfterSeconds}s antes de volver a generar el resumen.`,
+    };
+  }
+
+  const summary = await summarizeFinances(snapshot);
+  return { summary, error: summary ? null : "No se pudo generar el resumen. Intentá de nuevo." };
 }
 
 export async function subscribeToPush(subscription: {

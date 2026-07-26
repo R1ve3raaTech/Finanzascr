@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { BellRinging, BellSlash } from "@phosphor-icons/react";
 import { subscribeToPush } from "@/app/dashboard/actions";
 import { setNotificationsEnabled } from "@/app/dashboard/settings/actions";
 import { useToast } from "@/components/Toast";
@@ -101,21 +102,37 @@ export function NotificationsSetting() {
           <p className="text-xs text-zinc-500">
             Avisos en este dispositivo cuando se detecta un movimiento nuevo.
           </p>
+          <p
+            className={`mt-1 text-[11px] font-medium ${enabled ? "text-sky-400" : "text-zinc-600"}`}
+          >
+            {checked ? (enabled ? "Activadas en este dispositivo" : "Desactivadas") : ""}
+          </p>
         </div>
         <motion.button
           onClick={toggle}
           disabled={pending || !supported || !checked}
           aria-label="Notificaciones push"
           whileTap={reduce ? undefined : { scale: 0.92 }}
-          animate={{ backgroundColor: enabled ? "#38bdf8" : "#3f3f46" }}
-          transition={{ backgroundColor: { duration: 0.2 } }}
-          className="relative h-7 w-12 shrink-0 rounded-full disabled:opacity-40 cursor-pointer"
+          animate={{
+            backgroundColor: enabled ? "rgba(56,189,248,0.15)" : "rgba(63,63,70,0.6)",
+            borderColor: enabled ? "rgba(56,189,248,0.4)" : "rgba(255,255,255,0.1)",
+          }}
+          transition={{ duration: 0.2 }}
+          className="relative h-8 w-14 shrink-0 rounded-full border disabled:opacity-40 cursor-pointer"
         >
           <motion.span
-            animate={{ x: enabled ? 24 : 4 }}
+            animate={{ x: enabled ? 26 : 3 }}
             transition={knobSpring}
-            className="absolute top-1 h-5 w-5 rounded-full bg-zinc-950"
-          />
+            className={`absolute top-1 flex h-6 w-6 items-center justify-center rounded-full shadow-sm ${
+              enabled ? "bg-sky-400 text-zinc-950" : "bg-zinc-200 text-zinc-500"
+            }`}
+          >
+            {enabled ? (
+              <BellRinging size={13} weight="fill" />
+            ) : (
+              <BellSlash size={13} weight="bold" />
+            )}
+          </motion.span>
         </motion.button>
       </div>
       {!supported && checked && (

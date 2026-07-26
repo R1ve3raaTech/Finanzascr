@@ -7,14 +7,7 @@ import { CalendarBlank } from "@phosphor-icons/react";
 import { DATE_RANGE_PRESETS, presetRange } from "@/lib/dateRange";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
-
-function pillClass(active: boolean) {
-  return `flex h-8 items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors cursor-pointer ${
-    active
-      ? "border-sky-400/40 bg-sky-400/10 text-sky-400"
-      : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
-  }`;
-}
+const slide = { type: "spring", stiffness: 500, damping: 40 } as const;
 
 export function DateRangeFilter() {
   const reduce = useReducedMotion();
@@ -49,47 +42,52 @@ export function DateRangeFilter() {
     return r.from === from && r.to === to;
   });
 
+  const segments = [{ label: "Todo", days: null }, ...DATE_RANGE_PRESETS] as const;
+  const activeLabel = !hasFilter ? "Todo" : (activePreset?.label ?? null);
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
-        <motion.button
-          whileHover={reduce ? undefined : { scale: 1.03 }}
-          whileTap={reduce ? undefined : { scale: 0.94 }}
-          transition={tap}
-          onClick={() => {
-            setShowCustom(false);
-            applyRange(null);
-          }}
-          className={pillClass(!hasFilter)}
-        >
-          Todo
-        </motion.button>
-
-        {DATE_RANGE_PRESETS.map((p) => (
-          <motion.button
-            key={p.label}
-            whileHover={reduce ? undefined : { scale: 1.03 }}
-            whileTap={reduce ? undefined : { scale: 0.94 }}
-            transition={tap}
-            onClick={() => {
-              setShowCustom(false);
-              applyRange(presetRange(p.days));
-            }}
-            className={pillClass(activePreset?.label === p.label)}
-          >
-            {p.label}
-          </motion.button>
-        ))}
+        <div className="flex flex-wrap gap-0.5 rounded-full border border-white/10 bg-zinc-900/60 p-1">
+          {segments.map((s) => {
+            const active = activeLabel === s.label;
+            return (
+              <button
+                key={s.label}
+                onClick={() => {
+                  setShowCustom(false);
+                  applyRange(s.days === null ? null : presetRange(s.days));
+                }}
+                className="relative rounded-full px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer"
+              >
+                {active && (
+                  <motion.span
+                    layoutId="date-range-active"
+                    transition={slide}
+                    className="absolute inset-0 rounded-full bg-sky-400/15"
+                  />
+                )}
+                <span className={`relative ${active ? "text-sky-400" : "text-zinc-400 hover:text-zinc-100"}`}>
+                  {s.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
 
         <motion.button
           whileHover={reduce ? undefined : { scale: 1.03 }}
           whileTap={reduce ? undefined : { scale: 0.94 }}
           transition={tap}
           onClick={() => setShowCustom((v) => !v)}
-          className={pillClass(hasFilter && !activePreset)}
+          aria-label="Rango personalizado"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors cursor-pointer ${
+            hasFilter && !activePreset
+              ? "border-sky-400/40 bg-sky-400/10 text-sky-400"
+              : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
+          }`}
         >
           <CalendarBlank size={14} weight="bold" />
-          Personalizado
         </motion.button>
       </div>
 

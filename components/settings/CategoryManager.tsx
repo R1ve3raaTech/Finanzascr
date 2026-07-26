@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Plus, X } from "@phosphor-icons/react";
+import { ArrowDownLeft, ArrowUpRight, Plus, X } from "@phosphor-icons/react";
 import { addCategory, deleteCategory } from "@/app/dashboard/settings/actions";
 import { useToast } from "@/components/Toast";
 import type { TransactionType, UserCategory } from "@/lib/types";
@@ -19,6 +19,7 @@ function CategoryGroup({
   type: TransactionType;
   categories: UserCategory[];
 }) {
+  const income = type === "INCOME";
   const reduce = useReducedMotion();
   const toast = useToast();
   const [name, setName] = useState("");
@@ -50,7 +51,14 @@ function CategoryGroup({
 
   return (
     <div className="flex flex-col gap-2">
-      <h4 className="text-xs font-medium text-zinc-400">{title}</h4>
+      <h4 className="flex items-center gap-1.5 text-xs font-medium text-zinc-400">
+        {income ? (
+          <ArrowDownLeft size={12} weight="bold" className="text-emerald-400" />
+        ) : (
+          <ArrowUpRight size={12} weight="bold" className="text-zinc-500" />
+        )}
+        {title}
+      </h4>
       <div className="flex flex-wrap gap-2">
         <AnimatePresence initial={false}>
           {categories.map((c) => (
@@ -61,7 +69,11 @@ function CategoryGroup({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.7 }}
               transition={pop}
-              className="flex items-center gap-1.5 rounded-full border border-white/10 py-1.5 pl-3 pr-2 text-xs font-medium text-zinc-300"
+              className={`flex items-center gap-1.5 rounded-full border py-1.5 pl-3 pr-2 text-xs font-medium ${
+                income
+                  ? "border-emerald-400/25 bg-emerald-400/5 text-emerald-300"
+                  : "border-white/10 text-zinc-300"
+              }`}
             >
               {c.name}
               <motion.button
@@ -69,7 +81,11 @@ function CategoryGroup({
                 aria-label={`Borrar ${c.name}`}
                 whileTap={reduce ? undefined : { scale: 0.8 }}
                 transition={tap}
-                className="flex h-4 w-4 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-zinc-200 cursor-pointer"
+                className={`flex h-4 w-4 items-center justify-center rounded-full transition-colors cursor-pointer ${
+                  income
+                    ? "text-emerald-400/60 hover:bg-emerald-400/15 hover:text-emerald-300"
+                    : "text-zinc-500 hover:bg-zinc-800 hover:text-zinc-200"
+                }`}
               >
                 <X size={10} weight="bold" />
               </motion.button>

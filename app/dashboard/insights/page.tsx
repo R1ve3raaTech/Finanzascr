@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
+import { AiSummary } from "@/components/insights/AiSummary";
 import { BreakdownList } from "@/components/insights/BreakdownList";
 import { BudgetProgress } from "@/components/insights/BudgetProgress";
 import { CategorizeButton } from "@/components/insights/CategorizeButton";
@@ -62,6 +63,21 @@ export default async function InsightsPage() {
   const spentByCategory = new Map<string, number>();
   for (const item of byCategory) spentByCategory.set(item.label, item.amount);
 
+  const aiSnapshot = {
+    thisMonth: { income: thisMonth.income, expense: thisMonth.expense },
+    lastMonth: lastMonth ? { income: lastMonth.income, expense: lastMonth.expense } : null,
+    topCategories: byCategory.slice(0, 5).map((c) => ({ label: c.label, amount: c.amount })),
+    budgets: budgets.map((b) => ({
+      category: b.category,
+      limit: b.monthly_limit,
+      spent: spentByCategory.get(b.category) ?? 0,
+      currency: b.currency,
+    })),
+    recurring: recurring
+      .slice(0, 5)
+      .map((r) => ({ description: r.description, amount: r.averageAmount, currency: r.currency })),
+  };
+
   const netDelta =
     lastMonth && lastMonth.income - lastMonth.expense !== 0
       ? ((thisMonth.income - thisMonth.expense - (lastMonth.income - lastMonth.expense)) /
@@ -106,6 +122,8 @@ export default async function InsightsPage() {
             )}
           </div>
         </section>
+
+        <AiSummary snapshot={aiSnapshot} />
 
         <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:60ms]">
           <h2 className="mb-4 text-sm font-medium text-zinc-400">Metas de ahorro</h2>
