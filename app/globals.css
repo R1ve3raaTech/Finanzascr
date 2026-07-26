@@ -53,6 +53,34 @@ textarea,
   -webkit-touch-callout: default;
 }
 
+/* Scrollbar propia en vez de la del sistema: delgada, transparente hasta
+   que se usa, con el acento de la marca al pasar el mouse. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(56, 189, 248, 0.4);
+  background-clip: padding-box;
+}
+
 ::selection {
   background: rgb(56 189 248 / 0.25);
 }

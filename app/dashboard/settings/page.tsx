@@ -18,6 +18,7 @@ import { DangerZone } from "@/components/settings/DangerZone";
 import { GmailConnections } from "@/components/settings/GmailConnections";
 import { NotificationsSetting } from "@/components/settings/NotificationsSetting";
 import { ProfileSettings } from "@/components/settings/ProfileSettings";
+import { SettingsGroup } from "@/components/settings/SettingsGroup";
 import { SettingsSection } from "@/components/settings/SettingsSection";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
 import { DEFAULT_EXPENSE_CATEGORIES } from "@/lib/categories";
@@ -102,7 +103,7 @@ export default async function SettingsPage({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10">
         {params.gmail_connected && (
           <p className="animate-fade-up rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 text-sm text-emerald-300">
             Cuenta de Gmail conectada correctamente.
@@ -114,50 +115,54 @@ export default async function SettingsPage({
           </p>
         )}
 
-        <SettingsSection icon={User} accent="violet" delayMs={0}>
-          <ProfileSettings
-            userId={user.id}
-            initialFullName={initialFullName}
-            initialBirthDate={profile?.birth_date ?? null}
-            initialAvatarUrl={initialAvatarUrl}
-          />
-        </SettingsSection>
+        <SettingsGroup label="Cuenta" delayMs={0}>
+          <SettingsSection icon={User} accent="violet">
+            <ProfileSettings
+              userId={user.id}
+              initialFullName={initialFullName}
+              initialBirthDate={profile?.birth_date ?? null}
+              initialAvatarUrl={initialAvatarUrl}
+            />
+          </SettingsSection>
+        </SettingsGroup>
 
-        <SettingsSection icon={Tag} accent="amber" delayMs={40}>
-          <CategoryManager categories={(categories ?? []) as UserCategory[]} />
-        </SettingsSection>
+        <SettingsGroup label="Dinero" delayMs={60}>
+          <SettingsSection icon={Tag} accent="amber">
+            <CategoryManager categories={(categories ?? []) as UserCategory[]} />
+          </SettingsSection>
+          <SettingsSection icon={Wallet} accent="amber">
+            <BudgetManager budgets={(budgets ?? []) as Budget[]} categories={budgetCategories} />
+          </SettingsSection>
+          <SettingsSection icon={CurrencyCircleDollar} accent="emerald">
+            <CurrencySetting initial={resolvedSettings.default_currency} />
+          </SettingsSection>
+        </SettingsGroup>
 
-        <SettingsSection icon={Wallet} accent="zinc" delayMs={80}>
-          <BudgetManager budgets={(budgets ?? []) as Budget[]} categories={budgetCategories} />
-        </SettingsSection>
+        <SettingsGroup label="Alertas y correo" delayMs={140}>
+          <SettingsSection icon={Bell} accent="sky">
+            <NotificationsSetting />
+          </SettingsSection>
+          <SettingsSection icon={EnvelopeSimple} accent="sky">
+            <GmailConnections connections={gmailConnections ?? []} />
+          </SettingsSection>
+        </SettingsGroup>
 
-        <SettingsSection icon={CurrencyCircleDollar} accent="emerald" delayMs={120}>
-          <CurrencySetting initial={resolvedSettings.default_currency} />
-        </SettingsSection>
-
-        <SettingsSection icon={Bell} accent="sky" delayMs={160}>
-          <NotificationsSetting />
-        </SettingsSection>
-
-        <SettingsSection icon={EnvelopeSimple} accent="sky" delayMs={200}>
-          <GmailConnections connections={gmailConnections ?? []} />
-        </SettingsSection>
-
-        <a
-          href="/api/export-csv"
-          className="animate-fade-up flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900/40 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 [animation-delay:240ms]"
-        >
-          <DownloadSimple size={16} weight="bold" />
-          Exportar transacciones a CSV
-        </a>
-
-        <section className="animate-fade-up rounded-2xl border border-rose-400/15 bg-zinc-900/40 p-5 [animation-delay:280ms]">
-          <DangerZone transactionCount={transactionCount ?? 0} />
-        </section>
+        <SettingsGroup label="Datos" delayMs={220}>
+          <a
+            href="/api/export-csv"
+            className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-zinc-900/40 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100"
+          >
+            <DownloadSimple size={16} weight="bold" />
+            Exportar transacciones a CSV
+          </a>
+          <section className="rounded-2xl border border-rose-400/15 bg-zinc-900/40 p-5">
+            <DangerZone transactionCount={transactionCount ?? 0} />
+          </section>
+        </SettingsGroup>
 
         <Link
           href="/privacidad"
-          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-400 [animation-delay:300ms]"
+          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-400 [animation-delay:280ms]"
         >
           <ShieldCheck size={14} weight="bold" />
           Política de privacidad

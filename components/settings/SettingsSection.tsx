@@ -13,19 +13,14 @@ const ACCENTS = {
 export function SettingsSection({
   icon: IconComponent,
   accent = "zinc",
-  delayMs = 0,
   children,
 }: {
   icon: Icon;
   accent?: keyof typeof ACCENTS;
-  delayMs?: number;
   children: ReactNode;
 }) {
   return (
-    <section
-      className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5"
-      style={{ animationDelay: `${delayMs}ms` }}
-    >
+    <section className="rounded-2xl border border-white/10 bg-zinc-900/40 p-5">
       <div className="flex items-start gap-3.5">
         <div
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${ACCENTS[accent]}`}

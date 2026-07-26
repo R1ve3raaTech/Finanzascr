@@ -18,6 +18,7 @@ import { formatMoney } from "@/lib/format";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from "@/lib/categories";
 import { CURRENCY_LABEL, CURRENCY_SYMBOL, manualBankOptions } from "@/lib/transactionFormOptions";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 import { BankLogo } from "./BankLogo";
 import type { BankName, Currency, Transaction, TransactionType, UserCategory } from "@/lib/types";
 
@@ -65,6 +66,7 @@ export function TransactionDetailModal({
 }) {
   const reduce = useReducedMotion();
   const toast = useToast();
+  useLockBodyScroll(Boolean(transaction));
   const [confirming, setConfirming] = useState(false);
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);

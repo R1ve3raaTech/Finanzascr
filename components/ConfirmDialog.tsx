@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { WarningCircle } from "@phosphor-icons/react";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 
@@ -34,6 +35,7 @@ export function ConfirmDialog({
   onCancel: () => void;
 }) {
   const reduce = useReducedMotion();
+  useLockBodyScroll(open);
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,

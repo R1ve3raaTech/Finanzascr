@@ -16,6 +16,7 @@ import { BankLogo } from "@/components/dashboard/BankLogo";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { DEFAULT_EXPENSE_CATEGORIES as expenseCategories, DEFAULT_INCOME_CATEGORIES as incomeCategories } from "@/lib/categories";
 import { CURRENCY_LABEL, CURRENCY_SYMBOL, manualBankOptions } from "@/lib/transactionFormOptions";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 import type { BankName, Currency, TransactionType, UserCategory } from "@/lib/types";
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
@@ -41,6 +42,7 @@ export function AddCashModal({
   const reduce = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [saved, setSaved] = useState(false);
+  useLockBodyScroll(open);
 
   const allExpenseCategories = [
     ...expenseCategories,
@@ -188,11 +190,11 @@ export function AddCashModal({
               role="dialog"
               aria-modal="true"
               aria-label="Registrar movimiento"
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 40, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.97 }}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
               transition={spring}
-              className="fixed inset-x-4 bottom-4 top-4 z-50 mx-auto flex max-h-[calc(100dvh-2rem)] max-w-md flex-col overflow-y-auto rounded-2xl border border-white/10 bg-zinc-900 sm:inset-x-0 sm:inset-y-auto sm:top-1/2 sm:max-h-[85dvh] sm:-translate-y-1/2"
+              className="fixed inset-x-4 top-1/2 z-50 mx-auto flex max-h-[85dvh] max-w-md -translate-y-1/2 flex-col overflow-y-auto rounded-2xl border border-white/10 bg-zinc-900 sm:inset-x-0"
             >
               {!saved && (
                 <div className="sticky top-0 z-10 flex items-center justify-between bg-zinc-900 px-6 pt-5 pb-2">

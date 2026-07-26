@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { SignOut } from "@phosphor-icons/react";
 import { signOut } from "@/app/dashboard/actions";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
@@ -11,6 +12,7 @@ const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 export function SignOutButton() {
   const reduce = useReducedMotion();
   const [confirming, setConfirming] = useState(false);
+  useLockBodyScroll(confirming);
 
   return (
     <>

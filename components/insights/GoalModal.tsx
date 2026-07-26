@@ -8,6 +8,7 @@ import { createSavingsGoal, deleteSavingsGoal, updateSavingsGoal } from "@/app/d
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useToast } from "@/components/Toast";
 import { CURRENCY_LABEL, CURRENCY_SYMBOL } from "@/lib/transactionFormOptions";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 import type { Currency, SavingsGoal } from "@/lib/types";
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
@@ -23,6 +24,7 @@ export function GoalModal({
   onClose: () => void;
 }) {
   const reduce = useReducedMotion();
+  useLockBodyScroll(open);
   const toast = useToast();
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
