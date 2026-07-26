@@ -6,6 +6,7 @@ import { parseBnCardPurchase } from "./bnCardPurchase";
 import { parseBpServicePayment } from "./bpServicePayment";
 import { parseDaviviendaCardPurchase } from "./daviviendaCardPurchase";
 import { parseInternalTransfer } from "./internalTransfer";
+import { parseMucapCardPurchase } from "./mucapCardPurchase";
 import { parseMucapSinpe } from "./mucapSinpe";
 import { parsePayPal } from "./paypal";
 import { parseSinpeMovil } from "./sinpeMovil";
@@ -16,6 +17,7 @@ const parsers: EmailParser[] = [
   parseBacTransfer,
   parseSinpeMovil,
   parseMucapSinpe,
+  parseMucapCardPurchase,
   parseBcrSinpe,
   parseBpServicePayment,
   parseBacCardPurchase,
