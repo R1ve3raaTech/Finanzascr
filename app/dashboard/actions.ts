@@ -308,6 +308,30 @@ export async function deleteTransaction(id: string) {
   return { error: null };
 }
 
+export async function deleteTransactions(ids: string[]) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  if (ids.length === 0) return { error: null };
+
+  const { error } = await supabase
+    .from("transactions")
+    .delete()
+    .in("id", ids)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { error: "Hubo un error. Volvé a intentarlo." };
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/insights");
+  return { error: null };
+}
+
 export async function categorizeUncategorized() {
   const supabase = await createClient();
   const {

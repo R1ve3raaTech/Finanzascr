@@ -150,11 +150,11 @@ export function TransactionDetailModal({
             role="dialog"
             aria-modal="true"
             aria-label={editing ? "Editar movimiento" : "Detalle de transacción"}
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 40, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.97 }}
+            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
             transition={spring}
-            className="fixed inset-x-4 bottom-4 top-4 z-50 mx-auto flex max-h-[calc(100dvh-2rem)] max-w-md flex-col overflow-y-auto rounded-2xl border border-white/10 bg-zinc-900 p-6 sm:inset-x-0 sm:inset-y-auto sm:top-1/2 sm:max-h-[85dvh] sm:-translate-y-1/2"
+            className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-md -translate-y-1/2 overflow-y-auto rounded-2xl border border-white/10 bg-zinc-900 p-6 sm:inset-x-0"
           >
             {!editing ? (
               <>

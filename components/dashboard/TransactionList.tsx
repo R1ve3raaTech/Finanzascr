@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { EnvelopeSimple } from "@phosphor-icons/react";
+import { Check, EnvelopeSimple, Trash, X } from "@phosphor-icons/react";
+import { deleteTransactions } from "@/app/dashboard/actions";
+import { useToast } from "@/components/Toast";
 import { formatDate, formatMoney } from "@/lib/format";
 import { BankLogo } from "./BankLogo";
 import { TransactionDetailModal } from "./TransactionDetailModal";
 import type { Transaction, UserCategory } from "@/lib/types";
 
 const HIGHLIGHT_MS = 2600;
+const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 
 export function TransactionList({
   transactions,
@@ -17,9 +20,15 @@ export function TransactionList({
   transactions: Transaction[];
   customCategories?: UserCategory[];
 }) {
+  const toast = useToast();
   const [selected, setSelected] = useState<Transaction | null>(null);
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
   const seenIds = useRef<Set<string> | null>(null);
+
+  const [pickMode, setPickMode] = useState(false);
+  const [pickedIds, setPickedIds] = useState<Set<string>>(new Set());
+  const [confirmingBulkDelete, setConfirmingBulkDelete] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   // Solo se resaltan transacciones que aparecen DESPUÉS del primer render
   // (ej. tras un sync o un registro de efectivo) — en la carga inicial nada
@@ -40,6 +49,42 @@ export function TransactionList({
     const timer = setTimeout(() => setNewIds(new Set()), HIGHLIGHT_MS);
     return () => clearTimeout(timer);
   }, [transactions]);
+
+  function exitPickMode() {
+    setPickMode(false);
+    setPickedIds(new Set());
+    setConfirmingBulkDelete(false);
+  }
+
+  function togglePicked(id: string) {
+    setPickedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function handleRowClick(t: Transaction) {
+    if (pickMode) togglePicked(t.id);
+    else setSelected(t);
+  }
+
+  function handleBulkDelete() {
+    const ids = Array.from(pickedIds);
+    startTransition(async () => {
+      const result = await deleteTransactions(ids);
+      if (result.error) {
+        toast.error(result.error);
+        setConfirmingBulkDelete(false);
+      } else {
+        toast.success(
+          `${ids.length} movimiento${ids.length === 1 ? "" : "s"} eliminado${ids.length === 1 ? "" : "s"}`
+        );
+        exitPickMode();
+      }
+    });
+  }
 
   if (transactions.length === 0) {
     return (
@@ -62,11 +107,21 @@ export function TransactionList({
 
   return (
     <>
+      <div className="flex items-center justify-end">
+        <button
+          onClick={() => (pickMode ? exitPickMode() : setPickMode(true))}
+          className="rounded-full px-2 py-1 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-200 cursor-pointer"
+        >
+          {pickMode ? "Cancelar" : "Seleccionar"}
+        </button>
+      </div>
+
       <ul className="flex flex-col gap-2">
         <AnimatePresence initial={false}>
           {transactions.map((t, i) => {
             const income = t.type === "INCOME";
             const isNew = newIds.has(t.id);
+            const isPicked = pickedIds.has(t.id);
             return (
               <motion.li
                 key={t.id}
@@ -93,13 +148,26 @@ export function TransactionList({
                 style={isColdLoad ? { animationDelay: `${Math.min(i, 10) * 40}ms` } : undefined}
               >
                 <button
-                  onClick={() => setSelected(t)}
+                  onClick={() => handleRowClick(t)}
                   className={`relative flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-colors cursor-pointer ${
-                    isNew
-                      ? "border-sky-400/40 bg-sky-400/5"
-                      : "border-white/10 bg-zinc-900/60 hover:border-white/20"
+                    isPicked
+                      ? "border-sky-400/50 bg-sky-400/5"
+                      : isNew
+                        ? "border-sky-400/40 bg-sky-400/5"
+                        : "border-white/10 bg-zinc-900/60 hover:border-white/20"
                   }`}
                 >
+                  {pickMode && (
+                    <span
+                      className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                        isPicked
+                          ? "border-sky-400 bg-sky-400 text-zinc-950"
+                          : "border-white/20 text-transparent"
+                      }`}
+                    >
+                      <Check size={12} weight="bold" />
+                    </span>
+                  )}
                   <BankLogo bank={t.bank_name} size={40} />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm text-zinc-100">
@@ -108,7 +176,9 @@ export function TransactionList({
                     <p className="text-xs text-zinc-500">
                       {t.bank_name} · {formatDate(t.transaction_date)}
                     </p>
-                    <p className="mt-0.5 text-[11px] text-zinc-600">Ver más detalles</p>
+                    {!pickMode && (
+                      <p className="mt-0.5 text-[11px] text-zinc-600">Ver más detalles</p>
+                    )}
                   </div>
                   <span
                     className={`font-mono text-sm ${
@@ -138,11 +208,70 @@ export function TransactionList({
           })}
         </AnimatePresence>
       </ul>
+
       <TransactionDetailModal
         transaction={selected}
         customCategories={customCategories}
         onClose={() => setSelected(null)}
       />
+
+      <AnimatePresence>
+        {pickMode && pickedIds.size > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={tap}
+            className="fixed inset-x-4 bottom-24 z-40 mx-auto flex max-w-md items-center justify-between gap-3 rounded-2xl border border-white/10 bg-zinc-900 p-3 pl-4 shadow-[0_8px_30px_rgba(0,0,0,0.4)] sm:inset-x-0"
+          >
+            {!confirmingBulkDelete ? (
+              <>
+                <span className="text-sm text-zinc-300">
+                  {pickedIds.size} seleccionado{pickedIds.size === 1 ? "" : "s"}
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={exitPickMode}
+                    aria-label="Cancelar selección"
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 cursor-pointer"
+                  >
+                    <X size={16} weight="bold" />
+                  </button>
+                  <button
+                    onClick={() => setConfirmingBulkDelete(true)}
+                    className="flex items-center gap-2 rounded-full bg-rose-400/10 px-4 py-2 text-xs font-semibold text-rose-400 transition-colors hover:bg-rose-400/15 cursor-pointer"
+                  >
+                    <Trash size={14} weight="bold" />
+                    Eliminar
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <span className="text-sm text-zinc-300">
+                  ¿Eliminar {pickedIds.size} movimiento{pickedIds.size === 1 ? "" : "s"}?
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setConfirmingBulkDelete(false)}
+                    disabled={isPending}
+                    className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-zinc-400 hover:text-zinc-100 disabled:opacity-50 cursor-pointer"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleBulkDelete}
+                    disabled={isPending}
+                    className="rounded-full bg-rose-400 px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-50 cursor-pointer"
+                  >
+                    {isPending ? "Eliminando..." : "Sí, eliminar"}
+                  </button>
+                </div>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
