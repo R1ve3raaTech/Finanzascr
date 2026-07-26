@@ -3,8 +3,10 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 export function StepsSection({
+  heading,
   steps,
 }: {
+  heading: string;
   steps: { title: string; body: string }[];
 }) {
   const reduce = useReducedMotion();
@@ -18,7 +20,7 @@ export function StepsSection({
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="max-w-[24ch] text-3xl font-semibold tracking-tighter text-zinc-50 md:text-4xl"
       >
-        Cero anotaciones manuales
+        {heading}
       </motion.h2>
       <div className="relative mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
         {/* Línea que conecta los tres pasos, solo visible en desktop */}

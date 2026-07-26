@@ -1,9 +1,8 @@
-import { Differentiators } from "@/components/landing/Differentiators";
-import { FeatureShowcase } from "@/components/landing/FeatureShowcase";
 import { Footer } from "@/components/landing/Footer";
 import { Hero } from "@/components/landing/Hero";
-import { HowItReallyWorks } from "@/components/landing/HowItReallyWorks";
 import { LoginButton } from "@/components/landing/LoginButton";
+import { PasswordTrust } from "@/components/landing/PasswordTrust";
+import { PrivacySnippet } from "@/components/landing/PrivacySnippet";
 import { StepsSection } from "@/components/landing/StepsSection";
 import { SupportedBanks } from "@/components/landing/SupportedBanks";
 import { Logo } from "@/components/Logo";
@@ -17,16 +16,16 @@ const supportedBanks: BankName[] = ["BAC", "BCR", "BNCR", "BP", "Davivienda", "M
 
 const steps = [
   {
-    title: "Conectá tu Gmail",
+    title: "Conectá tu correo",
     body: "Iniciá sesión con Google y autorizá la lectura de tus correos bancarios. Solo lectura, nada más.",
   },
   {
-    title: "Nosotros interpretamos",
-    body: "Cada notificación de compra, transferencia o SINPE Móvil se convierte en una transacción categorizada.",
+    title: "Categorización automática",
+    body: "Cada notificación de compra, transferencia o SINPE Móvil se convierte en una transacción, ya categorizada.",
   },
   {
-    title: "Vos solo mirás",
-    body: "Tu saldo consolidado en colones y dólares, siempre al día. Solo el efectivo se anota a mano.",
+    title: "Mirá tus finanzas claras",
+    body: "Tu saldo consolidado en colones, dólares y córdobas, siempre al día. Solo el efectivo se anota a mano.",
   },
 ];
 
@@ -59,52 +58,30 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <section className="border-t border-white/10">
-        <div className="mx-auto w-full max-w-6xl px-4 py-20 text-center sm:px-6 sm:text-left">
-          <StepsSection steps={steps} />
-        </div>
-      </section>
-
-      <section className="border-t border-white/10">
-        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
-          <h2 className="text-2xl font-semibold tracking-tighter text-zinc-50 sm:text-3xl">
-            Antes de conectar tu Gmail, esto es justo que sepas
-          </h2>
-          <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-zinc-500">
-            Preferimos que sepas exactamente qué esperar, en vez de prometer magia.
-          </p>
-          <div className="mt-10">
-            <HowItReallyWorks />
-          </div>
-        </div>
-      </section>
-
       <section id="como-funciona" className="border-t border-white/10 scroll-mt-[68px]">
-        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
-          <h2 className="text-3xl font-semibold tracking-tighter text-zinc-50 md:text-4xl">
-            Todo lo que hace por vos
-          </h2>
-          <p className="mt-3 max-w-[50ch] text-sm leading-relaxed text-zinc-500 md:text-base">
-            No es solo leer correos. Es que nunca más tengas que pensar en anotar un gasto.
-          </p>
-          <div className="mt-10">
-            <FeatureShowcase />
-          </div>
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 text-center sm:px-6 sm:text-left">
+          <StepsSection heading="Cómo funciona" steps={steps} />
         </div>
       </section>
 
       <section className="border-t border-white/10">
-        <div className="mx-auto w-full max-w-3xl px-4 py-20 sm:px-6">
-          <h2 className="text-center text-2xl font-semibold tracking-tighter text-zinc-50 sm:text-3xl">
-            No es otra app para anotar gastos
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
+          <PasswordTrust />
+        </div>
+      </section>
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
+          <PrivacySnippet />
+        </div>
+      </section>
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6">
+          <h2 className="max-w-[28ch] text-2xl font-semibold tracking-tighter text-zinc-50 sm:text-3xl">
+            ¿Listo para dejar de anotar gastos a mano?
           </h2>
-          <p className="mx-auto mt-3 max-w-[46ch] text-center text-sm leading-relaxed text-zinc-500">
-            Muchas apps de finanzas en Costa Rica te piden trabajo extra, o no explican
-            qué hacen con tu información. Nosotros elegimos lo contrario.
-          </p>
-          <div className="mt-10">
-            <Differentiators />
-          </div>
+          <LoginButton large loggedIn={loggedIn} />
         </div>
       </section>
 

@@ -74,14 +74,22 @@ export function MockupPreview() {
   }
 
   return (
-    <motion.div
-      aria-hidden="true"
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
-      className="relative w-full max-w-md rounded-2xl border border-white/10 bg-zinc-900/60 p-5 backdrop-blur"
-    >
-      {/* Correo entrante */}
+    <div className="relative w-full max-w-md">
+      {/* Glow propio, más ceñido y fuerte que el ambiental del Hero — este
+          mockup es la prueba visual de que la automatización funciona, no
+          puede leerse apagado. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 rounded-[2rem] bg-sky-400/20 blur-[60px]"
+      />
+      <motion.div
+        aria-hidden="true"
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        style={{ rotateX, rotateY, transformPerspective: 900 }}
+        className="relative w-full rounded-2xl border border-white/15 bg-zinc-900/95 p-5 shadow-[0_25px_70px_-20px_rgba(56,189,248,0.45),0_0_0_1px_rgba(255,255,255,0.04)_inset]"
+      >
+        {/* Correo entrante */}
       <div className="relative h-24">
         {incoming.map((entry) => (
           <div
@@ -136,6 +144,7 @@ export function MockupPreview() {
           );
         })}
       </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
