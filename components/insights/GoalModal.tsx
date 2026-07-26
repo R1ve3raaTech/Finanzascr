@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useSyncExternalStore, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Trash, X } from "@phosphor-icons/react";
 import { createSavingsGoal, deleteSavingsGoal, updateSavingsGoal } from "@/app/dashboard/actions";
@@ -29,6 +30,16 @@ export function GoalModal({
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  // La sección que envuelve este componente tiene una animación de entrada
+  // que deja un `transform` en el ancestro (aunque sea la identidad), lo
+  // cual crea un containing block nuevo para `position: fixed` y rompe el
+  // modal (queda posicionado relativo a la sección, no al viewport, y los
+  // clicks caen en el contenido de atrás). Un portal a <body> lo evita.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   // Reinicializa el formulario cada vez que el modal se abre (para una meta
   // nueva o para editar otra) comparando contra la sesión anterior durante
@@ -87,7 +98,9 @@ export function GoalModal({
     });
   }
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
         <>
@@ -206,6 +219,7 @@ export function GoalModal({
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
