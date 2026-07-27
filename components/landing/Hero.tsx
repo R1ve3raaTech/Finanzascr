@@ -13,8 +13,9 @@ export function Hero({ loggedIn = false }: { loggedIn?: boolean }) {
           Controlá tus finanzas sin mover un solo dedo
         </h1>
 
-        <p className="animate-fade-up max-w-[42ch] text-base leading-relaxed text-zinc-400 md:text-lg [animation-delay:180ms]">
-          Todas tus entidades bancarias y tu dinero en un solo lugar.
+        <p className="animate-fade-up max-w-[46ch] text-base leading-relaxed text-zinc-400 md:text-lg [animation-delay:180ms]">
+          TicoFinanza se conecta a tu Gmail y lee las notificaciones que tu banco ya te manda por
+          correo, para registrar tus ingresos y gastos automáticamente — sin anotar nada a mano.
         </p>
 
         <div className="animate-fade-up [animation-delay:270ms]">
