@@ -35,7 +35,7 @@ export default function PrivacyPolicyPage() {
         </p>
         <p>
           Contacto directo para cualquier consulta, solicitud o reclamo relacionado con tus datos
-          personales: <a href="mailto:thecamil999@gmail.com">thecamil999@gmail.com</a>. No se
+          personales: <a href="mailto:info@ticofinanza.com">info@ticofinanza.com</a>. No se
           mantiene un domicilio físico de atención al público; toda gestión se realiza por correo
           electrónico.
         </p>
@@ -220,7 +220,7 @@ export default function PrivacyPolicyPage() {
         <p>
           Para cualquier otra solicitud (incluyendo el acceso completo a tus datos o la
           cancelación total de tu cuenta), escribinos a{" "}
-          <a href="mailto:thecamil999@gmail.com">thecamil999@gmail.com</a>. Respondemos dentro de
+          <a href="mailto:info@ticofinanza.com">info@ticofinanza.com</a>. Respondemos dentro de
           un plazo máximo de 5 días hábiles, y ejercer estos derechos nunca tiene costo alguno
           para vos.
         </p>
@@ -259,7 +259,7 @@ export default function PrivacyPolicyPage() {
       <LegalSection number={14} title="Contacto">
         <p>
           Si tenés dudas sobre esta política, sobre cómo usamos tus datos, o querés ejercer tus
-          derechos ARCO, escribinos a <a href="mailto:thecamil999@gmail.com">thecamil999@gmail.com</a>.
+          derechos ARCO, escribinos a <a href="mailto:info@ticofinanza.com">info@ticofinanza.com</a>.
         </p>
       </LegalSection>
     </LegalDocument>

@@ -128,7 +128,7 @@ export default function TermsOfServicePage() {
       <LegalSection number={9} title="Contacto">
         <p>
           Dudas sobre estos términos: escribinos a{" "}
-          <a href="mailto:thecamil999@gmail.com">thecamil999@gmail.com</a>.
+          <a href="mailto:info@ticofinanza.com">info@ticofinanza.com</a>.
         </p>
       </LegalSection>
     </LegalDocument>

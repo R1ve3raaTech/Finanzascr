@@ -4,19 +4,12 @@ import { MockupPreview } from "./MockupPreview";
 export function Hero({ loggedIn = false }: { loggedIn?: boolean }) {
   return (
     <section className="relative mx-auto grid w-full max-w-6xl items-center gap-12 overflow-hidden px-6 pb-20 pt-16 md:min-h-[calc(100dvh-72px)] md:grid-cols-[1.1fr_1fr] md:gap-16 md:pb-24 md:pt-0">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-40 top-1/2 h-[36rem] w-[36rem] -translate-y-1/2 rounded-full bg-orange-400/10 blur-[120px]"
-      />
+      <div className="relative flex flex-col items-center gap-7 text-center md:items-start md:text-left">
+        <p className="animate-fade-up font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">
+          Costa Rica · lectura automática de correos bancarios
+        </p>
 
-      <div className="relative flex flex-col items-center gap-6 text-center md:items-start md:text-left">
-        <span className="animate-fade-up inline-flex -rotate-2 items-center gap-2 rounded-md border border-dashed border-white/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-zinc-400">
-          100% automático · hecho en Costa Rica
-        </span>
-
-        <h1
-          className="animate-fade-up text-4xl font-semibold leading-[1.05] tracking-tighter text-zinc-50 md:text-6xl [animation-delay:90ms]"
-        >
+        <h1 className="animate-fade-up font-montserrat text-[2.75rem] font-bold leading-[0.98] tracking-tighter text-zinc-50 md:text-7xl [animation-delay:90ms]">
           Controlá tus finanzas sin mover un solo dedo
         </h1>
 

@@ -82,7 +82,7 @@ textarea,
 }
 
 ::selection {
-  background: rgb(56 189 248 / 0.25);
+  background: rgb(251 146 60 / 0.25);
 }
 
 @keyframes fade-up {

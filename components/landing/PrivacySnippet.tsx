@@ -13,11 +13,9 @@ export function PrivacySnippet() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-2xl border border-white/10 bg-zinc-900/40 px-6 py-10 text-center sm:px-10"
+      className="mx-auto flex max-w-2xl flex-col items-center gap-3 text-center"
     >
-      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-400/10 text-orange-400">
-        <ShieldCheck size={20} weight="bold" />
-      </div>
+      <ShieldCheck size={22} weight="bold" className="text-orange-400" />
       <h2 className="max-w-[32ch] text-xl font-semibold tracking-tighter text-zinc-50 sm:text-2xl">
         Tus datos, protegidos según la Ley 8968
       </h2>
@@ -28,7 +26,7 @@ export function PrivacySnippet() {
       </p>
       <Link
         href="/privacidad"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-orange-400 transition-colors hover:text-orange-300"
+        className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-orange-400 transition-colors hover:text-orange-300"
       >
         Leer la política de privacidad completa
         <ArrowRight size={14} weight="bold" />

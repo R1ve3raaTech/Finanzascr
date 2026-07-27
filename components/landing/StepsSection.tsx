@@ -22,12 +22,7 @@ export function StepsSection({
       >
         {heading}
       </motion.h2>
-      <div className="relative mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
-        {/* Línea que conecta los tres pasos, solo visible en desktop */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-0 right-0 top-6 hidden h-px bg-gradient-to-r from-orange-400/40 via-white/10 to-transparent md:block"
-        />
+      <div className="relative mt-14 grid gap-10 divide-y divide-white/10 md:grid-cols-3 md:gap-8 md:divide-y-0">
         {steps.map((step, i) => (
           <motion.div
             key={step.title}
@@ -35,12 +30,12 @@ export function StepsSection({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.55, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex flex-col gap-3"
+            className="relative flex flex-col gap-3 pt-6 first:pt-0 md:border-t md:border-white/10 md:pt-6"
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-orange-400/30 bg-zinc-950 font-mono text-sm font-semibold text-orange-400">
+            <span className="font-mono text-sm font-semibold text-orange-400">
               {String(i + 1).padStart(2, "0")}
             </span>
-            <h3 className="mt-2 text-lg font-medium text-zinc-100">{step.title}</h3>
+            <h3 className="text-lg font-medium text-zinc-100">{step.title}</h3>
             <p className="text-sm leading-relaxed text-zinc-400">{step.body}</p>
           </motion.div>
         ))}

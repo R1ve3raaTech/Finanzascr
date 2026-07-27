@@ -11,7 +11,7 @@ const links = [
   { label: "Cómo funciona", href: "#como-funciona" },
   { label: "Política de privacidad", href: "/privacidad" },
   { label: "Términos de servicio", href: "/terminos" },
-  { label: "Escribinos", href: "mailto:thecamil999@gmail.com" },
+  { label: "Escribinos", href: "mailto:info@ticofinanza.com" },
 ];
 
 const marqueeBanks: BankName[] = ["BAC", "BCR", "BNCR", "BP", "Davivienda", "MUCAP", "PayPal"];
@@ -29,15 +29,6 @@ export function Footer({ loggedIn = false }: { loggedIn?: boolean }) {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="relative mt-auto overflow-hidden border-t border-white/10 bg-zinc-950"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-orange-400/40 to-transparent"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-24 left-1/2 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-orange-400/[0.05] blur-[120px]"
-      />
-
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 md:flex-row md:items-end md:justify-between">
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
           <p className="select-none font-montserrat text-4xl font-bold leading-none tracking-tighter text-zinc-50 sm:text-5xl">
