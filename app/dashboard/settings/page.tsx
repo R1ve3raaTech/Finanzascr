@@ -16,6 +16,7 @@ import { BudgetManager } from "@/components/settings/BudgetManager";
 import { CategoryManager } from "@/components/settings/CategoryManager";
 import { CurrencySetting } from "@/components/settings/CurrencySetting";
 import { DangerZone } from "@/components/settings/DangerZone";
+import { DeleteAccountFlow } from "@/components/settings/DeleteAccountFlow";
 import { GmailConnections } from "@/components/settings/GmailConnections";
 import { NotificationsSetting } from "@/components/settings/NotificationsSetting";
 import { ProfileSettings } from "@/components/settings/ProfileSettings";
@@ -158,8 +159,11 @@ export default async function SettingsPage({
             <DownloadSimple size={16} weight="bold" />
             Exportar transacciones a CSV
           </a>
-          <section className="rounded-2xl border border-rose-400/15 bg-zinc-900/40 p-5">
+          <section className="flex flex-col gap-5 divide-y divide-rose-400/10 rounded-2xl border border-rose-400/15 bg-zinc-900/40 p-5">
             <DangerZone transactionCount={transactionCount ?? 0} />
+            <div className="pt-5">
+              <DeleteAccountFlow email={user.email ?? ""} />
+            </div>
           </section>
         </SettingsGroup>
 

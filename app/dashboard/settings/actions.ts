@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { checkRateLimit } from "@/lib/rateLimit";
+import { issueDeletionCode, verifyDeletionCode } from "@/lib/accountDeletion";
 import type { Currency, TransactionType } from "@/lib/types";
 
 export async function updateProfile(input: {
@@ -194,5 +196,58 @@ export async function deleteCategory(id: string) {
   await supabase.from("user_categories").delete().eq("id", id).eq("user_id", user.id);
   revalidatePath("/dashboard/settings");
   revalidatePath("/dashboard");
+  return { error: null };
+}
+
+/**
+ * Manda el código de eliminación de cuenta al correo real del usuario (el
+ * mismo con el que hizo login con Google, no uno que pueda escribir a
+ * mano). Limitado a 3 pedidos cada 15 minutos por usuario para que alguien
+ * con la sesión abierta no pueda spamear el envío de correos.
+ */
+export async function requestAccountDeletionCode() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || !user.email) redirect("/");
+
+  const admin = createAdminClient();
+
+  const rateLimit = await checkRateLimit(admin, user.id, "request_deletion_code", {
+    maxCalls: 3,
+    windowSeconds: 900,
+  });
+  if (!rateLimit.allowed) {
+    return {
+      error: `Esperá ${Math.ceil(rateLimit.retryAfterSeconds! / 60)} min antes de pedir otro código.`,
+    };
+  }
+
+  return issueDeletionCode(admin, user.id, user.email);
+}
+
+/**
+ * Verifica el código y, si es correcto, borra el usuario de auth.users —
+ * todas las tablas relacionadas caen en cascada (ver migración 0015).
+ * Cierra la sesión después para que las cookies no queden apuntando a un
+ * usuario que ya no existe.
+ */
+export async function confirmAccountDeletion(code: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const admin = createAdminClient();
+
+  const result = await verifyDeletionCode(admin, user.id, code);
+  if (!result.ok) return { error: result.error };
+
+  const { error: deleteError } = await admin.auth.admin.deleteUser(user.id);
+  if (deleteError) return { error: "No se pudo eliminar la cuenta. Intentá de nuevo." };
+
+  await supabase.auth.signOut();
   return { error: null };
 }
