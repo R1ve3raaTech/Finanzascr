@@ -1,5 +1,6 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
+import { localCategoryFor } from "@/lib/ai/localCategorize";
 
 const client = new Anthropic();
 const BATCH_SIZE = 40;
@@ -10,11 +11,15 @@ interface CategorizableTransaction {
   description: string | null;
   amount: number;
   currency: string;
+  type?: "EXPENSE" | "INCOME";
 }
 
 /**
  * Le pide a Claude que le asigne una categoría (de la lista dada) a cada
- * transacción. Devuelve un Map id -> categoría; las que no se pudieron
+ * transacción. Antes de tocar la IA, se prueba una categorización local por
+ * palabras clave (ver lib/ai/localCategorize.ts) — los comercios comunes de
+ * Costa Rica se resuelven gratis y sin latencia; solo lo que no matchea se
+ * manda a Claude. Devuelve un Map id -> categoría; las que no se pudieron
  * categorizar con confianza simplemente no aparecen en el resultado.
  */
 export async function categorizeTransactions(
@@ -24,8 +29,22 @@ export async function categorizeTransactions(
   const result = new Map<string, string>();
   if (transactions.length === 0 || categories.length === 0) return result;
 
-  for (let i = 0; i < transactions.length; i += BATCH_SIZE) {
-    const batch = transactions.slice(i, i + BATCH_SIZE);
+  const remaining: CategorizableTransaction[] = [];
+  for (const t of transactions) {
+    const local = localCategoryFor(
+      `${t.bank_name} ${t.description ?? ""}`,
+      t.type ?? "EXPENSE",
+      categories
+    );
+    if (local) {
+      result.set(t.id, local);
+    } else {
+      remaining.push(t);
+    }
+  }
+
+  for (let i = 0; i < remaining.length; i += BATCH_SIZE) {
+    const batch = remaining.slice(i, i + BATCH_SIZE);
     const batchResult = await categorizeBatch(batch, categories);
     for (const [id, category] of batchResult) result.set(id, category);
   }

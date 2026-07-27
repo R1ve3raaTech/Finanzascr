@@ -160,6 +160,7 @@ export async function suggestCategory(input: {
           description: input.description,
           amount: input.amount || 0,
           currency: input.currency,
+          type: input.type,
         },
       ],
       categories
