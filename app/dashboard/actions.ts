@@ -8,6 +8,7 @@ import { syncGmailForUser } from "@/lib/google/sync";
 import { sendPushToUser } from "@/lib/push/send";
 import { categorizeTransactions } from "@/lib/ai/categorize";
 import { summarizeFinances, type FinanceSnapshot } from "@/lib/ai/insightsSummary";
+import { AI_ERROR_MESSAGE } from "@/lib/ai/errorMessage";
 import { formatMoney } from "@/lib/format";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { decryptToken } from "@/lib/tokenCrypto";
@@ -390,7 +391,7 @@ export async function categorizeUncategorized() {
     assignments = new Map([...expenseResults, ...incomeResults]);
   } catch (err) {
     console.error("[categorizeUncategorized]", err);
-    return { error: "Hubo un error. Volvé a intentarlo.", updated: 0 };
+    return { error: AI_ERROR_MESSAGE, updated: 0 };
   }
 
   if (assignments.size === 0) {
@@ -430,7 +431,7 @@ export async function generateInsightsSummary(snapshot: FinanceSnapshot) {
   }
 
   const summary = await summarizeFinances(snapshot);
-  return { summary, error: summary ? null : "No se pudo generar el resumen. Intentá de nuevo." };
+  return { summary, error: summary ? null : AI_ERROR_MESSAGE };
 }
 
 export async function subscribeToPush(subscription: {
