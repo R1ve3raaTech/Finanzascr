@@ -20,6 +20,7 @@ export function buildGoogleAuthUrl(
   url.searchParams.set("scope", scope);
   url.searchParams.set("access_type", "offline");
   url.searchParams.set("prompt", "consent");
+  url.searchParams.set("include_granted_scopes", "true");
   url.searchParams.set("state", state);
   if (nonce) url.searchParams.set("nonce", nonce);
   return url.toString();
