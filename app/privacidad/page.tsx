@@ -8,7 +8,7 @@ export default function PrivacyPolicyPage() {
   return (
     <LegalDocument
       title="Política de privacidad"
-      updatedAt="24 de julio de 2026"
+      updatedAt="30 de julio de 2026"
       intro={
         <p>
           Esta política se rige por la Ley N.º 8968, Ley de Protección de la Persona frente al
@@ -123,6 +123,13 @@ export default function PrivacyPolicyPage() {
           únicamente para devolver la respuesta y no los usa para entrenar sus modelos.
         </p>
         <p>Esta función es opcional: solo se activa cuando vos tocás el botón de categorizar.</p>
+        <p>
+          <span>Declaración de cumplimiento de uso limitado</span>: el uso de datos de usuario,
+          crudos o derivados, recibidos a través de las APIs de Google Workspace (Gmail) cumple
+          con la Política de datos de usuario de los Servicios de API de Google, incluyendo los
+          requisitos de Uso Limitado. Esos datos nunca se usan para entrenar modelos de
+          inteligencia artificial, propios ni de terceros.
+        </p>
       </LegalSection>
 
       <LegalSection number={6} title="Cómo protegemos tus datos">
