@@ -6,6 +6,8 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 
+const MotionLink = motion.create(Link);
+
 export function ProfileAvatar({
   avatarUrl,
   name,
@@ -14,7 +16,6 @@ export function ProfileAvatar({
   name?: string;
 }) {
   const reduce = useReducedMotion();
-  const MotionLink = motion.create(Link);
 
   return (
     <MotionLink

@@ -9,6 +9,11 @@ import { useToast } from "@/components/Toast";
 
 const knobSpring = { type: "spring", stiffness: 500, damping: 30 } as const;
 
+function isPushSupported() {
+  if (typeof navigator === "undefined" || typeof window === "undefined") return false;
+  return "serviceWorker" in navigator && "PushManager" in window;
+}
+
 function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -26,23 +31,27 @@ export function NotificationsSetting() {
   // dispositivo) — por eso se revisa contra el Service Worker en vez de
   // confiar en el valor inicial del servidor.
   const [enabled, setEnabled] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const [supported, setSupported] = useState(false);
+  const [supported] = useState(isPushSupported);
+  const [checked, setChecked] = useState(() => !isPushSupported());
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-      setChecked(true);
-      return;
-    }
-    setSupported(true);
+    if (!supported) return;
+    let cancelled = false;
     navigator.serviceWorker
       .getRegistration()
       .then((reg) => reg?.pushManager.getSubscription())
-      .then((sub) => setEnabled(!!sub))
-      .finally(() => setChecked(true));
-  }, []);
+      .then((sub) => {
+        if (!cancelled) setEnabled(!!sub);
+      })
+      .finally(() => {
+        if (!cancelled) setChecked(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [supported]);
 
   function toggle() {
     setError(null);

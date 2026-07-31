@@ -32,15 +32,25 @@ aparte):
   Google hasta que termine el proceso. No hay nada que hacer del lado del
   código salvo responder si Google pide más info por correo.
 
-**Pendientes de sesiones anteriores (2026-07-24), aún sin confirmar:**
-- Confirmar visualmente (no tengo navegador) que el header del dashboard se
-  ve bien: logo clickeable a la landing, botón "Leer correos" junto a
-  "Últimas transacciones" (estilo sky-400), "Estadísticas" con label
-  siempre visible, modal de "Cerrar sesión" centrado en todas las pantallas.
-- Revisar en un dispositivo real que `/bienvenida` (rediseño tipográfico
-  grande, sin card flotante) se vea bien y no genérica.
-- Recordar correr en Supabase Studio cualquier migración nueva que no se
-  haya corrido todavía (última confirmada aplicada: `0015_account_deletion.sql`).
+## Dónde quedamos (2026-07-30)
+
+Google mandó el checklist automático de verificación (pide confirmar por
+correo que la app cumple cada punto antes de seguir con la revisión). Se
+agregó a `/privacidad` una declaración explícita de "Limited Use" (Google la
+exige cuando una app usa IA sobre datos que vienen de una API de Workspace,
+como Gmail) y se deployó. Queda pendiente que Camil mande la respuesta al
+correo de Google confirmando el checklist (borrador ya redactado en esa
+conversación). El bloqueante real sigue siendo CASA, sin contratar todavía
+(ver nota de 2026-07-29 arriba).
+
+Los dos pendientes visuales de la sesión del 2026-07-24 (header del
+dashboard y `/bienvenida`) ya fueron confirmados por Camil viendo la app en
+producción — se ven bien, no hace falta retocar nada.
+
+**Pendientes generales, sin fecha de sesión asociada:**
+- No hay migraciones pendientes de correr: la última en el repo
+  (`supabase/migrations/`) es `0015_account_deletion.sql`, igual a la última
+  confirmada aplicada en Supabase Studio.
 - El texto sobre notificaciones bancarias de BAC quedó deliberadamente
   genérico ("revisá los ajustes de notificaciones de tu banco") porque las
   instrucciones específicas que se probaron dos veces resultaron

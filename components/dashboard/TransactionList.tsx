@@ -36,6 +36,10 @@ export function TransactionList({
   const [selected, setSelected] = useState<Transaction | null>(null);
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
   const seenIds = useRef<Set<string> | null>(null);
+  // Ids presentes en el primer render: son los únicos que reciben la
+  // animación de entrada escalonada. Se calcula una sola vez (no via ref)
+  // para no leer un ref durante el render.
+  const [coldLoadIds] = useState(() => new Set(transactions.map((t) => t.id)));
 
   const [pickMode, setPickMode] = useState(false);
   const [pickedIds, setPickedIds] = useState<Set<string>>(new Set());
@@ -130,8 +134,6 @@ export function TransactionList({
       }
     });
   }
-
-  const isColdLoad = seenIds.current === null;
 
   return (
     <>
@@ -313,8 +315,12 @@ export function TransactionList({
                       ? { duration: 1.3, ease: "easeOut", times: [0, 0.25, 1] }
                       : { type: "spring", stiffness: 500, damping: 40 }
                   }
-                  className={isColdLoad ? "animate-fade-up" : undefined}
-                  style={isColdLoad ? { animationDelay: `${Math.min(i, 10) * 40}ms` } : undefined}
+                  className={coldLoadIds.has(t.id) ? "animate-fade-up" : undefined}
+                  style={
+                    coldLoadIds.has(t.id)
+                      ? { animationDelay: `${Math.min(i, 10) * 40}ms` }
+                      : undefined
+                  }
                 >
                   <button
                     onClick={() => handleRowClick(t)}

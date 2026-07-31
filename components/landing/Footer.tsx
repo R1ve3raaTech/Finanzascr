@@ -16,10 +16,11 @@ const links = [
 
 const marqueeBanks: BankName[] = ["BAC", "BCR", "BNCR", "BP", "Davivienda", "MUCAP", "PayPal"];
 
+const MotionLink = motion.create(Link);
+
 export function Footer({ loggedIn = false }: { loggedIn?: boolean }) {
   const reduce = useReducedMotion();
   const year = new Date().getFullYear();
-  const MotionLink = motion.create(Link);
 
   return (
     <motion.footer

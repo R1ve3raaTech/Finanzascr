@@ -5,6 +5,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { SquaresFour } from "@phosphor-icons/react";
 import { GoogleMark } from "@/components/GoogleMark";
 
+const MotionLink = motion.create(Link);
+
 export function LoginButton({
   large = false,
   loggedIn = false,
@@ -13,7 +15,6 @@ export function LoginButton({
   loggedIn?: boolean;
 }) {
   const reduce = useReducedMotion();
-  const MotionLink = motion.create(Link);
 
   return (
     <MotionLink

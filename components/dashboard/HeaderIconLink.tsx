@@ -6,6 +6,8 @@ import type { ReactNode } from "react";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 
+const MotionLink = motion.create(Link);
+
 export function HeaderIconLink({
   href,
   label,
@@ -20,7 +22,6 @@ export function HeaderIconLink({
   children: ReactNode;
 }) {
   const reduce = useReducedMotion();
-  const MotionLink = motion.create(Link);
 
   if (showLabel) {
     return (
