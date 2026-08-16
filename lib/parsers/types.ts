@@ -29,6 +29,17 @@ export function parseCRAmount(raw: string): number {
 }
 
 /**
+ * ¿El nombre de comercio de una notificación de tarjeta corresponde en
+ * realidad a un pago procesado por PayPal? Los bancos lo escriben como
+ * "PAYPAL *comercio" o, más seguido, con la abreviatura de red de tarjeta
+ * "PP*comercio" (ej. "PP*FSPRG.COM"). Ese mismo cobro también llega como
+ * correo directo de PayPal — usar esto para no registrarlo dos veces.
+ */
+export function isPaypalRoutedMerchant(merchant: string): boolean {
+  return /paypal|^\s*pp\*/i.test(merchant);
+}
+
+/**
  * Tipo de cambio fijo y aproximado de córdoba nicaragüense (NIO) a colón
  * (CRC). La app ya no maneja el córdoba como moneda propia (nadie más que
  * Camil lo necesitaba, y le agregaba una tercera columna al saldo todo el

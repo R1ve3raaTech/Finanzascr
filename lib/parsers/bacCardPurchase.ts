@@ -1,4 +1,10 @@
-import { crLocalToUtcIso, nioToCrc, parseCRAmount, type EmailParser } from "./types";
+import {
+  crLocalToUtcIso,
+  isPaypalRoutedMerchant,
+  nioToCrc,
+  parseCRAmount,
+  type EmailParser,
+} from "./types";
 
 const MONTHS: Record<string, number> = {
   ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5,
@@ -21,8 +27,18 @@ function parseCardDate(raw: string): string {
  * Transacción / Monto. El monto puede venir en CRC, USD o NIC (compras
  * hechas en Nicaragua con la misma tarjeta) — los córdobas se convierten a
  * colones porque la app ya no maneja el córdoba como moneda propia.
+ *
+ * Este layout ("Comprobante de Compra" con esa misma tabla de campos) no es
+ * exclusivo de BAC: Banco Popular manda notificaciones de compra con la
+ * tabla idéntica (ver bpCardPurchase.ts), y sin este chequeo cualquier
+ * correo de BP con ese formato se registraba como si fuera de BAC — pasó de
+ * verdad con una compra real (confirmado corriendo el parser contra el
+ * correo). Por eso hace falta algo que solo aparezca en el correo real de
+ * BAC (el pie de página, no la tabla de arriba que ambos comparten).
  */
 export const parseBacCardPurchase: EmailParser = (bodyText) => {
+  if (!/baccredomatic\.com|BAC INTERNATIONAL BANK/i.test(bodyText)) return null;
+
   const comercio = bodyText.match(/Comercio:\s*([^\n]+)/i)?.[1]?.trim();
   const fecha = bodyText.match(/Fecha:\s*([^\n]+)/i)?.[1]?.trim();
   const tipo = bodyText.match(/Tipo de Transacci[oó]n:\s*([^\n]+)/i)?.[1]?.trim();
@@ -31,9 +47,10 @@ export const parseBacCardPurchase: EmailParser = (bodyText) => {
   if (!comercio || !montoMatch || !/COMPRA/i.test(tipo ?? "")) return null;
 
   // Las compras pagadas con PayPal aparecen en el estado de cuenta como
-  // "PAYPAL *comercio": ya las captura el parser de PayPal con el nombre
-  // real del comercio, así que se ignoran acá para no duplicar el gasto.
-  if (/paypal/i.test(comercio)) return null;
+  // "PAYPAL *comercio" o "PP*comercio": ya las captura el parser de PayPal
+  // con el nombre real del comercio, así que se ignoran acá para no
+  // duplicar el gasto.
+  if (isPaypalRoutedMerchant(comercio)) return null;
 
   const [, currencyRaw, amountRaw] = montoMatch;
   const isNio = /NIC/i.test(currencyRaw);
