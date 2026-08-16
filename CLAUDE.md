@@ -47,6 +47,35 @@ Los dos pendientes visuales de la sesión del 2026-07-24 (header del
 dashboard y `/bienvenida`) ya fueron confirmados por Camil viendo la app en
 producción — se ven bien, no hace falta retocar nada.
 
+## Dónde quedamos (2026-08-15)
+
+Camil reportó que el saldo del dashboard no le cuadraba. Causa real: el
+saldo consolidado se calculaba sumando solo las transacciones ya traídas
+para la lista visible (`.limit(50)` sin filtro de fecha, `.limit(300)` con
+filtro) — en cuanto había más movimientos que ese límite, el saldo
+ignoraba los más viejos. Se arregló calculando el saldo con una consulta
+aparte sin límite (`app/dashboard/page.tsx`).
+
+De paso se quitó el córdoba nicaragüense (NIC) como moneda propia de la
+app — ya no aparece en saldo, formulario de efectivo, metas ni
+presupuestos; solo quedan CRC y USD. Los correos de BAC/MUCAP que a veces
+llegan en córdobas (compras hechas en Nicaragua) se convierten
+automáticamente a colones al parsear el correo, con un tipo de cambio fijo
+aproximado (`NIO_TO_CRC_RATE = 14.2` en `lib/parsers/types.ts` — no es una
+tasa en vivo, son montos chicos y esporádicos). Migración `0016_remove_nic_currency.sql`
+ya corrida en Supabase Studio por Camil (convirtió filas viejas en
+córdobas a colones y sacó NIC de los check constraints). Deployado a
+producción.
+
+**Importante para el futuro**: no tengo acceso directo a la base de
+TicoFinanza por ningún canal automatizado — el MCP de Supabase conectado
+en este entorno apunta a otra cuenta de Camil (proyectos ajenos, no
+`pukvyunpwgwpbvtmyniu`), no hay `DATABASE_URL`/connection string guardado
+en `.env.local` (solo `SUPABASE_SERVICE_ROLE_KEY`, que no permite DDL/SQL
+crudo), y el CLI de Supabase no está enlazado. Mientras eso no cambie,
+cualquier migración SQL la tiene que correr Camil a mano en Supabase
+Studio → SQL Editor.
+
 **Pendientes generales, sin fecha de sesión asociada:**
 - No hay migraciones pendientes de correr: la última en el repo
   (`supabase/migrations/`) es `0015_account_deletion.sql`, igual a la última
