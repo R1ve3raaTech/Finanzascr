@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
+import { InstallPromptProvider } from "@/components/InstallPromptProvider";
 import { RegisterServiceWorker } from "@/components/RegisterServiceWorker";
 import { ToastProvider } from "@/components/Toast";
 import "./globals.css";
@@ -58,7 +59,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col overflow-x-hidden bg-ground text-ink">
         <RegisterServiceWorker />
-        <ToastProvider>{children}</ToastProvider>
+        <InstallPromptProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </InstallPromptProvider>
       </body>
     </html>
   );

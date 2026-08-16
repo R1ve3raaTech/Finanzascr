@@ -23,6 +23,7 @@ import { ProfileSettings } from "@/components/settings/ProfileSettings";
 import { SettingsGroup } from "@/components/settings/SettingsGroup";
 import { SettingsSection } from "@/components/settings/SettingsSection";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
+import { InstallAppButton } from "@/components/InstallAppButton";
 import { DEFAULT_EXPENSE_CATEGORIES } from "@/lib/categories";
 import { resolveAvatarUrl, resolveDisplayName } from "@/lib/profile";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -92,11 +93,14 @@ export default async function SettingsPage({
   return (
     <main className="flex min-h-[100dvh] flex-col bg-ground">
       <header className="border-b border-line lg:hidden">
-        <div className="mx-auto flex h-[68px] w-full max-w-2xl items-center gap-3 px-4 sm:px-6">
-          <HeaderIconLink href="/dashboard" label="Volver al dashboard">
-            <ArrowLeft size={18} weight="bold" />
-          </HeaderIconLink>
-          <h1 className="text-sm font-semibold tracking-tight text-ink">Ajustes</h1>
+        <div className="mx-auto flex h-[68px] w-full max-w-2xl items-center justify-between gap-3 px-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <HeaderIconLink href="/dashboard" label="Volver al dashboard">
+              <ArrowLeft size={18} weight="bold" />
+            </HeaderIconLink>
+            <h1 className="truncate text-sm font-semibold tracking-tight text-ink">Ajustes</h1>
+          </div>
+          <InstallAppButton />
         </div>
       </header>
 

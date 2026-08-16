@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
+import { InstallAppButton } from "@/components/InstallAppButton";
 import { AiSummary } from "@/components/insights/AiSummary";
 import { BreakdownList } from "@/components/insights/BreakdownList";
 import { BudgetProgress } from "@/components/insights/BudgetProgress";
@@ -96,11 +97,16 @@ export default async function InsightsPage() {
   return (
     <main className="flex min-h-[100dvh] flex-col bg-ground">
       <header className="border-b border-line lg:hidden">
-        <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center gap-3 px-4 sm:px-6">
-          <HeaderIconLink href="/dashboard" label="Volver al dashboard">
-            <ArrowLeft size={18} weight="bold" />
-          </HeaderIconLink>
-          <h1 className="text-sm font-semibold tracking-tight text-ink">Estadísticas</h1>
+        <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center justify-between gap-3 px-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <HeaderIconLink href="/dashboard" label="Volver al dashboard">
+              <ArrowLeft size={18} weight="bold" />
+            </HeaderIconLink>
+            <h1 className="truncate text-sm font-semibold tracking-tight text-ink">
+              Estadísticas
+            </h1>
+          </div>
+          <InstallAppButton />
         </div>
       </header>
 
