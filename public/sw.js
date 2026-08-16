@@ -1,3 +1,9 @@
+// Passthrough sin caché: no cambia cómo carga la app, pero un listener de
+// "fetch" es parte de lo que algunos navegadores revisan para decidir si
+// ofrecer el prompt de instalación (el resto del criterio — manifest válido,
+// íconos, HTTPS — ya estaba).
+self.addEventListener("fetch", () => {});
+
 self.addEventListener("push", (event) => {
   const data = event.data ? event.data.json() : {};
   event.waitUntil(

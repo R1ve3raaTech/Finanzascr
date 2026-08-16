@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChartBar, GearSix, SquaresFour } from "@phosphor-icons/react";
+import { InstallAppButton } from "@/components/InstallAppButton";
 import { Logo } from "@/components/Logo";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { SignOutButton } from "./SignOutButton";
@@ -59,6 +60,12 @@ export function AppSidebar({ name, avatarUrl }: { name?: string; avatarUrl?: str
           );
         })}
       </nav>
+
+      {/* No renderiza nada si el navegador no puede instalar la PWA (o si ya
+          está instalada) — ver InstallAppButton para el detalle. */}
+      <div className="px-3 pb-1">
+        <InstallAppButton showLabel />
+      </div>
 
       <div className="flex items-center gap-2.5 border-t border-line px-4 py-4">
         <ProfileAvatar avatarUrl={avatarUrl} name={name} />

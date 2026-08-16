@@ -9,6 +9,7 @@ import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
 import { ProfileAvatar } from "@/components/dashboard/ProfileAvatar";
 import { SignOutButton } from "@/components/dashboard/SignOutButton";
 import { TransactionList } from "@/components/dashboard/TransactionList";
+import { InstallAppButton } from "@/components/InstallAppButton";
 import { Logo } from "@/components/Logo";
 import { MonthlyBarChart } from "@/components/insights/MonthlyBarChart";
 import { endOfDayISO, startOfDayISO } from "@/lib/dateRange";
@@ -129,6 +130,7 @@ export default async function DashboardPage({
             <HeaderIconLink href="/dashboard/insights" label="Estadísticas" showLabel>
               <ChartBar size={14} weight="bold" />
             </HeaderIconLink>
+            <InstallAppButton />
             <SignOutButton />
             <ProfileAvatar avatarUrl={avatarUrl} name={firstName} />
           </div>
