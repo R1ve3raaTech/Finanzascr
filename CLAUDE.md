@@ -106,6 +106,37 @@ sin querer:
   `agent/`, están en `.gitignore` y excluidas del lint. Se reinstalan con
   `npx skills experimental_install` desde `skills-lock.json`, que sí se versiona.
 
+## Dónde quedamos (2026-08-15, tercera parte)
+
+Camil pidió revisar su Gmail real para ver si algún correo bancario servía
+de algo. Encontré un bug de correctness real (no de diseño): las
+notificaciones de compra de Banco Popular usan el mismo layout de tabla que
+BAC ("Comercio: / Fecha: / Tipo de Transacción: / Monto:"), y
+`bacCardPurchase.ts` no exigía ningún texto propio de BAC — así que
+cualquier compra de BP con tarjeta se registraba como si fuera de BAC.
+Confirmado corriendo `parseEmail()` de verdad contra el HTML real de dos
+correos de BP (`notificacion@bancopopularinforma.fi.cr`). Se agregó
+`lib/parsers/bpCardPurchase.ts` (gateado por "bp.fi.cr", propio de sus
+correos) y se blindó `bacCardPurchase.ts` exigiendo "baccredomatic.com" o
+"BAC INTERNATIONAL BANK".
+
+De paso salieron dos bugs más del mismo lote de correos: el filtro que evita
+duplicar una compra pagada vía PayPal solo reconocía "PAYPAL \*comercio",
+no "PP\*comercio" (la notación que usa BP) — ahora es
+`isPaypalRoutedMerchant()`, compartida entre ambos parsers de tarjeta. Y el
+parser de PayPal (`lib/parsers/paypal.ts`) solo aceptaba correos "Ha
+pagado", así que los pagos "Ha autorizado" (pendientes de captura, comunes
+en compras dentro de apps/juegos) no se registraban nada — ahora acepta
+ambas variantes.
+
+**Importante, sin resolver**: no tengo forma de saber si esto ya afectó
+datos reales en producción — no tengo acceso de lectura a la base (ver nota
+de acceso arriba, 2026-08-15 segundo bloque). Si Camil ya conectó Gmail y
+usó "Leer correos" con compras de BP de por medio, esas filas quedaron con
+`bank_name = 'BAC'` en vez de `'BP'` y hay que corregirlas a mano (editar
+cada una desde Ajustes → o Camil corre un `UPDATE` en Supabase Studio
+buscando transacciones "BAC" cuyo `description` no le suene a Nicaragua/BAC).
+
 **Pendientes generales, sin fecha de sesión asociada:**
 - No hay migraciones pendientes de correr: la última en el repo
   (`supabase/migrations/`) es `0015_account_deletion.sql`, igual a la última
