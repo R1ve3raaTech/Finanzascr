@@ -76,6 +76,36 @@ crudo), y el CLI de Supabase no está enlazado. Mientras eso no cambie,
 cualquier migración SQL la tiene que correr Camil a mano en Supabase
 Studio → SQL Editor.
 
+## Dónde quedamos (2026-08-15, segunda parte)
+
+Rediseño visual completo de la app, en cuatro commits (landing → ajustes →
+estadísticas → login/bienvenida). Lo que hay que saber para no deshacerlo
+sin querer:
+
+- **El acento de la app es celeste `#38BDF8`, no naranja.** No es un capricho:
+  es el color que ya tenía el ícono (`public/icon-192.png`), así que antes el
+  usuario instalaba una app azul y abría una app naranja. Además el naranja
+  chocaba con el ámbar de "casi te pasás del presupuesto".
+- **Regla de color que gobierna todo**: verde/rosa/ámbar están *reservados*
+  para ingreso/gasto/alerta y no se usan decorativamente. Si algo necesita
+  color y no significa plata, va celeste o neutro. Los tokens viven en
+  `app/globals.css` (`--ground`, `--ink`, `--accent`, `--income`, …) y se usan
+  como clases de Tailwind (`bg-surface`, `text-ink-2`, `border-line`).
+- **El gráfico de los 6 meses es divergente a propósito** (ingresos arriba,
+  gastos abajo). No volver a barras agrupadas: verde contra rojo da ΔE 4.6 en
+  deuteranopía, o sea que para ~1 de cada 12 hombres eran el mismo color, y
+  ahí el color era lo único que separaba las series. Los rellenos usan
+  `--chart-income` / `--chart-expense`, más profundos que los del texto porque
+  tienen que caer dentro de la banda OKLCH L 0.48–0.67 del validador.
+- **Para ver pantallas que exigen login** (ajustes, estadísticas, bienvenida)
+  se puede crear `app/preview-tmp/page.tsx` con datos falsos, capturarla con
+  Playwright (está en node_modules) y borrarla antes de commitear. Ojo: Next
+  ignora las carpetas que empiezan con `_`, por eso no puede llamarse
+  `_preview`. Así aparecieron varios de los bugs que se corrigieron.
+- Las skills instaladas con `npx skills add` viven en `.agents/`, `.claude/` y
+  `agent/`, están en `.gitignore` y excluidas del lint. Se reinstalan con
+  `npx skills experimental_install` desde `skills-lock.json`, que sí se versiona.
+
 **Pendientes generales, sin fecha de sesión asociada:**
 - No hay migraciones pendientes de correr: la última en el repo
   (`supabase/migrations/`) es `0015_account_deletion.sql`, igual a la última
