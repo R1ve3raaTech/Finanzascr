@@ -6,12 +6,10 @@ import { formatMoney } from "@/lib/format";
 export function BalanceCard({
   crc,
   usd,
-  nic = 0,
   filtered = false,
 }: {
   crc: number;
   usd: number;
-  nic?: number;
   filtered?: boolean;
 }) {
   const reduce = useReducedMotion();
@@ -19,9 +17,6 @@ export function BalanceCard({
   const columns = [
     { code: "CRC" as const, label: "Colones", value: crc },
     { code: "USD" as const, label: "Dólares", value: usd },
-    // El córdoba solo aparece cuando hay movimientos reales en esa moneda
-    // (viajes a Nicaragua) — no le agrega ruido al resto de los usuarios.
-    ...(nic !== 0 ? [{ code: "NIC" as const, label: "Córdobas", value: nic }] : []),
   ];
 
   return (
@@ -35,11 +30,7 @@ export function BalanceCard({
       <h2 className="text-sm font-medium text-zinc-400">
         {filtered ? "Neto del período seleccionado" : "Saldo consolidado"}
       </h2>
-      <div
-        className={`mt-4 grid gap-6 ${
-          columns.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
-        }`}
-      >
+      <div className="mt-4 grid gap-6 sm:grid-cols-2">
         {columns.map((c) => (
           <div key={c.code}>
             <p className="text-xs text-zinc-500">{c.label}</p>

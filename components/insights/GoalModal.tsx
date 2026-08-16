@@ -161,7 +161,7 @@ export function GoalModal({
                   />
                 </div>
                 <div className="flex rounded-xl border border-white/10 p-1">
-                  {(["CRC", "USD", "NIC"] as const).map((c) => (
+                  {(["CRC", "USD"] as const).map((c) => (
                     <button
                       key={c}
                       onClick={() => setCurrency(c)}

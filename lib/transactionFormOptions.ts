@@ -1,10 +1,9 @@
 import type { BankName, Currency } from "./types";
 
-export const CURRENCY_SYMBOL: Record<Currency, string> = { CRC: "₡", USD: "$", NIC: "C$" };
+export const CURRENCY_SYMBOL: Record<Currency, string> = { CRC: "₡", USD: "$" };
 export const CURRENCY_LABEL: Record<Currency, string> = {
   CRC: "Colones",
   USD: "Dólares",
-  NIC: "Córdobas",
 };
 
 // Mismos bancos que soporta la lectura automática (ver lib/parsers/index.ts)

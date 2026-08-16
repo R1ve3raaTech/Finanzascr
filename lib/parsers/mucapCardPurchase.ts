@@ -1,4 +1,4 @@
-import { crLocalToUtcIso, parseCRAmount, type EmailParser } from "./types";
+import { crLocalToUtcIso, nioToCrc, parseCRAmount, type EmailParser } from "./types";
 
 /** Formato "25/07/26 a las 21:11" (hora de Costa Rica, año de 2 dígitos, 24h) -> ISO UTC. */
 function parseMucapCardDate(day: string, month: string, year2: string, hour: string, minute: string): string {
@@ -23,11 +23,13 @@ export const parseMucapCardPurchase: EmailParser = (bodyText) => {
   if (!match) return null;
 
   const [, amountRaw, currencyRaw, merchant, day, month, year2, hour, minute] = match;
-  const currency = /USD/i.test(currencyRaw) ? "USD" : /NIC/i.test(currencyRaw) ? "NIC" : "CRC";
+  const isNio = /NIC/i.test(currencyRaw);
+  const currency = /USD/i.test(currencyRaw) ? "USD" : "CRC";
+  const parsedAmount = parseCRAmount(amountRaw);
 
   return {
     bank_name: "MUCAP",
-    amount: parseCRAmount(amountRaw),
+    amount: isNio ? nioToCrc(parsedAmount) : parsedAmount,
     currency,
     description: merchant.trim().replace(/\s+/g, " "),
     type: "EXPENSE",

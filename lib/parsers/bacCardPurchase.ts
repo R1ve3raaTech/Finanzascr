@@ -1,4 +1,4 @@
-import { crLocalToUtcIso, parseCRAmount, type EmailParser } from "./types";
+import { crLocalToUtcIso, nioToCrc, parseCRAmount, type EmailParser } from "./types";
 
 const MONTHS: Record<string, number> = {
   ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5,
@@ -19,7 +19,8 @@ function parseCardDate(raw: string): string {
  * (notificacion@notificacionesbaccr.com): tabla clave-valor Comercio /
  * Ciudad y país / Fecha / Visa / Autorización / Referencia / Tipo de
  * Transacción / Monto. El monto puede venir en CRC, USD o NIC (compras
- * hechas en Nicaragua con la misma tarjeta).
+ * hechas en Nicaragua con la misma tarjeta) — los córdobas se convierten a
+ * colones porque la app ya no maneja el córdoba como moneda propia.
  */
 export const parseBacCardPurchase: EmailParser = (bodyText) => {
   const comercio = bodyText.match(/Comercio:\s*([^\n]+)/i)?.[1]?.trim();
@@ -35,15 +36,13 @@ export const parseBacCardPurchase: EmailParser = (bodyText) => {
   if (/paypal/i.test(comercio)) return null;
 
   const [, currencyRaw, amountRaw] = montoMatch;
-  const currency = /USD|\$/i.test(currencyRaw)
-    ? "USD"
-    : /NIC/i.test(currencyRaw)
-      ? "NIC"
-      : "CRC";
+  const isNio = /NIC/i.test(currencyRaw);
+  const currency = /USD|\$/i.test(currencyRaw) ? "USD" : "CRC";
+  const parsedAmount = parseCRAmount(amountRaw);
 
   return {
     bank_name: "BAC",
-    amount: parseCRAmount(amountRaw),
+    amount: isNio ? nioToCrc(parsedAmount) : parsedAmount,
     currency,
     description: comercio,
     type: "EXPENSE",

@@ -7,7 +7,7 @@ import { useToast } from "@/components/Toast";
 import type { Currency } from "@/lib/types";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
-const CURRENCY_LABEL: Record<Currency, string> = { CRC: "Colones", USD: "Dólares", NIC: "Córdobas" };
+const CURRENCY_LABEL: Record<Currency, string> = { CRC: "Colones", USD: "Dólares" };
 
 export function CurrencySetting({ initial }: { initial: Currency }) {
   const reduce = useReducedMotion();
@@ -33,7 +33,7 @@ export function CurrencySetting({ initial }: { initial: Currency }) {
         </p>
       </div>
       <div className="flex rounded-xl border border-white/10 p-1">
-        {(["CRC", "USD", "NIC"] as const).map((c) => (
+        {(["CRC", "USD"] as const).map((c) => (
           <motion.button
             key={c}
             onClick={() => pick(c)}
@@ -46,7 +46,7 @@ export function CurrencySetting({ initial }: { initial: Currency }) {
                 : "text-zinc-500 hover:text-zinc-300"
             }`}
           >
-            {c === "CRC" ? "₡" : c === "USD" ? "$" : "C$"} {CURRENCY_LABEL[c]}
+            {c === "CRC" ? "₡" : "$"} {CURRENCY_LABEL[c]}
           </motion.button>
         ))}
       </div>

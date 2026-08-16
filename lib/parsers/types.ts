@@ -29,6 +29,20 @@ export function parseCRAmount(raw: string): number {
 }
 
 /**
+ * Tipo de cambio fijo y aproximado de córdoba nicaragüense (NIO) a colón
+ * (CRC). La app ya no maneja el córdoba como moneda propia (nadie más que
+ * Camil lo necesitaba, y le agregaba una tercera columna al saldo todo el
+ * tiempo) — los pocos correos que llegan en córdobas (compras hechas en
+ * Nicaragua) se convierten a colones en el momento de parsear el correo.
+ * No se usa una tasa en vivo porque son montos chicos y esporádicos.
+ */
+export const NIO_TO_CRC_RATE = 14.2;
+
+export function nioToCrc(amountNio: number): number {
+  return Math.round(amountNio * NIO_TO_CRC_RATE);
+}
+
+/**
  * Formato internacional/europeo (punto = miles, coma = decimal). Lo usan
  * PayPal siempre, y BAC para montos de 1.000 CRC en adelante (para montos
  * menores a mil BAC no pone separador de miles, ej. "10,00").

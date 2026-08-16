@@ -42,16 +42,28 @@ export default async function DashboardPage({
     .select("*")
     .order("transaction_date", { ascending: false });
 
-  transactionsQuery = hasRange
-    ? transactionsQuery
-        .gte("transaction_date", startOfDayISO(from!))
-        .lte("transaction_date", endOfDayISO(to!))
-        .limit(300)
-    : transactionsQuery.limit(50);
+  // El saldo se calcula con una consulta aparte, sin el límite de la lista
+  // visible: antes se sumaba solo sobre las transacciones ya traídas (50 o
+  // 300), así que en cuanto había más movimientos que ese límite el saldo
+  // mostrado quedaba corto (ignoraba los movimientos más viejos).
+  let balanceQuery = supabase.from("transactions").select("amount, currency, type");
 
-  const [{ data }, { data: settings }, { data: categories }, { data: profile }] =
+  if (hasRange) {
+    transactionsQuery = transactionsQuery
+      .gte("transaction_date", startOfDayISO(from!))
+      .lte("transaction_date", endOfDayISO(to!))
+      .limit(300);
+    balanceQuery = balanceQuery
+      .gte("transaction_date", startOfDayISO(from!))
+      .lte("transaction_date", endOfDayISO(to!));
+  } else {
+    transactionsQuery = transactionsQuery.limit(50);
+  }
+
+  const [{ data }, { data: balanceRows }, { data: settings }, { data: categories }, { data: profile }] =
     await Promise.all([
       transactionsQuery,
+      balanceQuery,
       supabase
         .from("user_settings")
         .select("default_currency")
@@ -69,9 +81,9 @@ export default async function DashboardPage({
   const userCategories = (categories ?? []) as UserCategory[];
   const defaultCurrency: Currency = settings?.default_currency ?? "CRC";
 
-  const balance = { CRC: 0, USD: 0, NIC: 0 };
-  for (const t of transactions) {
-    balance[t.currency] += t.type === "INCOME" ? t.amount : -t.amount;
+  const balance = { CRC: 0, USD: 0 };
+  for (const t of balanceRows ?? []) {
+    balance[t.currency as Currency] += t.type === "INCOME" ? t.amount : -t.amount;
   }
 
   const fullName =
@@ -106,7 +118,7 @@ export default async function DashboardPage({
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pb-28 pt-8 sm:px-6 sm:pb-32 sm:pt-10">
         <DateRangeFilter />
 
-        <BalanceCard crc={balance.CRC} usd={balance.USD} nic={balance.NIC} filtered={hasRange} />
+        <BalanceCard crc={balance.CRC} usd={balance.USD} filtered={hasRange} />
 
         <section className="flex flex-col">
           <TransactionList
