@@ -67,6 +67,32 @@ export function currentMonthKey(): string {
   return monthKey(new Date().toISOString());
 }
 
+/**
+ * Gasto del mes agrupado por categoría **y moneda**, con la llave
+ * `"categoría::MONEDA"`.
+ *
+ * `expenseBreakdown` descarta todo lo que no sea colones (para no sumar peras
+ * con manzanas en el desglose), pero un presupuesto puede estar en dólares:
+ * usar el desglose para eso hacía que a un presupuesto en dólares se le
+ * mostrara el gasto en colones con el símbolo "$".
+ */
+export function expenseByCategoryAndCurrency(
+  transactions: Transaction[],
+  targetMonthKey?: string
+): Map<string, number> {
+  const target = targetMonthKey ?? monthKey(new Date().toISOString());
+  const totals = new Map<string, number>();
+
+  for (const t of transactions) {
+    if (t.type !== "EXPENSE") continue;
+    if (monthKey(t.transaction_date) !== target) continue;
+    const key = `${t.category ?? "Sin categoría"}::${t.currency}`;
+    totals.set(key, (totals.get(key) ?? 0) + t.amount);
+  }
+
+  return totals;
+}
+
 export interface RecurringItem {
   description: string;
   bankName: string;

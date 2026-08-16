@@ -40,6 +40,15 @@
   --expense: #fb7185;
   --warn: #fbbf24;
 
+  /* Rellenos de gráficos. Son un paso más profundos que los de arriba a
+     propósito: el texto necesita ser claro para leerse sobre el fondo oscuro,
+     pero una barra grande con ese mismo tono deslumbra. Estos dos están dentro
+     de la banda de luminosidad que pide el validador de paletas para dark mode
+     (OKLCH L 0.48–0.67) y pasan contraste contra la superficie de las
+     tarjetas. */
+  --chart-income: #059669;
+  --chart-expense: #e11d48;
+
   /* Compatibilidad con el nombre viejo */
   --background: var(--ground);
   --foreground: var(--ink);
@@ -66,6 +75,8 @@
   --color-income: var(--income);
   --color-expense: var(--expense);
   --color-warn: var(--warn);
+  --color-chart-income: var(--chart-income);
+  --color-chart-expense: var(--chart-expense);
 
   --color-background: var(--ground);
   --color-foreground: var(--ink);

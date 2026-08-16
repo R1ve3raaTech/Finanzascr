@@ -25,9 +25,28 @@ export function BreakdownList({
     return <p className="text-sm text-ink-3">{emptyLabel}</p>;
   }
 
+  // Antes se mostraban los 8 primeros y el resto simplemente desaparecía,
+  // pero los porcentajes seguían calculándose contra el total completo: las
+  // barras no sumaban el 100% y no había forma de saber que faltaba plata.
+  // Ahora la cola se junta en "Otros" en vez de esfumarse.
+  const MAX_ROWS = 8;
+  const head = items.slice(0, MAX_ROWS - 1);
+  const tail = items.slice(MAX_ROWS - 1);
+  const rows =
+    tail.length > 1
+      ? [
+          ...head,
+          {
+            label: `Otros (${tail.length})`,
+            amount: tail.reduce((sum, item) => sum + item.amount, 0),
+            share: tail.reduce((sum, item) => sum + item.share, 0),
+          },
+        ]
+      : items;
+
   return (
     <ul className="flex flex-col gap-3">
-      {items.slice(0, 8).map((item, i) => {
+      {rows.map((item, i) => {
         const color = colorMap?.[item.label] ?? CATEGORICAL_DARK[i % CATEGORICAL_DARK.length];
         return (
           <li key={item.label} className="flex flex-col gap-1.5">
