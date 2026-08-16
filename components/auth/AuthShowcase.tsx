@@ -50,7 +50,7 @@ export function AuthShowcase() {
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
         <div className="auth-blob-a absolute left-[-10%] top-[10%] h-[28rem] w-[28rem] rounded-full bg-accent/10 blur-[110px]" />
-        <div className="auth-blob-b absolute bottom-[-10%] right-[-5%] h-[24rem] w-[24rem] rounded-full bg-emerald-400/[0.06] blur-[110px]" />
+        <div className="auth-blob-b absolute bottom-[-10%] right-[-5%] h-[24rem] w-[24rem] rounded-full bg-accent/[0.05] blur-[110px]" />
       </div>
 
       <div className="relative flex flex-1 flex-col justify-center px-16">
@@ -104,8 +104,8 @@ export function AuthShowcase() {
                 <p className="text-xs text-ink-3">{card.bank}</p>
               </div>
               <span
-                className={`shrink-0 font-mono text-sm ${
-                  card.income ? "text-emerald-400" : "text-ink-2"
+                className={`shrink-0 money font-mono text-sm ${
+                  card.income ? "text-income" : "text-ink-2"
                 }`}
               >
                 {card.amount}

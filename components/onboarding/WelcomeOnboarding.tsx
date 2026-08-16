@@ -91,7 +91,7 @@ export function WelcomeOnboarding({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-[-15%] left-[-10%] h-[22rem] w-[22rem] rounded-full bg-emerald-400/[0.04] blur-[120px]"
+        className="pointer-events-none absolute bottom-[-15%] left-[-10%] h-[22rem] w-[22rem] rounded-full bg-accent/[0.04] blur-[120px]"
       />
 
       <div className="relative flex w-full max-w-md flex-col gap-8">

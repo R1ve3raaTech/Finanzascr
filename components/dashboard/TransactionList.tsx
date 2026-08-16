@@ -265,9 +265,20 @@ export function TransactionList({
             <EnvelopeSimple size={22} className="text-ink-3" />
           </div>
           <p className="text-sm font-medium text-ink-2">Todavía no hay movimientos</p>
-          <p className="max-w-[38ch] text-sm text-ink-3">
-            Cuando lleguen correos de tus bancos aparecerán aquí solos. También
-            podés registrar una compra en efectivo con el botón (+).
+          <p className="max-w-[40ch] text-sm text-ink-3">
+            Los correos nuevos de tus bancos van a caer acá solos. Si acabás de entrar,
+            leé los que ya tenés en la bandeja para arrancar con algo.
+          </p>
+          {/* El estado vacío decía solo "esperá a que lleguen", pero alguien
+              que recién conecta el correo ya tiene movimientos viejos ahí
+              esperando — y el botón de leerlos está arriba, donde no lo busca.
+              Repetirlo acá es lo que hace que el primer uso no sea una
+              pantalla en blanco. */}
+          <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+            <SyncGmailButton />
+          </div>
+          <p className="max-w-[38ch] text-xs text-ink-3">
+            También podés anotar un gasto en efectivo con el botón (+).
           </p>
         </div>
       ) : filteredTransactions.length === 0 ? (
