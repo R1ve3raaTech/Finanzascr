@@ -137,6 +137,10 @@ export function WelcomeOnboarding({
                 alt="Tu foto de perfil"
                 width={56}
                 height={56}
+                // Igual que en ProfileSettings/ProfileAvatar: no se manda a
+                // procesar con sharp/libvips en el servidor (ver ese archivo
+                // para el detalle — CVEs de severidad alta en esa librería).
+                unoptimized
                 className="h-full w-full object-cover"
               />
             ) : (

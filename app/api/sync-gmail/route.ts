@@ -12,8 +12,13 @@ import { decryptToken } from "@/lib/tokenCrypto";
  * variable de entorno existe en el proyecto.
  */
 async function handleSync(request: Request) {
+  // Si CRON_SECRET no está seteado en el entorno, la comparación de abajo
+  // caería a comparar contra el string literal "Bearer undefined" — fallar
+  // cerrado explícitamente en vez de dejar que un valor mal configurado se
+  // vuelva, sin querer, la contraseña real del endpoint.
+  const cronSecret = process.env.CRON_SECRET;
   const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 

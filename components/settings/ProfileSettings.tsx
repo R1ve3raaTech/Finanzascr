@@ -123,6 +123,14 @@ export function ProfileSettings({
               alt="Foto de perfil"
               width={64}
               height={64}
+              // El avatar viene de Google o de un archivo que el propio
+              // usuario sube a Supabase Storage — sin `unoptimized`, Next
+              // procesa esos bytes en el servidor con sharp/libvips antes de
+              // mostrarlos, y esa librería tuvo CVEs de severidad alta. Acá
+              // no hace falta el redimensionado/reformateo automático (el
+              // avatar ya es chico), así que se sirve tal cual y se evita
+              // pasarle contenido controlado por el usuario a esa librería.
+              unoptimized
               className="h-full w-full rounded-full object-cover"
             />
           ) : (

@@ -401,7 +401,17 @@ export async function categorizeUncategorized() {
   let updated = 0;
   await Promise.all(
     Array.from(assignments.entries()).map(async ([id, category]) => {
-      const { error } = await admin.from("transactions").update({ category }).eq("id", id);
+      // El cliente admin ignora RLS, así que el .eq("user_id", ...) de acá
+      // es la única barrera contra escribirle la categoría a la transacción
+      // de otro usuario. Hoy `assignments` solo puede traer ids que ya
+      // venían filtrados por user_id más arriba (categorizeTransactions
+      // valida cada id contra el lote que se le mandó), pero esa garantía
+      // vive en otro archivo — no depender de que se mantenga así.
+      const { error } = await admin
+        .from("transactions")
+        .update({ category })
+        .eq("id", id)
+        .eq("user_id", user.id);
       if (!error) updated++;
     })
   );

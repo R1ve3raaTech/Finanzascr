@@ -32,6 +32,10 @@ export function ProfileAvatar({
           alt={name ?? "Perfil"}
           width={32}
           height={32}
+          // Igual que en ProfileSettings: la imagen viene de Google o de un
+          // archivo subido por el usuario, así que no se manda a procesar
+          // con sharp/libvips en el servidor (ver ese archivo para el detalle).
+          unoptimized
           className="h-8 w-8 rounded-full border border-line object-cover"
         />
       ) : (
