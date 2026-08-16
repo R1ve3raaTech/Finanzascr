@@ -179,7 +179,7 @@ export function ProfileSettings({
         disabled={pending || !fullName.trim()}
         whileTap={reduce ? undefined : { scale: 0.98 }}
         transition={tap}
-        className="self-start rounded-full bg-accent px-4 py-2 text-xs font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+        className="self-start rounded-full bg-accent px-4 py-2 text-xs font-semibold text-on-accent transition-opacity disabled:opacity-40 cursor-pointer"
       >
         {pending ? "Guardando..." : saved ? "Guardado" : "Guardar"}
       </motion.button>

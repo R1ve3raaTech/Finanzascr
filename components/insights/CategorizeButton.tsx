@@ -40,7 +40,7 @@ export function CategorizeButton({ pendingCount }: { pendingCount: number }) {
         whileHover={reduce ? undefined : { scale: 1.02 }}
         whileTap={reduce ? undefined : { scale: 0.96 }}
         transition={tap}
-        className="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-50 cursor-pointer"
+        className="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:opacity-50 cursor-pointer"
       >
         <Sparkle size={14} weight="bold" />
         {isPending ? "Categorizando..." : `Categorizar con IA (${pendingCount})`}

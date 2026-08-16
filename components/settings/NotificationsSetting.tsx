@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useSyncExternalStore, useTransition } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { BellRinging, BellSlash } from "@phosphor-icons/react";
 import { subscribeToPush } from "@/app/dashboard/actions";
@@ -31,10 +31,24 @@ export function NotificationsSetting() {
   // dispositivo) — por eso se revisa contra el Service Worker en vez de
   // confiar en el valor inicial del servidor.
   const [enabled, setEnabled] = useState(false);
-  const [supported] = useState(isPushSupported);
-  const [checked, setChecked] = useState(() => !isPushSupported());
+  const [subscriptionChecked, setSubscriptionChecked] = useState(false);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+
+  // El soporte de push solo se puede saber en el navegador, así que no puede
+  // leerse durante el primer render: si se lee, el servidor renderiza
+  // "Desactivadas" (no hay `navigator`) y el cliente renderiza otra cosa, y
+  // React tira un error de hidratación. Con useSyncExternalStore el primer
+  // render coincide en ambos lados y el valor real entra recién después.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+  const supported = mounted && isPushSupported();
+  // Ya sabemos qué mostrar: o el navegador no soporta push, o terminamos de
+  // preguntarle al Service Worker si hay suscripción.
+  const checked = mounted && (!supported || subscriptionChecked);
 
   useEffect(() => {
     if (!supported) return;
@@ -46,7 +60,7 @@ export function NotificationsSetting() {
         if (!cancelled) setEnabled(!!sub);
       })
       .finally(() => {
-        if (!cancelled) setChecked(true);
+        if (!cancelled) setSubscriptionChecked(true);
       });
     return () => {
       cancelled = true;
@@ -133,7 +147,7 @@ export function NotificationsSetting() {
             animate={{ x: enabled ? 26 : 3 }}
             transition={knobSpring}
             className={`absolute top-1 flex h-6 w-6 items-center justify-center rounded-full shadow-sm ${
-              enabled ? "bg-accent text-zinc-950" : "bg-zinc-200 text-ink-3"
+              enabled ? "bg-accent text-on-accent" : "bg-zinc-200 text-ground/60"
             }`}
           >
             {enabled ? (

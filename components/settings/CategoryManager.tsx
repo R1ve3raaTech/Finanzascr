@@ -110,7 +110,7 @@ function CategoryGroup({
           aria-label="Agregar categoría"
           whileTap={reduce ? undefined : { scale: 0.88 }}
           transition={tap}
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-line text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-40 cursor-pointer"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-line text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:opacity-40 cursor-pointer"
         >
           <Plus size={14} weight="bold" />
         </motion.button>

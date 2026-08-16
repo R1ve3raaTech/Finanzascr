@@ -99,7 +99,7 @@ export function WelcomeOnboarding({
           initial={reduce ? undefined : { opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="inline-flex w-fit -rotate-2 items-center rounded-md border border-dashed border-white/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-ink-2"
+          className="inline-flex w-fit -rotate-2 items-center rounded-md border border-dashed border-line-strong px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-ink-2"
         >
           Antes de arrancar
         </motion.span>
@@ -129,7 +129,7 @@ export function WelcomeOnboarding({
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
             aria-label="Elegir foto de perfil"
-            className="group relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-ground cursor-pointer disabled:opacity-60"
+            className="group relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-line-strong bg-ground cursor-pointer disabled:opacity-60"
           >
             {avatarUrl ? (
               <Image
@@ -158,7 +158,7 @@ export function WelcomeOnboarding({
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Tu nombre"
-              className="w-full border-b border-white/15 bg-transparent pb-1 text-base font-medium text-ink outline-none placeholder:text-ink-3 focus:border-accent"
+              className="w-full border-b border-line-strong bg-transparent pb-1 text-base font-medium text-ink outline-none placeholder:text-ink-3 focus:border-accent"
             />
             <span className="text-xs text-ink-3">
               {uploading ? "Subiendo tu foto..." : "Tocá el círculo para ponerle una foto (opcional)"}
@@ -198,7 +198,7 @@ export function WelcomeOnboarding({
             whileHover={reduce ? undefined : { scale: 1.02 }}
             whileTap={reduce ? undefined : { scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-on-accent transition-opacity disabled:opacity-40 cursor-pointer"
           >
             {pending ? "Guardando..." : "Empezar a usar TicoFinanza"}
             {!pending && <ArrowRight size={16} weight="bold" />}

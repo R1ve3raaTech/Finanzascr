@@ -45,7 +45,7 @@ export function Footer({ loggedIn = false }: { loggedIn?: boolean }) {
           <MotionLink
             href={loggedIn ? "/dashboard" : "/entrar"}
             whileHover={reduce ? undefined : { x: 2 }}
-            className="mt-6 inline-flex items-center gap-2 rounded-full border border-line py-2 pl-2 pr-4 text-sm text-ink-2 transition-colors hover:border-white/20 hover:text-ink"
+            className="mt-6 inline-flex items-center gap-2 rounded-full border border-line py-2 pl-2 pr-4 text-sm text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
           >
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-50">
               {loggedIn ? (
@@ -73,7 +73,7 @@ export function Footer({ loggedIn = false }: { loggedIn?: boolean }) {
       </div>
 
       <div
-        className="relative border-y border-white/5 py-5"
+        className="relative border-y border-line py-5"
         style={{
           maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           WebkitMaskImage:

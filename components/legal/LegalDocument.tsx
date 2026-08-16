@@ -43,7 +43,7 @@ export function LegalDocument({
         <div className="mt-4 max-w-[62ch] text-base leading-relaxed text-ink-2">{intro}</div>
 
         {summary && (
-          <div className="mt-10 border-y border-white/15 py-6">
+          <div className="mt-10 border-y border-line-strong py-6">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-ink-3">
               {summary.label}
             </p>

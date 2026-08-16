@@ -22,7 +22,7 @@ export function SignOutButton() {
         whileHover={reduce ? undefined : { scale: 1.04 }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={tap}
-        className="inline-flex items-center gap-2 rounded-full border border-line px-2.5 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink cursor-pointer sm:px-4"
+        className="inline-flex items-center gap-2 rounded-full border border-line px-2.5 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink cursor-pointer sm:px-4"
       >
         <SignOut size={14} weight="bold" />
         <span className="hidden sm:inline">Salir</span>
@@ -59,7 +59,7 @@ export function SignOutButton() {
                   onClick={() => setConfirming(false)}
                   whileTap={reduce ? undefined : { scale: 0.97 }}
                   transition={tap}
-                  className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink cursor-pointer"
+                  className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink cursor-pointer"
                 >
                   Cancelar
                 </motion.button>
@@ -67,7 +67,7 @@ export function SignOutButton() {
                   onClick={() => signOut()}
                   whileTap={reduce ? undefined : { scale: 0.97 }}
                   transition={tap}
-                  className="rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-400 cursor-pointer"
+                  className="rounded-xl bg-rose-600 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-500 cursor-pointer"
                 >
                   Salir
                 </motion.button>

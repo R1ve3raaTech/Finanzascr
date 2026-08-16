@@ -6,6 +6,7 @@ import { Plus, Wallet, X } from "@phosphor-icons/react";
 import { deleteBudget, setBudget } from "@/app/dashboard/settings/actions";
 import { useToast } from "@/components/Toast";
 import { formatMoney } from "@/lib/format";
+import { CURRENCY_SYMBOL } from "@/lib/transactionFormOptions";
 import type { Budget, Currency } from "@/lib/types";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
@@ -71,7 +72,7 @@ export function BudgetManager({
               transition={pop}
               className="flex items-center gap-3 rounded-xl border border-line bg-ground p-3"
             >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-400/10 text-amber-400">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-raised text-ink-2">
                 <Wallet size={15} weight="bold" />
               </div>
               <span className="min-w-0 flex-1 truncate text-sm text-ink">{b.category}</span>
@@ -96,7 +97,7 @@ export function BudgetManager({
       </ul>
 
       {available.length > 0 && (
-        <div className="flex flex-col gap-3 rounded-xl border border-dashed border-amber-400/20 bg-amber-400/[0.03] p-3">
+        <div className="flex flex-col gap-3 rounded-xl border border-dashed border-line p-3">
           <div className="flex flex-wrap gap-1.5">
             {available.map((c) => (
               <button
@@ -104,8 +105,8 @@ export function BudgetManager({
                 onClick={() => setCategory(c)}
                 className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                   (category || available[0]) === c
-                    ? "border-amber-400/50 bg-amber-400/10 text-amber-300"
-                    : "border-line text-ink-2 hover:border-white/20"
+                    ? "border-accent/50 bg-accent/10 text-accent"
+                    : "border-line text-ink-2 hover:border-line-strong"
                 }`}
               >
                 {c}
@@ -115,7 +116,7 @@ export function BudgetManager({
           <div className="flex gap-2">
             <div className="flex flex-1 items-center gap-1.5 rounded-lg border border-line bg-ground pl-3 pr-1.5">
               <span className="font-mono text-xs text-ink-3">
-                {currency === "CRC" ? "₡" : currency === "USD" ? "$" : "C$"}
+                {CURRENCY_SYMBOL[currency]}
               </span>
               <input
                 value={amount}
@@ -145,7 +146,7 @@ export function BudgetManager({
               whileTap={reduce ? undefined : { scale: 0.88 }}
               transition={tap}
               aria-label="Agregar presupuesto"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-400/10 text-amber-400 transition-colors hover:bg-amber-400/15 disabled:opacity-40 cursor-pointer"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors hover:bg-accent/15 disabled:opacity-40 cursor-pointer"
             >
               <Plus size={14} weight="bold" />
             </motion.button>

@@ -205,7 +205,7 @@ export function GoalModal({
                 <button
                   onClick={handleSave}
                   disabled={isPending}
-                  className="flex-1 rounded-xl bg-accent py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                  className="flex-1 rounded-xl bg-accent py-3 text-sm font-semibold text-on-accent transition-opacity disabled:opacity-40 cursor-pointer"
                 >
                   {isPending ? "Guardando..." : goal ? "Guardar cambios" : "Crear meta"}
                 </button>

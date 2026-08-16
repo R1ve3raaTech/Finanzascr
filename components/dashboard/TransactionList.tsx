@@ -147,7 +147,7 @@ export function TransactionList({
               className={`flex h-8 items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors cursor-pointer ${
                 pickMode
                   ? "border-accent/50 bg-accent/10 text-accent-soft"
-                  : "border-line text-ink-2 hover:border-white/20 hover:text-ink"
+                  : "border-line text-ink-2 hover:border-line-strong hover:text-ink"
               }`}
             >
               {pickMode ? <X size={14} weight="bold" /> : <ListChecks size={14} weight="bold" />}
@@ -184,12 +184,12 @@ export function TransactionList({
               className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-colors cursor-pointer ${
                 showFilters || activeFilterCount > 0
                   ? "border-accent/50 bg-accent/10 text-accent-soft"
-                  : "border-line text-ink-2 hover:border-white/20 hover:text-ink"
+                  : "border-line text-ink-2 hover:border-line-strong hover:text-ink"
               }`}
             >
               <Funnel size={15} weight="bold" />
               {activeFilterCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-zinc-950">
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-on-accent">
                   {activeFilterCount}
                 </span>
               )}
@@ -217,7 +217,7 @@ export function TransactionList({
                             className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                               filterCategory === c
                                 ? "border-accent/50 bg-accent/10 text-accent-soft"
-                                : "border-line text-ink-2 hover:border-white/20"
+                                : "border-line text-ink-2 hover:border-line-strong"
                             }`}
                           >
                             {c}
@@ -236,7 +236,7 @@ export function TransactionList({
                           className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                             filterBank === b
                               ? "border-accent/50 bg-accent/10 text-accent-soft"
-                              : "border-line text-ink-2 hover:border-white/20"
+                              : "border-line text-ink-2 hover:border-line-strong"
                           }`}
                         >
                           {b}
@@ -324,20 +324,20 @@ export function TransactionList({
                 >
                   <button
                     onClick={() => handleRowClick(t)}
-                    className={`relative flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-colors cursor-pointer ${
+                    className={`group relative flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-colors cursor-pointer ${
                       isPicked
                         ? "border-accent/50 bg-accent/5"
                         : isNew
                           ? "border-accent/40 bg-accent/5"
-                          : "border-line bg-surface/60 hover:border-white/20"
+                          : "border-line bg-surface/60 hover:border-line-strong"
                     }`}
                   >
                     {pickMode && (
                       <span
                         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors ${
                           isPicked
-                            ? "border-accent bg-accent text-zinc-950"
-                            : "border-white/20 text-transparent"
+                            ? "border-accent bg-accent text-on-accent"
+                            : "border-line-strong text-transparent"
                         }`}
                       >
                         <Check size={12} weight="bold" />
@@ -351,8 +351,14 @@ export function TransactionList({
                       <p className="text-xs text-ink-3">
                         {t.bank_name} · {formatDate(t.transaction_date)}
                       </p>
+                      {/* Repetir "Ver más detalles" en cada fila era puro ruido
+                          en una lista larga: la fila entera ya es un botón. Se
+                          muestra al pasar el mouse o al llegar con el teclado,
+                          que es cuando la pista sirve de algo. */}
                       {!pickMode && (
-                        <p className="mt-0.5 text-[11px] text-ink-3">Ver más detalles</p>
+                        <p className="mt-0.5 text-[11px] text-accent opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                          Ver más detalles
+                        </p>
                       )}
                     </div>
                     <span
@@ -371,7 +377,7 @@ export function TransactionList({
                           animate={{ opacity: 1, scale: 1, y: 0 }}
                           exit={{ opacity: 0, scale: 0.7 }}
                           transition={{ type: "spring", stiffness: 420, damping: 20 }}
-                          className="absolute -right-1.5 -top-1.5 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold tracking-wide text-zinc-950"
+                          className="absolute -right-1.5 -top-1.5 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold tracking-wide text-on-accent"
                         >
                           NUEVO
                         </motion.span>

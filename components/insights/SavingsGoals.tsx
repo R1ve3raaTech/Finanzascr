@@ -66,7 +66,7 @@ export function SavingsGoals({
               <li key={g.id}>
                 <button
                   onClick={() => openEdit(g)}
-                  className="flex w-full flex-col gap-1.5 rounded-xl border border-line bg-ground/40 p-4 text-left transition-colors hover:border-white/20 cursor-pointer"
+                  className="flex w-full flex-col gap-1.5 rounded-xl border border-line bg-ground/40 p-4 text-left transition-colors hover:border-line-strong cursor-pointer"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-sm">
                     <span className="min-w-0 truncate text-ink">{g.name}</span>

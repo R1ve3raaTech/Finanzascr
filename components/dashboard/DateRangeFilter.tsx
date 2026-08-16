@@ -84,7 +84,7 @@ export function DateRangeFilter() {
           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors cursor-pointer ${
             hasFilter && !activePreset
               ? "border-accent/40 bg-accent/10 text-accent"
-              : "border-line text-ink-2 hover:border-white/20 hover:text-ink"
+              : "border-line text-ink-2 hover:border-line-strong hover:text-ink"
           }`}
         >
           <CalendarBlank size={14} weight="bold" />
@@ -116,7 +116,7 @@ export function DateRangeFilter() {
           <button
             onClick={applyCustom}
             disabled={!customFrom || !customTo}
-            className="rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-40 cursor-pointer"
+            className="rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-on-accent disabled:opacity-40 cursor-pointer"
           >
             Aplicar
           </button>

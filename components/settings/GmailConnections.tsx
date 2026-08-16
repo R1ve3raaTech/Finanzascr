@@ -87,7 +87,7 @@ export function GmailConnections({ connections }: { connections: GmailConnection
         whileHover={reduce ? undefined : { scale: 1.01 }}
         whileTap={reduce ? undefined : { scale: 0.98 }}
         transition={tap}
-        className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/15 py-2.5 text-xs font-medium text-ink-2 transition-colors hover:border-white/30 hover:text-ink"
+        className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-line-strong py-2.5 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
       >
         <Plus size={14} weight="bold" />
         Conectar otra cuenta de Gmail

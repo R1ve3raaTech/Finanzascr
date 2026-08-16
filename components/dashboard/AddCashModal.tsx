@@ -171,7 +171,7 @@ export function AddCashModal({
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={spring}
         aria-label="Registrar efectivo"
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-zinc-950 shadow-[0_8px_30px_rgba(56,189,248,0.35)] cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-on-accent shadow-[0_8px_30px_rgba(56,189,248,0.35)] cursor-pointer"
       >
         <Plus size={24} weight="bold" />
       </motion.button>
@@ -315,7 +315,7 @@ export function AddCashModal({
                               className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                                 category === c
                                   ? "border-accent/50 bg-accent/10 text-accent-soft"
-                                  : "border-line text-ink-2 hover:border-white/20"
+                                  : "border-line text-ink-2 hover:border-line-strong"
                               }`}
                             >
                               {c}
@@ -359,7 +359,7 @@ export function AddCashModal({
                                         className={`flex items-center gap-1.5 rounded-full border py-1 pl-1 pr-3 text-xs font-medium transition-colors cursor-pointer ${
                                           bank === b
                                             ? "border-accent/50 bg-accent/10 text-accent-soft"
-                                            : "border-line text-ink-2 hover:border-white/20"
+                                            : "border-line text-ink-2 hover:border-line-strong"
                                         }`}
                                       >
                                         <BankLogo bank={b} size={18} />
@@ -386,7 +386,7 @@ export function AddCashModal({
                         onClick={submit}
                         disabled={pending}
                         whileTap={reduce ? undefined : { scale: 0.98 }}
-                        className="rounded-xl bg-accent py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                        className="rounded-xl bg-accent py-3 text-sm font-semibold text-on-accent transition-opacity disabled:opacity-40 cursor-pointer"
                       >
                         {pending ? "Guardando..." : "Guardar movimiento"}
                       </motion.button>
@@ -405,7 +405,7 @@ export function AddCashModal({
                         transition={{ type: "spring", stiffness: 480, damping: 18 }}
                         className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400"
                       >
-                        <Check size={30} weight="bold" className="text-zinc-950" />
+                        <Check size={30} weight="bold" className="text-ground" />
                       </motion.div>
                       <motion.p
                         initial={{ opacity: 0, y: 6 }}

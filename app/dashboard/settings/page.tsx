@@ -120,7 +120,7 @@ export default async function SettingsPage({
         )}
 
         <SettingsGroup label="Cuenta" delayMs={0}>
-          <SettingsSection icon={User} accent="violet">
+          <SettingsSection icon={User}>
             <ProfileSettings
               userId={user.id}
               initialFullName={initialFullName}
@@ -131,35 +131,51 @@ export default async function SettingsPage({
         </SettingsGroup>
 
         <SettingsGroup label="Dinero" delayMs={60}>
-          <SettingsSection icon={Tag} accent="amber">
+          <SettingsSection icon={Tag}>
             <CategoryManager categories={(categories ?? []) as UserCategory[]} />
           </SettingsSection>
-          <SettingsSection icon={Wallet} accent="amber">
+          <SettingsSection icon={Wallet}>
             <BudgetManager budgets={(budgets ?? []) as Budget[]} categories={budgetCategories} />
           </SettingsSection>
-          <SettingsSection icon={CurrencyCircleDollar} accent="emerald">
+          <SettingsSection icon={CurrencyCircleDollar}>
             <CurrencySetting initial={resolvedSettings.default_currency} />
           </SettingsSection>
         </SettingsGroup>
 
         <SettingsGroup label="Alertas y correo" delayMs={140}>
-          <SettingsSection icon={Bell} accent="accent">
+          <SettingsSection icon={Bell}>
             <NotificationsSetting />
           </SettingsSection>
-          <SettingsSection icon={EnvelopeSimple} accent="accent">
+          <SettingsSection icon={EnvelopeSimple}>
             <GmailConnections connections={gmailConnections ?? []} />
           </SettingsSection>
         </SettingsGroup>
 
         <SettingsGroup label="Datos" delayMs={220}>
-          <a
-            href="/api/export-csv"
-            className="flex items-center justify-center gap-2 rounded-2xl border border-line bg-surface/40 py-3 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink"
-          >
-            <DownloadSimple size={16} weight="bold" />
-            Exportar transacciones a CSV
-          </a>
-          <section className="flex flex-col gap-5 divide-y divide-rose-400/10 rounded-2xl border border-rose-400/15 bg-surface/40 p-5">
+          <SettingsSection icon={DownloadSimple}>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-medium text-ink">Exportar tus datos</h3>
+                <p className="text-xs text-ink-3">
+                  Bajate todos tus movimientos en un CSV que abre Excel o Google Sheets.
+                </p>
+              </div>
+              <a
+                href="/api/export-csv"
+                className="flex shrink-0 items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
+              >
+                <DownloadSimple size={14} weight="bold" />
+                Descargar CSV
+              </a>
+            </div>
+          </SettingsSection>
+        </SettingsGroup>
+
+        {/* Lo destructivo va en su propio grupo y no mezclado con "Datos":
+            que comparta encabezado con una descarga inofensiva es justo cómo
+            alguien borra su cuenta sin querer. */}
+        <SettingsGroup label="Zona de peligro" delayMs={280}>
+          <section className="flex flex-col gap-5 divide-y divide-expense/10 rounded-2xl border border-expense/20 bg-expense/[0.03] p-5">
             <DangerZone transactionCount={transactionCount ?? 0} />
             <div className="pt-5">
               <DeleteAccountFlow email={user.email ?? ""} />
@@ -169,7 +185,7 @@ export default async function SettingsPage({
 
         <Link
           href="/privacidad"
-          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-ink-3 transition-colors hover:text-ink-2 [animation-delay:280ms]"
+          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-ink-3 transition-colors hover:text-ink-2 [animation-delay:340ms]"
         >
           <ShieldCheck size={14} weight="bold" />
           Política de privacidad

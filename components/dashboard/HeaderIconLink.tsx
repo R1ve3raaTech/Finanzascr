@@ -31,7 +31,7 @@ export function HeaderIconLink({
         whileHover={reduce ? undefined : { scale: 1.03 }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={tap}
-        className="flex h-8 items-center gap-1.5 rounded-full border border-line px-2.5 text-xs font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink sm:px-3"
+        className="flex h-8 items-center gap-1.5 rounded-full border border-line px-2.5 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink sm:px-3"
       >
         {children}
         <span>{label}</span>

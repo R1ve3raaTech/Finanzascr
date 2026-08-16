@@ -42,7 +42,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#09090b",
+  // Mismo valor que --ground en globals.css y que el manifest.
+  themeColor: "#08090c",
 };
 
 export default function RootLayout({

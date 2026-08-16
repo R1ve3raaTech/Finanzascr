@@ -133,14 +133,14 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                         <button
                           onClick={close}
                           disabled={pending}
-                          className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-50 cursor-pointer"
+                          className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:opacity-50 cursor-pointer"
                         >
                           Cancelar
                         </button>
                         <button
                           onClick={sendCode}
                           disabled={pending}
-                          className="flex items-center justify-center gap-1.5 rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-400 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+                          className="flex items-center justify-center gap-1.5 rounded-xl bg-rose-600 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-500 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                         >
                           <EnvelopeSimple size={15} weight="bold" />
                           {pending ? "Enviando..." : "Mandar código"}
@@ -190,14 +190,14 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                         <button
                           onClick={close}
                           disabled={pending}
-                          className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-50 cursor-pointer"
+                          className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:opacity-50 cursor-pointer"
                         >
                           Cancelar
                         </button>
                         <button
                           onClick={confirm}
                           disabled={pending || code.length !== 8 || typed !== CONFIRM_WORD}
-                          className="rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-400 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+                          className="rounded-xl bg-rose-600 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-500 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                         >
                           {pending ? "Eliminando..." : "Eliminar cuenta"}
                         </button>

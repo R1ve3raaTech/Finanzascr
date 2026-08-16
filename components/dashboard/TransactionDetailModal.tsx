@@ -26,7 +26,7 @@ const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between border-b border-white/5 py-2.5 last:border-0">
+    <div className="flex items-center justify-between border-b border-line py-2.5 last:border-0">
       <span className="text-xs text-ink-3">{label}</span>
       <span className="text-sm text-ink">{value}</span>
     </div>
@@ -245,12 +245,12 @@ export function TransactionDetailModal({
                     )}
                   </div>
 
-                  <div className="mt-5 border-t border-white/5 pt-4">
+                  <div className="mt-5 border-t border-line pt-4">
                     {error && <p className="mb-3 text-xs text-rose-400">{error}</p>}
                     <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={startEditing}
-                        className="flex items-center gap-2 rounded-full border border-line px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink cursor-pointer"
+                        className="flex items-center gap-2 rounded-full border border-line px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink cursor-pointer"
                       >
                         <PencilSimple size={14} weight="bold" />
                         Editar
@@ -352,7 +352,7 @@ export function TransactionDetailModal({
                             className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                               category === c
                                 ? "border-accent/50 bg-accent/10 text-accent-soft"
-                                : "border-line text-ink-2 hover:border-white/20"
+                                : "border-line text-ink-2 hover:border-line-strong"
                             }`}
                           >
                             {c}
@@ -371,7 +371,7 @@ export function TransactionDetailModal({
                             className={`flex items-center gap-1.5 rounded-full border py-1 pl-1 pr-3 text-xs font-medium transition-colors cursor-pointer ${
                               bank === b
                                 ? "border-accent/50 bg-accent/10 text-accent-soft"
-                                : "border-line text-ink-2 hover:border-white/20"
+                                : "border-line text-ink-2 hover:border-line-strong"
                             }`}
                           >
                             <BankLogo bank={b} size={18} />
@@ -397,14 +397,14 @@ export function TransactionDetailModal({
                       <button
                         onClick={() => setEditing(false)}
                         disabled={isPending}
-                        className="flex-1 rounded-xl border border-line py-3 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-50 cursor-pointer"
+                        className="flex-1 rounded-xl border border-line py-3 text-sm font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:opacity-50 cursor-pointer"
                       >
                         Cancelar
                       </button>
                       <button
                         onClick={handleSave}
                         disabled={isPending}
-                        className="flex-1 rounded-xl bg-accent py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                        className="flex-1 rounded-xl bg-accent py-3 text-sm font-semibold text-on-accent transition-opacity disabled:opacity-40 cursor-pointer"
                       >
                         {isPending ? "Guardando..." : "Guardar cambios"}
                       </button>
