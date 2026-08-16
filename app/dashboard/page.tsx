@@ -10,7 +10,10 @@ import { ProfileAvatar } from "@/components/dashboard/ProfileAvatar";
 import { SignOutButton } from "@/components/dashboard/SignOutButton";
 import { TransactionList } from "@/components/dashboard/TransactionList";
 import { Logo } from "@/components/Logo";
+import { MonthlyBarChart } from "@/components/insights/MonthlyBarChart";
 import { endOfDayISO, startOfDayISO } from "@/lib/dateRange";
+import { monthlyTotals } from "@/lib/insights";
+import { resolveAvatarUrl, resolveFirstName } from "@/lib/profile";
 import { createClient } from "@/lib/supabase/server";
 import type { Currency, Transaction, UserCategory } from "@/lib/types";
 
@@ -101,16 +104,18 @@ export default async function DashboardPage({
     }
   }
 
-  const fullName =
-    profile?.full_name ?? (user.user_metadata?.full_name as string | undefined) ?? user.email;
-  const firstName = fullName?.split(" ")[0];
-  const avatarUrl =
-    profile?.avatar_url ??
-    ((user.user_metadata?.avatar_url ?? user.user_metadata?.picture) as string | undefined);
+  const firstName = resolveFirstName(user, profile?.full_name);
+  const avatarUrl = resolveAvatarUrl(user, profile?.avatar_url);
+
+  // Gráfico chico de los últimos 6 meses, solo para la columna lateral de
+  // escritorio (ver TransactionList/gráfico más abajo). Reusa las mismas
+  // filas ya traídas para el saldo — no hace falta pedirle a la base el
+  // historial de nuevo.
+  const months = monthlyTotals((balanceRows ?? []) as Transaction[], 6);
 
   return (
     <main className="flex min-h-[100dvh] flex-col bg-ground">
-      <header className="border-b border-line">
+      <header className="border-b border-line lg:hidden">
         <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <HeaderIconLink href="/dashboard/settings" label="Ajustes" hoverRotate={45}>
@@ -130,7 +135,9 @@ export default async function DashboardPage({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pb-28 pt-8 sm:px-6 sm:pb-32 sm:pt-10">
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pb-28 pt-8 sm:px-6 sm:pb-32 sm:pt-10 lg:max-w-5xl lg:px-10 lg:pt-10">
+        <h1 className="hidden text-2xl font-semibold tracking-tight text-ink lg:block">Dashboard</h1>
+
         <DateRangeFilter />
 
         <BalanceCard
@@ -140,13 +147,25 @@ export default async function DashboardPage({
           month={hasRange ? undefined : month}
         />
 
-        <section className="flex flex-col">
-          <TransactionList
-            title={hasRange ? "Movimientos del período" : "Últimas transacciones"}
-            transactions={transactions}
-            customCategories={userCategories}
-          />
-        </section>
+        {/* En escritorio la lista y el gráfico van uno al lado del otro; en
+            mobile el gráfico chico se esconde (ya hay una versión completa
+            en Estadísticas — acá solo hay lugar de sobra para mostrarlo). */}
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+          <section className="flex min-w-0 flex-1 flex-col">
+            <TransactionList
+              title={hasRange ? "Movimientos del período" : "Últimas transacciones"}
+              transactions={transactions}
+              customCategories={userCategories}
+            />
+          </section>
+
+          {!hasRange && (
+            <aside className="hidden w-[320px] shrink-0 flex-col gap-3 rounded-2xl border border-line bg-surface/40 p-5 lg:flex">
+              <h2 className="text-sm font-medium text-ink-2">Últimos 6 meses</h2>
+              <MonthlyBarChart data={months} />
+            </aside>
+          )}
+        </div>
       </div>
 
       <AddCashModal defaultCurrency={defaultCurrency} customCategories={userCategories} />

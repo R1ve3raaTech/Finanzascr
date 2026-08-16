@@ -12,8 +12,16 @@ function monthKey(iso: string): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 }
 
+/**
+ * Solo necesita estos cuatro campos, no la transacción completa — así el
+ * dashboard puede reusar la misma fila liviana que ya trae para el saldo
+ * (amount/currency/type/transaction_date) en vez de pedirle a la base el
+ * historial de nuevo para dibujar el gráfico de 6 meses.
+ */
+type MonthlyTotalsInput = Pick<Transaction, "currency" | "transaction_date" | "type" | "amount">;
+
 /** Últimos `months` meses (incluyendo el actual), solo movimientos en CRC. */
-export function monthlyTotals(transactions: Transaction[], months = 6): MonthTotal[] {
+export function monthlyTotals(transactions: MonthlyTotalsInput[], months = 6): MonthTotal[] {
   const now = new Date();
   const buckets: MonthTotal[] = [];
   for (let i = months - 1; i >= 0; i--) {

@@ -24,6 +24,7 @@ import { SettingsGroup } from "@/components/settings/SettingsGroup";
 import { SettingsSection } from "@/components/settings/SettingsSection";
 import { HeaderIconLink } from "@/components/dashboard/HeaderIconLink";
 import { DEFAULT_EXPENSE_CATEGORIES } from "@/lib/categories";
+import { resolveAvatarUrl, resolveDisplayName } from "@/lib/profile";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import type { Budget, UserCategory, UserSettings } from "@/lib/types";
@@ -85,20 +86,12 @@ export default async function SettingsPage({
   const resolvedSettings: Pick<UserSettings, "default_currency"> =
     settings ?? { default_currency: "CRC" };
 
-  const initialFullName =
-    profile?.full_name ??
-    (user.user_metadata?.full_name as string | undefined) ??
-    user.email ??
-    "";
-  const initialAvatarUrl =
-    profile?.avatar_url ??
-    (user.user_metadata?.avatar_url as string | undefined) ??
-    (user.user_metadata?.picture as string | undefined) ??
-    null;
+  const initialFullName = resolveDisplayName(user, profile?.full_name) ?? "";
+  const initialAvatarUrl = resolveAvatarUrl(user, profile?.avatar_url) ?? null;
 
   return (
     <main className="flex min-h-[100dvh] flex-col bg-ground">
-      <header className="border-b border-line">
+      <header className="border-b border-line lg:hidden">
         <div className="mx-auto flex h-[68px] w-full max-w-2xl items-center gap-3 px-4 sm:px-6">
           <HeaderIconLink href="/dashboard" label="Volver al dashboard">
             <ArrowLeft size={18} weight="bold" />
@@ -107,7 +100,9 @@ export default async function SettingsPage({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10 lg:max-w-3xl lg:px-10 lg:pt-10">
+        <h1 className="hidden text-2xl font-semibold tracking-tight text-ink lg:block">Ajustes</h1>
+
         {params.gmail_connected && (
           <p className="animate-fade-up rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 text-sm text-emerald-300">
             Cuenta de Gmail conectada correctamente.

@@ -95,7 +95,7 @@ export default async function InsightsPage() {
 
   return (
     <main className="flex min-h-[100dvh] flex-col bg-ground">
-      <header className="border-b border-line">
+      <header className="border-b border-line lg:hidden">
         <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center gap-3 px-4 sm:px-6">
           <HeaderIconLink href="/dashboard" label="Volver al dashboard">
             <ArrowLeft size={18} weight="bold" />
@@ -104,7 +104,9 @@ export default async function InsightsPage() {
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10 lg:max-w-5xl lg:px-10 lg:pt-10">
+        <h1 className="hidden text-2xl font-semibold tracking-tight text-ink lg:block">Estadísticas</h1>
+
         <section className="animate-fade-up flex flex-col gap-3">
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
             <h2 className="text-sm font-medium text-ink-2">Este mes</h2>
@@ -154,37 +156,44 @@ export default async function InsightsPage() {
           <MonthlyBarChart data={months} />
         </section>
 
-        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:120ms]">
-          <h2 className="mb-4 text-sm font-medium text-ink-2">Gasto por entidad este mes</h2>
-          <BreakdownList
-            items={byEntity}
-            colorMap={Object.fromEntries(
-              byEntity.map((item) => [
-                item.label,
-                BANK_BRAND[item.label as keyof typeof BANK_BRAND]?.bg ?? "#3f3f46",
-              ])
-            )}
-            emptyLabel="Todavía no hay gastos este mes."
-          />
-        </section>
+        {/* En mobile estas cuatro secciones van apiladas, una por fila. En
+            escritorio hay ancho de sobra para emparejarlas de a dos y que no
+            quede una sola columna larguísima y vacía a los costados. */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:120ms]">
+            <h2 className="mb-4 text-sm font-medium text-ink-2">Gasto por entidad este mes</h2>
+            <BreakdownList
+              items={byEntity}
+              colorMap={Object.fromEntries(
+                byEntity.map((item) => [
+                  item.label,
+                  BANK_BRAND[item.label as keyof typeof BANK_BRAND]?.bg ?? "#3f3f46",
+                ])
+              )}
+              emptyLabel="Todavía no hay gastos este mes."
+            />
+          </section>
 
-        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:180ms]">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-sm font-medium text-ink-2">Gasto por categoría este mes</h2>
-            <CategorizeButton pendingCount={uncategorizedCount} />
-          </div>
-          <BreakdownList items={byCategory} emptyLabel="Todavía no hay gastos categorizados este mes." />
-        </section>
+          <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:180ms]">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-sm font-medium text-ink-2">Gasto por categoría este mes</h2>
+              <CategorizeButton pendingCount={uncategorizedCount} />
+            </div>
+            <BreakdownList items={byCategory} emptyLabel="Todavía no hay gastos categorizados este mes." />
+          </section>
+        </div>
 
-        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:240ms]">
-          <h2 className="mb-4 text-sm font-medium text-ink-2">Presupuestos</h2>
-          <BudgetProgress budgets={budgets} spentByCategoryCurrency={spentByCategoryCurrency} />
-        </section>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:240ms]">
+            <h2 className="mb-4 text-sm font-medium text-ink-2">Presupuestos</h2>
+            <BudgetProgress budgets={budgets} spentByCategoryCurrency={spentByCategoryCurrency} />
+          </section>
 
-        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:300ms]">
-          <h2 className="mb-4 text-sm font-medium text-ink-2">Gastos recurrentes</h2>
-          <SubscriptionsList items={recurring} />
-        </section>
+          <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:300ms]">
+            <h2 className="mb-4 text-sm font-medium text-ink-2">Gastos recurrentes</h2>
+            <SubscriptionsList items={recurring} />
+          </section>
+        </div>
       </div>
     </main>
   );
