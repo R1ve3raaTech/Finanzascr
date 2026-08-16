@@ -39,15 +39,15 @@ export function GmailConnections({ connections }: { connections: GmailConnection
   return (
     <div className="flex flex-col gap-3">
       <div>
-        <h3 className="text-sm font-medium text-zinc-100">Cuentas de Gmail conectadas</h3>
-        <p className="text-xs text-zinc-500">
+        <h3 className="text-sm font-medium text-ink">Cuentas de Gmail conectadas</h3>
+        <p className="text-xs text-ink-3">
           Se leen automáticamente los correos bancarios de cada una.
         </p>
       </div>
 
       <div className="flex flex-col gap-2">
         {connections.length === 0 && (
-          <p className="text-xs text-zinc-600">No hay ninguna cuenta conectada.</p>
+          <p className="text-xs text-ink-3">No hay ninguna cuenta conectada.</p>
         )}
         <AnimatePresence initial={false}>
           {connections.map((c) => (
@@ -58,14 +58,14 @@ export function GmailConnections({ connections }: { connections: GmailConnection
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={pop}
-              className="flex items-center gap-3 rounded-xl border border-white/10 bg-zinc-950 p-3"
+              className="flex items-center gap-3 rounded-xl border border-line bg-ground p-3"
             >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-800">
-                <EnvelopeSimple size={14} weight="bold" className="text-zinc-400" />
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-raised">
+                <EnvelopeSimple size={14} weight="bold" className="text-ink-2" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm text-zinc-100">{c.email ?? "Cuenta conectada"}</p>
-                <p className="text-xs text-zinc-500">{formatLastSync(c.last_synced_at)}</p>
+                <p className="truncate text-sm text-ink">{c.email ?? "Cuenta conectada"}</p>
+                <p className="text-xs text-ink-3">{formatLastSync(c.last_synced_at)}</p>
               </div>
               <motion.button
                 onClick={() => disconnect(c.id, c.email)}
@@ -73,7 +73,7 @@ export function GmailConnections({ connections }: { connections: GmailConnection
                 aria-label={`Desconectar ${c.email}`}
                 whileTap={reduce ? undefined : { scale: 0.85 }}
                 transition={tap}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-rose-400 disabled:opacity-40 cursor-pointer"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-surface-raised hover:text-rose-400 disabled:opacity-40 cursor-pointer"
               >
                 <X size={14} weight="bold" />
               </motion.button>
@@ -87,7 +87,7 @@ export function GmailConnections({ connections }: { connections: GmailConnection
         whileHover={reduce ? undefined : { scale: 1.01 }}
         whileTap={reduce ? undefined : { scale: 0.98 }}
         transition={tap}
-        className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/15 py-2.5 text-xs font-medium text-zinc-400 transition-colors hover:border-white/30 hover:text-zinc-100"
+        className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/15 py-2.5 text-xs font-medium text-ink-2 transition-colors hover:border-white/30 hover:text-ink"
       >
         <Plus size={14} weight="bold" />
         Conectar otra cuenta de Gmail

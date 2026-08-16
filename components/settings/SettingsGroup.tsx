@@ -19,7 +19,7 @@ export function SettingsGroup({
       className="animate-fade-up flex flex-col gap-3"
       style={{ animationDelay: `${delayMs}ms` }}
     >
-      <h2 className="px-1 text-xs font-semibold uppercase tracking-wider text-zinc-600">
+      <h2 className="px-1 text-xs font-semibold uppercase tracking-wider text-ink-3">
         {label}
       </h2>
       <div className="flex flex-col gap-3">{children}</div>

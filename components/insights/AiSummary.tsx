@@ -22,12 +22,12 @@ export function AiSummary({ snapshot }: { snapshot: FinanceSnapshot }) {
   }
 
   return (
-    <section className="animate-fade-up rounded-2xl border border-orange-400/20 bg-gradient-to-br from-orange-400/[0.06] to-transparent p-5">
+    <section className="animate-fade-up rounded-2xl border border-accent/20 bg-gradient-to-br from-accent/[0.06] to-transparent p-5">
       <div className="flex items-center gap-2">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-400/10 text-orange-400">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
           <Sparkle size={14} weight="fill" />
         </div>
-        <h2 className="text-sm font-medium text-zinc-300">Resumen con IA</h2>
+        <h2 className="text-sm font-medium text-ink-2">Resumen con IA</h2>
       </div>
 
       <AnimatePresence mode="wait">
@@ -39,12 +39,12 @@ export function AiSummary({ snapshot }: { snapshot: FinanceSnapshot }) {
             exit={{ opacity: 0 }}
             className="mt-3 flex flex-wrap items-center justify-between gap-3"
           >
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-ink-3">
               Un resumen corto de cómo viene tu mes, generado por Claude.
             </p>
             <button
               onClick={generate}
-              className="flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-orange-400/10 px-3 text-xs font-semibold text-orange-300 transition-colors hover:bg-orange-400/15 cursor-pointer"
+              className="flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-accent/10 px-3 text-xs font-semibold text-accent-soft transition-colors hover:bg-accent/15 cursor-pointer"
             >
               <Sparkle size={13} weight="fill" />
               Generar resumen
@@ -58,7 +58,7 @@ export function AiSummary({ snapshot }: { snapshot: FinanceSnapshot }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="mt-3 flex items-center gap-2 text-xs text-orange-400"
+            className="mt-3 flex items-center gap-2 text-xs text-accent"
           >
             <motion.span
               animate={reduce ? undefined : { rotate: 360 }}
@@ -79,10 +79,10 @@ export function AiSummary({ snapshot }: { snapshot: FinanceSnapshot }) {
             exit={{ opacity: 0 }}
             className="mt-3 flex flex-col gap-3"
           >
-            <p className="text-sm leading-relaxed text-zinc-200">{summary}</p>
+            <p className="text-sm leading-relaxed text-ink">{summary}</p>
             <button
               onClick={generate}
-              className="flex w-fit items-center gap-1.5 text-xs text-zinc-500 transition-colors hover:text-zinc-300 cursor-pointer"
+              className="flex w-fit items-center gap-1.5 text-xs text-ink-3 transition-colors hover:text-ink-2 cursor-pointer"
             >
               <ArrowsClockwise size={12} weight="bold" />
               Regenerar

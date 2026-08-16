@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Skills de agentes instaladas con `npx skills add`: son código de
+    // terceros que no forma parte de la app y no tiene por qué cumplir
+    // nuestras reglas de lint.
+    "agent/**",
+    ".agents/**",
+    ".claude/**",
   ]),
 ]);
 

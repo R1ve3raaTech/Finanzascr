@@ -113,7 +113,7 @@ export function GoalModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-zinc-950/70 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-ground/70 backdrop-blur-sm"
           />
           <motion.div
             role="dialog"
@@ -123,16 +123,16 @@ export function GoalModal({
             animate={{ opacity: 1, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
             transition={spring}
-            className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-md -translate-y-1/2 overflow-y-auto rounded-2xl border border-white/10 bg-zinc-900 p-6 sm:inset-x-0"
+            className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-md -translate-y-1/2 overflow-y-auto rounded-2xl border border-line bg-surface p-6 sm:inset-x-0"
           >
             <div className="mb-4 flex items-center justify-between gap-4">
-              <h2 className="text-base font-semibold text-zinc-50">
+              <h2 className="text-base font-semibold text-ink">
                 {goal ? "Editar meta" : "Nueva meta de ahorro"}
               </h2>
               <button
                 onClick={onClose}
                 aria-label="Cerrar"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 cursor-pointer"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-raised hover:text-ink cursor-pointer"
               >
                 <X size={16} weight="bold" />
               </button>
@@ -144,12 +144,12 @@ export function GoalModal({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="¿Para qué? (ej. Viaje a Nicaragua)"
-                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-orange-400/50"
+                className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/50"
               />
 
               <div className="flex flex-col items-center gap-3">
                 <div className="flex items-center justify-center gap-2">
-                  <span className="font-mono text-3xl text-zinc-500">
+                  <span className="font-mono text-3xl text-ink-3">
                     {CURRENCY_SYMBOL[currency]}
                   </span>
                   <input
@@ -157,18 +157,18 @@ export function GoalModal({
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0"
-                    className="w-40 bg-transparent text-center font-mono text-5xl text-zinc-50 outline-none placeholder:text-zinc-700"
+                    className="w-40 bg-transparent text-center font-mono text-5xl text-ink outline-none placeholder:text-ink-3"
                   />
                 </div>
-                <div className="flex rounded-xl border border-white/10 p-1">
+                <div className="flex rounded-xl border border-line p-1">
                   {(["CRC", "USD"] as const).map((c) => (
                     <button
                       key={c}
                       onClick={() => setCurrency(c)}
                       className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors cursor-pointer ${
                         currency === c
-                          ? "bg-zinc-800 text-zinc-50"
-                          : "text-zinc-500 hover:text-zinc-300"
+                          ? "bg-surface-raised text-ink"
+                          : "text-ink-3 hover:text-ink-2"
                       }`}
                     >
                       {CURRENCY_SYMBOL[c]} {CURRENCY_LABEL[c]}
@@ -178,14 +178,14 @@ export function GoalModal({
               </div>
 
               <label className="flex flex-col gap-1.5">
-                <span className="text-xs font-medium text-zinc-400">
-                  ¿Para cuándo? <span className="font-normal text-zinc-600">(opcional)</span>
+                <span className="text-xs font-medium text-ink-2">
+                  ¿Para cuándo? <span className="font-normal text-ink-3">(opcional)</span>
                 </span>
                 <input
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
+                  className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
                 />
               </label>
 
@@ -205,7 +205,7 @@ export function GoalModal({
                 <button
                   onClick={handleSave}
                   disabled={isPending}
-                  className="flex-1 rounded-xl bg-orange-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                  className="flex-1 rounded-xl bg-accent py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
                 >
                   {isPending ? "Guardando..." : goal ? "Guardar cambios" : "Crear meta"}
                 </button>

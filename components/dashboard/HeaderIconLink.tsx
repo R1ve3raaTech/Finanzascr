@@ -31,7 +31,7 @@ export function HeaderIconLink({
         whileHover={reduce ? undefined : { scale: 1.03 }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={tap}
-        className="flex h-8 items-center gap-1.5 rounded-full border border-white/10 px-2.5 text-xs font-medium text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100 sm:px-3"
+        className="flex h-8 items-center gap-1.5 rounded-full border border-line px-2.5 text-xs font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink sm:px-3"
       >
         {children}
         <span>{label}</span>
@@ -46,7 +46,7 @@ export function HeaderIconLink({
       whileHover={reduce ? undefined : { scale: 1.08, rotate: hoverRotate }}
       whileTap={reduce ? undefined : { scale: 0.92, rotate: 0 }}
       transition={tap}
-      className="flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-zinc-100"
+      className="flex h-8 w-8 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface hover:text-ink"
     >
       {children}
     </MotionLink>

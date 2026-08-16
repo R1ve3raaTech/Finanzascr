@@ -27,8 +27,8 @@ const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between border-b border-white/5 py-2.5 last:border-0">
-      <span className="text-xs text-zinc-500">{label}</span>
-      <span className="text-sm text-zinc-200">{value}</span>
+      <span className="text-xs text-ink-3">{label}</span>
+      <span className="text-sm text-ink">{value}</span>
     </div>
   );
 }
@@ -41,8 +41,8 @@ function FieldLabel({
   children: React.ReactNode;
 }) {
   return (
-    <span className="flex items-center gap-1.5 text-xs font-medium text-zinc-400">
-      <Icon size={13} weight="bold" className="text-zinc-600" />
+    <span className="flex items-center gap-1.5 text-xs font-medium text-ink-2">
+      <Icon size={13} weight="bold" className="text-ink-3" />
       {children}
     </span>
   );
@@ -171,7 +171,7 @@ export function TransactionDetailModal({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={handleClose}
-              className="fixed inset-0 z-50 bg-zinc-950/70 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-ground/70 backdrop-blur-sm"
             />
             <motion.div
               role="dialog"
@@ -181,7 +181,7 @@ export function TransactionDetailModal({
               animate={{ opacity: 1, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
               transition={spring}
-              className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-md -translate-y-1/2 overflow-y-auto rounded-2xl border border-white/10 bg-zinc-900 p-6 sm:inset-x-0"
+              className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-md -translate-y-1/2 overflow-y-auto rounded-2xl border border-line bg-surface p-6 sm:inset-x-0"
             >
               {!editing ? (
                 <>
@@ -189,13 +189,13 @@ export function TransactionDetailModal({
                     <div className="flex items-start gap-3">
                       <BankLogo bank={transaction.bank_name} size={36} />
                       <div>
-                        <p className="text-base font-semibold text-zinc-50">
+                        <p className="text-base font-semibold text-ink">
                           {transaction.description ??
                             (transaction.type === "INCOME" ? "Ingreso" : "Gasto")}
                         </p>
                         <p
                           className={`mt-1 font-mono text-lg ${
-                            transaction.type === "INCOME" ? "text-emerald-400" : "text-zinc-300"
+                            transaction.type === "INCOME" ? "text-emerald-400" : "text-ink-2"
                           }`}
                         >
                           {transaction.type === "INCOME" ? "+" : "-"}
@@ -206,7 +206,7 @@ export function TransactionDetailModal({
                     <button
                       onClick={handleClose}
                       aria-label="Cerrar"
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 cursor-pointer"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-raised hover:text-ink cursor-pointer"
                     >
                       <X size={16} weight="bold" />
                     </button>
@@ -250,7 +250,7 @@ export function TransactionDetailModal({
                     <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={startEditing}
-                        className="flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 cursor-pointer"
+                        className="flex items-center gap-2 rounded-full border border-line px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink cursor-pointer"
                       >
                         <PencilSimple size={14} weight="bold" />
                         Editar
@@ -268,25 +268,25 @@ export function TransactionDetailModal({
               ) : (
                 <>
                   <div className="mb-5 flex items-center justify-between gap-4">
-                    <h2 className="text-base font-semibold text-zinc-50">Editar movimiento</h2>
+                    <h2 className="text-base font-semibold text-ink">Editar movimiento</h2>
                     <button
                       onClick={() => setEditing(false)}
                       aria-label="Cancelar edición"
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 cursor-pointer"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-raised hover:text-ink cursor-pointer"
                     >
                       <X size={16} weight="bold" />
                     </button>
                   </div>
 
                   <div className="flex flex-col gap-5">
-                    <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-zinc-950/40 p-5">
-                      <div className="flex rounded-xl border border-white/10 p-1">
+                    <div className="flex flex-col items-center gap-4 rounded-2xl border border-line bg-ground/40 p-5">
+                      <div className="flex rounded-xl border border-line p-1">
                         <button
                           onClick={() => pickType("EXPENSE")}
                           className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                             type === "EXPENSE"
-                              ? "bg-zinc-800 text-zinc-50"
-                              : "text-zinc-500 hover:text-zinc-300"
+                              ? "bg-surface-raised text-ink"
+                              : "text-ink-3 hover:text-ink-2"
                           }`}
                         >
                           Gasto
@@ -296,7 +296,7 @@ export function TransactionDetailModal({
                           className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                             type === "INCOME"
                               ? "bg-emerald-400/15 text-emerald-300"
-                              : "text-zinc-500 hover:text-zinc-300"
+                              : "text-ink-3 hover:text-ink-2"
                           }`}
                         >
                           Ingreso
@@ -304,7 +304,7 @@ export function TransactionDetailModal({
                       </div>
 
                       <div className="flex items-center justify-center gap-2">
-                        <span className="font-mono text-3xl text-zinc-500">
+                        <span className="font-mono text-3xl text-ink-3">
                           {CURRENCY_SYMBOL[currency]}
                         </span>
                         <input
@@ -312,18 +312,18 @@ export function TransactionDetailModal({
                           value={amount}
                           onChange={(e) => setAmount(e.target.value)}
                           placeholder="0"
-                          className="w-40 bg-transparent text-center font-mono text-5xl text-zinc-50 outline-none placeholder:text-zinc-700"
+                          className="w-40 bg-transparent text-center font-mono text-5xl text-ink outline-none placeholder:text-ink-3"
                         />
                       </div>
-                      <div className="flex rounded-xl border border-white/10 p-1">
+                      <div className="flex rounded-xl border border-line p-1">
                         {(["CRC", "USD"] as const).map((c) => (
                           <button
                             key={c}
                             onClick={() => setCurrency(c)}
                             className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors cursor-pointer ${
                               currency === c
-                                ? "bg-zinc-800 text-zinc-50"
-                                : "text-zinc-500 hover:text-zinc-300"
+                                ? "bg-surface-raised text-ink"
+                                : "text-ink-3 hover:text-ink-2"
                             }`}
                           >
                             {CURRENCY_SYMBOL[c]} {CURRENCY_LABEL[c]}
@@ -338,7 +338,7 @@ export function TransactionDetailModal({
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Opcional"
-                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-orange-400/50"
+                        className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/50"
                       />
                     </div>
 
@@ -351,8 +351,8 @@ export function TransactionDetailModal({
                             onClick={() => setCategory(c)}
                             className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                               category === c
-                                ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
-                                : "border-white/10 text-zinc-400 hover:border-white/20"
+                                ? "border-accent/50 bg-accent/10 text-accent-soft"
+                                : "border-line text-ink-2 hover:border-white/20"
                             }`}
                           >
                             {c}
@@ -370,8 +370,8 @@ export function TransactionDetailModal({
                             onClick={() => setBank(b)}
                             className={`flex items-center gap-1.5 rounded-full border py-1 pl-1 pr-3 text-xs font-medium transition-colors cursor-pointer ${
                               bank === b
-                                ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
-                                : "border-white/10 text-zinc-400 hover:border-white/20"
+                                ? "border-accent/50 bg-accent/10 text-accent-soft"
+                                : "border-line text-ink-2 hover:border-white/20"
                             }`}
                           >
                             <BankLogo bank={b} size={18} />
@@ -387,7 +387,7 @@ export function TransactionDetailModal({
                         type="datetime-local"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
-                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
+                        className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
                       />
                     </div>
 
@@ -397,14 +397,14 @@ export function TransactionDetailModal({
                       <button
                         onClick={() => setEditing(false)}
                         disabled={isPending}
-                        className="flex-1 rounded-xl border border-white/10 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 disabled:opacity-50 cursor-pointer"
+                        className="flex-1 rounded-xl border border-line py-3 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-50 cursor-pointer"
                       >
                         Cancelar
                       </button>
                       <button
                         onClick={handleSave}
                         disabled={isPending}
-                        className="flex-1 rounded-xl bg-orange-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                        className="flex-1 rounded-xl bg-accent py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
                       >
                         {isPending ? "Guardando..." : "Guardar cambios"}
                       </button>

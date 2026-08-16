@@ -19,7 +19,7 @@ export function SupportedBanks({ banks }: { banks: { bank: BankName; label: stri
           className="flex flex-col items-center gap-2"
         >
           <BankLogo bank={bank} size={52} />
-          <span className="text-xs font-medium text-zinc-400">{label}</span>
+          <span className="text-xs font-medium text-ink-2">{label}</span>
         </motion.div>
       ))}
     </div>

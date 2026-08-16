@@ -43,21 +43,21 @@ export function AuthShowcase() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative hidden overflow-hidden border-l border-white/10 bg-zinc-950 lg:flex lg:flex-col lg:justify-between">
+    <div className="relative hidden overflow-hidden border-l border-line bg-ground lg:flex lg:flex-col lg:justify-between">
       {/* Blobs de fondo, a la deriva en loop. Solo transform + opacity. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <div className="auth-blob-a absolute left-[-10%] top-[10%] h-[28rem] w-[28rem] rounded-full bg-orange-400/10 blur-[110px]" />
+        <div className="auth-blob-a absolute left-[-10%] top-[10%] h-[28rem] w-[28rem] rounded-full bg-accent/10 blur-[110px]" />
         <div className="auth-blob-b absolute bottom-[-10%] right-[-5%] h-[24rem] w-[24rem] rounded-full bg-emerald-400/[0.06] blur-[110px]" />
       </div>
 
       <div className="relative flex flex-1 flex-col justify-center px-16">
-        <p className="max-w-[26ch] text-2xl font-semibold leading-snug tracking-tight text-zinc-50">
+        <p className="max-w-[26ch] text-2xl font-semibold leading-snug tracking-tight text-ink">
           Tus movimientos aparecen solos, mientras vos hacés otra cosa.
         </p>
-        <p className="mt-3 max-w-[34ch] text-sm leading-relaxed text-zinc-500">
+        <p className="mt-3 max-w-[34ch] text-sm leading-relaxed text-ink-3">
           Cada notificación de tu banco se convierte en un gasto o ingreso
           categorizado, en tiempo real.
         </p>
@@ -96,16 +96,16 @@ export function AuthShowcase() {
                 top: 0,
                 rotate: card.rotate,
               }}
-              className="flex w-64 items-center gap-3 rounded-2xl border border-white/10 bg-zinc-900/90 p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur"
+              className="flex w-64 items-center gap-3 rounded-2xl border border-line bg-surface/90 p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur"
             >
               <BankLogo bank={card.bank} size={36} />
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm text-zinc-100">{card.description}</p>
-                <p className="text-xs text-zinc-500">{card.bank}</p>
+                <p className="truncate text-sm text-ink">{card.description}</p>
+                <p className="text-xs text-ink-3">{card.bank}</p>
               </div>
               <span
                 className={`shrink-0 font-mono text-sm ${
-                  card.income ? "text-emerald-400" : "text-zinc-300"
+                  card.income ? "text-emerald-400" : "text-ink-2"
                 }`}
               >
                 {card.amount}
@@ -116,7 +116,7 @@ export function AuthShowcase() {
       </div>
 
       {/* Marquee de bancos, en loop infinito. */}
-      <div className="relative border-t border-white/10 py-6">
+      <div className="relative border-t border-line py-6">
         <div className={`flex w-max gap-12 ${reduce ? "" : "auth-marquee"}`}>
           {[...marqueeBanks, ...marqueeBanks].map((bank, i) => (
             <div key={`${bank}-${i}`} className="flex shrink-0 items-center gap-2 opacity-60">

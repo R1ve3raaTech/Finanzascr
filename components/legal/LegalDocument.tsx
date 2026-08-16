@@ -23,13 +23,13 @@ export function LegalDocument({
   children: ReactNode;
 }) {
   return (
-    <main className="flex min-h-[100dvh] flex-col bg-zinc-950 text-zinc-100">
-      <header className="border-b border-white/10">
+    <main className="flex min-h-[100dvh] flex-col bg-ground text-ink">
+      <header className="border-b border-line">
         <div className="mx-auto flex h-[68px] w-full max-w-2xl items-center gap-3 px-4 sm:px-6">
           <Link
             href="/"
             aria-label="Volver al inicio"
-            className="flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-zinc-100"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface hover:text-ink"
           >
             <ArrowLeft size={18} weight="bold" />
           </Link>
@@ -39,18 +39,18 @@ export function LegalDocument({
 
       <article className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-14 sm:px-6">
         <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{title}</h1>
-        <p className="mt-3 text-sm text-zinc-500">Última actualización: {updatedAt}.</p>
-        <div className="mt-4 max-w-[62ch] text-base leading-relaxed text-zinc-300">{intro}</div>
+        <p className="mt-3 text-sm text-ink-3">Última actualización: {updatedAt}.</p>
+        <div className="mt-4 max-w-[62ch] text-base leading-relaxed text-ink-2">{intro}</div>
 
         {summary && (
           <div className="mt-10 border-y border-white/15 py-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-zinc-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-ink-3">
               {summary.label}
             </p>
             <ul className="mt-3 flex flex-col gap-2">
               {summary.items.map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-relaxed text-zinc-300">
-                  <span className="text-zinc-600">—</span>
+                <li key={item} className="flex gap-3 text-sm leading-relaxed text-ink-2">
+                  <span className="text-ink-3">—</span>
                   {item}
                 </li>
               ))}
@@ -74,12 +74,12 @@ export function LegalSection({
   children: ReactNode;
 }) {
   return (
-    <section className="flex flex-col gap-3 border-t border-white/10 py-8 first:border-t-0">
+    <section className="flex flex-col gap-3 border-t border-line py-8 first:border-t-0">
       <div className="flex items-baseline gap-3">
-        <span className="font-mono text-xs text-zinc-600">{String(number).padStart(2, "0")}</span>
+        <span className="font-mono text-xs text-ink-3">{String(number).padStart(2, "0")}</span>
         <h2 className="text-lg font-semibold text-white">{title}</h2>
       </div>
-      <div className="flex flex-col gap-3 pl-[calc(1.75rem)] text-[15px] leading-relaxed text-zinc-400 [&_a]:text-white [&_a]:underline [&_a]:decoration-zinc-600 [&_a]:underline-offset-2 [&_a]:transition-colors [&_a:hover]:decoration-white [&_li]:pl-1 [&_span]:text-zinc-200">
+      <div className="flex flex-col gap-3 pl-[calc(1.75rem)] text-[15px] leading-relaxed text-ink-2 [&_a]:text-white [&_a]:underline [&_a]:decoration-ink-3 [&_a]:underline-offset-2 [&_a]:transition-colors [&_a:hover]:decoration-white [&_li]:pl-1 [&_span]:text-ink">
         {children}
       </div>
     </section>

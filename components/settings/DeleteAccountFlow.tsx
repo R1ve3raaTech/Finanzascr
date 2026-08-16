@@ -71,8 +71,8 @@ export function DeleteAccountFlow({ email }: { email: string }) {
     <>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-sm font-medium text-zinc-100">Eliminar cuenta</h3>
-          <p className="text-xs text-zinc-500">
+          <h3 className="text-sm font-medium text-ink">Eliminar cuenta</h3>
+          <p className="text-xs text-ink-3">
             Borra tu cuenta y todos tus datos para siempre. No se puede deshacer.
           </p>
         </div>
@@ -97,7 +97,7 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onClick={close}
-                  className="fixed inset-0 z-50 bg-zinc-950/70 backdrop-blur-sm"
+                  className="fixed inset-0 z-50 bg-ground/70 backdrop-blur-sm"
                 />
                 <motion.div
                   role="alertdialog"
@@ -107,23 +107,23 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={reduce ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.97 }}
                   transition={spring}
-                  className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-sm -translate-y-1/2 overflow-y-auto rounded-2xl border border-rose-400/20 bg-zinc-900 p-6 sm:inset-x-0"
+                  className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-sm -translate-y-1/2 overflow-y-auto rounded-2xl border border-rose-400/20 bg-surface p-6 sm:inset-x-0"
                 >
                   {step === "warn" && (
                     <>
                       <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-rose-400/10">
                         <ShieldWarning size={22} weight="bold" className="text-rose-400" />
                       </div>
-                      <h2 className="text-base font-semibold text-zinc-50">
+                      <h2 className="text-base font-semibold text-ink">
                         ¿Eliminar tu cuenta permanentemente?
                       </h2>
-                      <p className="mt-1.5 text-sm text-zinc-400">
+                      <p className="mt-1.5 text-sm text-ink-2">
                         Se borran tus transacciones, categorías, presupuestos, metas y la
                         conexión con Gmail. No hay forma de recuperarlo después.
                       </p>
-                      <p className="mt-3 text-xs text-zinc-500">
+                      <p className="mt-3 text-xs text-ink-3">
                         Te vamos a mandar un código de un solo uso a{" "}
-                        <span className="text-zinc-300">{email}</span> para confirmar que sos
+                        <span className="text-ink-2">{email}</span> para confirmar que sos
                         vos.
                       </p>
 
@@ -133,14 +133,14 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                         <button
                           onClick={close}
                           disabled={pending}
-                          className="rounded-xl border border-white/10 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 disabled:opacity-50 cursor-pointer"
+                          className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-50 cursor-pointer"
                         >
                           Cancelar
                         </button>
                         <button
                           onClick={sendCode}
                           disabled={pending}
-                          className="flex items-center justify-center gap-1.5 rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-zinc-50 transition-colors hover:bg-rose-400 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+                          className="flex items-center justify-center gap-1.5 rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-400 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                         >
                           <EnvelopeSimple size={15} weight="bold" />
                           {pending ? "Enviando..." : "Mandar código"}
@@ -154,12 +154,12 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                       <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-rose-400/10">
                         <EnvelopeSimple size={22} weight="bold" className="text-rose-400" />
                       </div>
-                      <h2 className="text-base font-semibold text-zinc-50">Revisá tu correo</h2>
-                      <p className="mt-1.5 text-sm text-zinc-400">
+                      <h2 className="text-base font-semibold text-ink">Revisá tu correo</h2>
+                      <p className="mt-1.5 text-sm text-ink-2">
                         Te mandamos un código de 8 dígitos a {email}. Vence en 10 minutos.
                       </p>
 
-                      <label className="mt-4 flex flex-col gap-1.5 text-xs text-zinc-500">
+                      <label className="mt-4 flex flex-col gap-1.5 text-xs text-ink-3">
                         Código de 8 dígitos
                         <input
                           value={code}
@@ -167,11 +167,11 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                           inputMode="numeric"
                           autoFocus
                           placeholder="00000000"
-                          className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 font-mono text-lg tracking-[0.2em] text-zinc-50 outline-none transition-colors focus:border-rose-400/50"
+                          className="rounded-lg border border-line bg-ground px-3 py-2 font-mono text-lg tracking-[0.2em] text-ink outline-none transition-colors focus:border-rose-400/50"
                         />
                       </label>
 
-                      <label className="mt-3 flex flex-col gap-1.5 text-xs text-zinc-500">
+                      <label className="mt-3 flex flex-col gap-1.5 text-xs text-ink-3">
                         Escribí{" "}
                         <span className="font-mono font-semibold text-rose-400">
                           {CONFIRM_WORD}
@@ -180,7 +180,7 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                         <input
                           value={typed}
                           onChange={(e) => setTyped(e.target.value)}
-                          className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-50 outline-none transition-colors focus:border-rose-400/50"
+                          className="rounded-lg border border-line bg-ground px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-rose-400/50"
                         />
                       </label>
 
@@ -190,14 +190,14 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                         <button
                           onClick={close}
                           disabled={pending}
-                          className="rounded-xl border border-white/10 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 disabled:opacity-50 cursor-pointer"
+                          className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-50 cursor-pointer"
                         >
                           Cancelar
                         </button>
                         <button
                           onClick={confirm}
                           disabled={pending || code.length !== 8 || typed !== CONFIRM_WORD}
-                          className="rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-zinc-50 transition-colors hover:bg-rose-400 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+                          className="rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-400 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                         >
                           {pending ? "Eliminando..." : "Eliminar cuenta"}
                         </button>
@@ -206,7 +206,7 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                       <button
                         onClick={sendCode}
                         disabled={pending}
-                        className="mt-3 w-full text-center text-xs text-zinc-600 transition-colors hover:text-zinc-400 disabled:opacity-50 cursor-pointer"
+                        className="mt-3 w-full text-center text-xs text-ink-3 transition-colors hover:text-ink-2 disabled:opacity-50 cursor-pointer"
                       >
                         Reenviar código
                       </button>
@@ -218,8 +218,8 @@ export function DeleteAccountFlow({ email }: { email: string }) {
                       <div className="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-400/10">
                         <Trash size={22} weight="bold" className="text-emerald-400" />
                       </div>
-                      <h2 className="text-base font-semibold text-zinc-50">Cuenta eliminada</h2>
-                      <p className="text-sm text-zinc-400">
+                      <h2 className="text-base font-semibold text-ink">Cuenta eliminada</h2>
+                      <p className="text-sm text-ink-2">
                         Todos tus datos fueron borrados. Te llevamos al inicio...
                       </p>
                     </div>

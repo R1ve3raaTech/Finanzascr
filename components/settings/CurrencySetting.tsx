@@ -27,12 +27,12 @@ export function CurrencySetting({ initial }: { initial: Currency }) {
   return (
     <div className="flex flex-col gap-3">
       <div>
-        <h3 className="text-sm font-medium text-zinc-100">Moneda por defecto</h3>
-        <p className="text-xs text-zinc-500">
+        <h3 className="text-sm font-medium text-ink">Moneda por defecto</h3>
+        <p className="text-xs text-ink-3">
           La que va a venir preseleccionada al registrar efectivo.
         </p>
       </div>
-      <div className="flex rounded-xl border border-white/10 p-1">
+      <div className="flex rounded-xl border border-line p-1">
         {(["CRC", "USD"] as const).map((c) => (
           <motion.button
             key={c}
@@ -42,8 +42,8 @@ export function CurrencySetting({ initial }: { initial: Currency }) {
             transition={tap}
             className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer disabled:opacity-50 ${
               currency === c
-                ? "bg-zinc-800 text-zinc-50"
-                : "text-zinc-500 hover:text-zinc-300"
+                ? "bg-surface-raised text-ink"
+                : "text-ink-3 hover:text-ink-2"
             }`}
           >
             {c === "CRC" ? "₡" : "$"} {CURRENCY_LABEL[c]}

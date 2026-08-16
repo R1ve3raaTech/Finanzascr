@@ -55,7 +55,7 @@ export default function RootLayout({
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden bg-zinc-950 text-zinc-50">
+      <body className="min-h-full flex flex-col overflow-x-hidden bg-ground text-ink">
         <RegisterServiceWorker />
         <ToastProvider>{children}</ToastProvider>
       </body>

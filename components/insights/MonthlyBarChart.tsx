@@ -15,7 +15,7 @@ export function MonthlyBarChart({ data }: { data: MonthTotal[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-4 text-xs text-zinc-500">
+      <div className="flex items-center gap-4 text-xs text-ink-3">
         <span className="flex items-center gap-1.5">
           <span className="h-2 w-2 rounded-full bg-emerald-400" /> Ingresos
         </span>
@@ -51,7 +51,7 @@ export function MonthlyBarChart({ data }: { data: MonthTotal[] }) {
                       }`}
                     />
                     {isHovered && (
-                      <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-lg border border-white/10 bg-zinc-800 px-2 py-1 text-[11px] font-medium text-zinc-100 shadow-lg">
+                      <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-lg border border-line bg-surface-raised px-2 py-1 text-[11px] font-medium text-ink shadow-lg">
                         {formatMoney(value, "CRC")}
                       </div>
                     )}
@@ -59,7 +59,7 @@ export function MonthlyBarChart({ data }: { data: MonthTotal[] }) {
                 );
               })}
             </div>
-            <span className="text-[11px] capitalize text-zinc-500">{d.label}</span>
+            <span className="text-[11px] capitalize text-ink-3">{d.label}</span>
           </div>
         ))}
       </div>

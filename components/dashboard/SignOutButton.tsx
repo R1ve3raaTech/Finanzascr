@@ -22,7 +22,7 @@ export function SignOutButton() {
         whileHover={reduce ? undefined : { scale: 1.04 }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={tap}
-        className="inline-flex items-center gap-2 rounded-full border border-white/10 px-2.5 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100 cursor-pointer sm:px-4"
+        className="inline-flex items-center gap-2 rounded-full border border-line px-2.5 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink cursor-pointer sm:px-4"
       >
         <SignOut size={14} weight="bold" />
         <span className="hidden sm:inline">Salir</span>
@@ -36,7 +36,7 @@ export function SignOutButton() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setConfirming(false)}
-              className="fixed inset-0 z-50 bg-zinc-950/70 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-ground/70 backdrop-blur-sm"
             />
             <motion.div
               role="alertdialog"
@@ -46,12 +46,12 @@ export function SignOutButton() {
               animate={{ opacity: 1, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
               transition={spring}
-              className="fixed inset-x-4 top-1/2 z-50 mx-auto max-w-sm -translate-y-1/2 rounded-2xl border border-white/10 bg-zinc-900 p-6 sm:inset-x-0"
+              className="fixed inset-x-4 top-1/2 z-50 mx-auto max-w-sm -translate-y-1/2 rounded-2xl border border-line bg-surface p-6 sm:inset-x-0"
             >
-              <h2 className="text-base font-semibold text-zinc-50">
+              <h2 className="text-base font-semibold text-ink">
                 ¿Cerrar sesión?
               </h2>
-              <p className="mt-1.5 text-sm text-zinc-400">
+              <p className="mt-1.5 text-sm text-ink-2">
                 Vas a tener que volver a iniciar sesión con Google para ver tu dashboard.
               </p>
               <div className="mt-5 grid grid-cols-2 gap-2">
@@ -59,7 +59,7 @@ export function SignOutButton() {
                   onClick={() => setConfirming(false)}
                   whileTap={reduce ? undefined : { scale: 0.97 }}
                   transition={tap}
-                  className="rounded-xl border border-white/10 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100 cursor-pointer"
+                  className="rounded-xl border border-line py-2.5 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink cursor-pointer"
                 >
                   Cancelar
                 </motion.button>
@@ -67,7 +67,7 @@ export function SignOutButton() {
                   onClick={() => signOut()}
                   whileTap={reduce ? undefined : { scale: 0.97 }}
                   transition={tap}
-                  className="rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-zinc-50 transition-colors hover:bg-rose-400 cursor-pointer"
+                  className="rounded-xl bg-rose-500 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-400 cursor-pointer"
                 >
                   Salir
                 </motion.button>

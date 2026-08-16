@@ -53,8 +53,8 @@ export function BudgetManager({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h3 className="text-sm font-medium text-zinc-100">Presupuestos mensuales</h3>
-        <p className="text-xs text-zinc-500">
+        <h3 className="text-sm font-medium text-ink">Presupuestos mensuales</h3>
+        <p className="text-xs text-ink-3">
           Te avisamos por push cuando te pasás del límite en una categoría.
         </p>
       </div>
@@ -69,13 +69,13 @@ export function BudgetManager({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
               transition={pop}
-              className="flex items-center gap-3 rounded-xl border border-white/10 bg-zinc-950 p-3"
+              className="flex items-center gap-3 rounded-xl border border-line bg-ground p-3"
             >
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-400/10 text-amber-400">
                 <Wallet size={15} weight="bold" />
               </div>
-              <span className="min-w-0 flex-1 truncate text-sm text-zinc-200">{b.category}</span>
-              <span className="font-mono text-sm text-zinc-400">
+              <span className="min-w-0 flex-1 truncate text-sm text-ink">{b.category}</span>
+              <span className="font-mono text-sm text-ink-2">
                 {formatMoney(b.monthly_limit, b.currency)}
               </span>
               <motion.button
@@ -83,7 +83,7 @@ export function BudgetManager({
                 whileTap={reduce ? undefined : { scale: 0.85 }}
                 transition={tap}
                 aria-label={`Borrar presupuesto de ${b.category}`}
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-rose-400 cursor-pointer"
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-surface-raised hover:text-rose-400 cursor-pointer"
               >
                 <X size={12} weight="bold" />
               </motion.button>
@@ -91,7 +91,7 @@ export function BudgetManager({
           ))}
         </AnimatePresence>
         {budgets.length === 0 && (
-          <p className="text-xs text-zinc-600">No tenés presupuestos configurados.</p>
+          <p className="text-xs text-ink-3">No tenés presupuestos configurados.</p>
         )}
       </ul>
 
@@ -105,7 +105,7 @@ export function BudgetManager({
                 className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                   (category || available[0]) === c
                     ? "border-amber-400/50 bg-amber-400/10 text-amber-300"
-                    : "border-white/10 text-zinc-400 hover:border-white/20"
+                    : "border-line text-ink-2 hover:border-white/20"
                 }`}
               >
                 {c}
@@ -113,8 +113,8 @@ export function BudgetManager({
             ))}
           </div>
           <div className="flex gap-2">
-            <div className="flex flex-1 items-center gap-1.5 rounded-lg border border-white/10 bg-zinc-950 pl-3 pr-1.5">
-              <span className="font-mono text-xs text-zinc-500">
+            <div className="flex flex-1 items-center gap-1.5 rounded-lg border border-line bg-ground pl-3 pr-1.5">
+              <span className="font-mono text-xs text-ink-3">
                 {currency === "CRC" ? "₡" : currency === "USD" ? "$" : "C$"}
               </span>
               <input
@@ -123,15 +123,15 @@ export function BudgetManager({
                 onKeyDown={(e) => e.key === "Enter" && submit()}
                 inputMode="decimal"
                 placeholder="Límite mensual"
-                className="w-full bg-transparent py-1.5 text-xs text-zinc-50 outline-none placeholder:text-zinc-600"
+                className="w-full bg-transparent py-1.5 text-xs text-ink outline-none placeholder:text-ink-3"
               />
-              <div className="flex shrink-0 rounded-md border border-white/10 p-0.5">
+              <div className="flex shrink-0 rounded-md border border-line p-0.5">
                 {(["CRC", "USD"] as const).map((c) => (
                   <button
                     key={c}
                     onClick={() => setCurrency(c)}
                     className={`rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors cursor-pointer ${
-                      currency === c ? "bg-zinc-800 text-zinc-50" : "text-zinc-500"
+                      currency === c ? "bg-surface-raised text-ink" : "text-ink-3"
                     }`}
                   >
                     {c === "CRC" ? "₡" : "$"}

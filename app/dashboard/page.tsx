@@ -46,7 +46,9 @@ export default async function DashboardPage({
   // visible: antes se sumaba solo sobre las transacciones ya traídas (50 o
   // 300), así que en cuanto había más movimientos que ese límite el saldo
   // mostrado quedaba corto (ignoraba los movimientos más viejos).
-  let balanceQuery = supabase.from("transactions").select("amount, currency, type");
+  let balanceQuery = supabase
+    .from("transactions")
+    .select("amount, currency, type, transaction_date");
 
   if (hasRange) {
     transactionsQuery = transactionsQuery
@@ -82,8 +84,21 @@ export default async function DashboardPage({
   const defaultCurrency: Currency = settings?.default_currency ?? "CRC";
 
   const balance = { CRC: 0, USD: 0 };
+  // Ingresos y gastos del mes en curso, en la moneda por defecto del usuario:
+  // el saldo consolidado responde "cuánto tengo", pero lo que uno mira todos
+  // los días es "cuánto entró y cuánto se fue este mes".
+  const monthStart = new Date();
+  monthStart.setDate(1);
+  monthStart.setHours(0, 0, 0, 0);
+  const month = { currency: defaultCurrency, income: 0, expense: 0 };
+
   for (const t of balanceRows ?? []) {
     balance[t.currency as Currency] += t.type === "INCOME" ? t.amount : -t.amount;
+
+    if (t.currency === defaultCurrency && new Date(t.transaction_date) >= monthStart) {
+      if (t.type === "INCOME") month.income += t.amount;
+      else month.expense += t.amount;
+    }
   }
 
   const fullName =
@@ -94,8 +109,8 @@ export default async function DashboardPage({
     ((user.user_metadata?.avatar_url ?? user.user_metadata?.picture) as string | undefined);
 
   return (
-    <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
-      <header className="border-b border-white/10">
+    <main className="flex min-h-[100dvh] flex-col bg-ground">
+      <header className="border-b border-line">
         <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <HeaderIconLink href="/dashboard/settings" label="Ajustes" hoverRotate={45}>
@@ -118,7 +133,12 @@ export default async function DashboardPage({
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pb-28 pt-8 sm:px-6 sm:pb-32 sm:pt-10">
         <DateRangeFilter />
 
-        <BalanceCard crc={balance.CRC} usd={balance.USD} filtered={hasRange} />
+        <BalanceCard
+          crc={balance.CRC}
+          usd={balance.USD}
+          filtered={hasRange}
+          month={hasRange ? undefined : month}
+        />
 
         <section className="flex flex-col">
           <TransactionList

@@ -138,7 +138,7 @@ export function TransactionList({
   return (
     <>
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-sm font-medium text-zinc-400">{title}</h2>
+        <h2 className="text-sm font-medium text-ink-2">{title}</h2>
         <div className="flex items-center gap-2">
           <SyncGmailButton />
           {transactions.length > 0 && (
@@ -146,8 +146,8 @@ export function TransactionList({
               onClick={() => (pickMode ? exitPickMode() : setPickMode(true))}
               className={`flex h-8 items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors cursor-pointer ${
                 pickMode
-                  ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
-                  : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
+                  ? "border-accent/50 bg-accent/10 text-accent-soft"
+                  : "border-line text-ink-2 hover:border-white/20 hover:text-ink"
               }`}
             >
               {pickMode ? <X size={14} weight="bold" /> : <ListChecks size={14} weight="bold" />}
@@ -160,19 +160,19 @@ export function TransactionList({
       {transactions.length > 0 && (
         <div className="mt-3 flex flex-col gap-2">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 flex-1 items-center gap-2 rounded-xl border border-white/10 bg-zinc-950 px-3">
-              <MagnifyingGlass size={14} className="shrink-0 text-zinc-500" />
+            <div className="flex h-9 flex-1 items-center gap-2 rounded-xl border border-line bg-ground px-3">
+              <MagnifyingGlass size={14} className="shrink-0 text-ink-3" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Buscar por descripción, banco o categoría..."
-                className="w-full bg-transparent text-sm text-zinc-100 outline-none placeholder:text-zinc-600"
+                className="w-full bg-transparent text-sm text-ink outline-none placeholder:text-ink-3"
               />
               {query && (
                 <button
                   onClick={() => setQuery("")}
                   aria-label="Limpiar búsqueda"
-                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-zinc-500 hover:text-zinc-200 cursor-pointer"
+                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-ink-3 hover:text-ink cursor-pointer"
                 >
                   <X size={12} weight="bold" />
                 </button>
@@ -183,13 +183,13 @@ export function TransactionList({
               aria-label="Filtros"
               className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-colors cursor-pointer ${
                 showFilters || activeFilterCount > 0
-                  ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
-                  : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
+                  ? "border-accent/50 bg-accent/10 text-accent-soft"
+                  : "border-line text-ink-2 hover:border-white/20 hover:text-ink"
               }`}
             >
               <Funnel size={15} weight="bold" />
               {activeFilterCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-orange-400 text-[10px] font-bold text-zinc-950">
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-zinc-950">
                   {activeFilterCount}
                 </span>
               )}
@@ -205,10 +205,10 @@ export function TransactionList({
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-zinc-900/60 p-3">
+                <div className="flex flex-col gap-3 rounded-xl border border-line bg-surface/60 p-3">
                   {availableCategories.length > 0 && (
                     <div className="flex flex-col gap-1.5">
-                      <span className="text-xs font-medium text-zinc-500">Categoría</span>
+                      <span className="text-xs font-medium text-ink-3">Categoría</span>
                       <div className="flex flex-wrap gap-1.5">
                         {availableCategories.map((c) => (
                           <button
@@ -216,8 +216,8 @@ export function TransactionList({
                             onClick={() => setFilterCategory(filterCategory === c ? null : c)}
                             className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                               filterCategory === c
-                                ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
-                                : "border-white/10 text-zinc-400 hover:border-white/20"
+                                ? "border-accent/50 bg-accent/10 text-accent-soft"
+                                : "border-line text-ink-2 hover:border-white/20"
                             }`}
                           >
                             {c}
@@ -227,7 +227,7 @@ export function TransactionList({
                     </div>
                   )}
                   <div className="flex flex-col gap-1.5">
-                    <span className="text-xs font-medium text-zinc-500">Banco</span>
+                    <span className="text-xs font-medium text-ink-3">Banco</span>
                     <div className="flex flex-wrap gap-1.5">
                       {availableBanks.map((b) => (
                         <button
@@ -235,8 +235,8 @@ export function TransactionList({
                           onClick={() => setFilterBank(filterBank === b ? null : b)}
                           className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
                             filterBank === b
-                              ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
-                              : "border-white/10 text-zinc-400 hover:border-white/20"
+                              ? "border-accent/50 bg-accent/10 text-accent-soft"
+                              : "border-line text-ink-2 hover:border-white/20"
                           }`}
                         >
                           {b}
@@ -247,7 +247,7 @@ export function TransactionList({
                   {activeFilterCount > 0 && (
                     <button
                       onClick={clearFilters}
-                      className="self-start text-xs text-zinc-500 transition-colors hover:text-zinc-300 cursor-pointer"
+                      className="self-start text-xs text-ink-3 transition-colors hover:text-ink-2 cursor-pointer"
                     >
                       Limpiar filtros
                     </button>
@@ -260,20 +260,20 @@ export function TransactionList({
       )}
 
       {transactions.length === 0 ? (
-        <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-white/10 px-6 py-16 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900">
-            <EnvelopeSimple size={22} className="text-zinc-500" />
+        <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-line px-6 py-16 text-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface">
+            <EnvelopeSimple size={22} className="text-ink-3" />
           </div>
-          <p className="text-sm font-medium text-zinc-300">Todavía no hay movimientos</p>
-          <p className="max-w-[38ch] text-sm text-zinc-500">
+          <p className="text-sm font-medium text-ink-2">Todavía no hay movimientos</p>
+          <p className="max-w-[38ch] text-sm text-ink-3">
             Cuando lleguen correos de tus bancos aparecerán aquí solos. También
             podés registrar una compra en efectivo con el botón (+).
           </p>
         </div>
       ) : filteredTransactions.length === 0 ? (
-        <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-white/10 px-6 py-12 text-center">
-          <p className="text-sm font-medium text-zinc-300">Sin resultados</p>
-          <p className="max-w-[38ch] text-sm text-zinc-500">
+        <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-line px-6 py-12 text-center">
+          <p className="text-sm font-medium text-ink-2">Sin resultados</p>
+          <p className="max-w-[38ch] text-sm text-ink-3">
             Ningún movimiento coincide con la búsqueda o los filtros.
           </p>
           <button
@@ -281,7 +281,7 @@ export function TransactionList({
               setQuery("");
               clearFilters();
             }}
-            className="text-xs font-medium text-orange-400 hover:text-orange-300 cursor-pointer"
+            className="text-xs font-medium text-accent hover:text-accent-soft cursor-pointer"
           >
             Quitar búsqueda y filtros
           </button>
@@ -303,9 +303,9 @@ export function TransactionList({
                       ? {
                           scale: [1, 1.035, 1],
                           boxShadow: [
-                            "0 0 0 0 rgba(251,146,60,0)",
-                            "0 0 0 0 rgba(251,146,60,0.55)",
-                            "0 0 0 14px rgba(251,146,60,0)",
+                            "0 0 0 0 rgba(56,189,248,0)",
+                            "0 0 0 0 rgba(56,189,248,0.55)",
+                            "0 0 0 14px rgba(56,189,248,0)",
                           ],
                         }
                       : { scale: 1 }
@@ -326,17 +326,17 @@ export function TransactionList({
                     onClick={() => handleRowClick(t)}
                     className={`relative flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-colors cursor-pointer ${
                       isPicked
-                        ? "border-orange-400/50 bg-orange-400/5"
+                        ? "border-accent/50 bg-accent/5"
                         : isNew
-                          ? "border-orange-400/40 bg-orange-400/5"
-                          : "border-white/10 bg-zinc-900/60 hover:border-white/20"
+                          ? "border-accent/40 bg-accent/5"
+                          : "border-line bg-surface/60 hover:border-white/20"
                     }`}
                   >
                     {pickMode && (
                       <span
                         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors ${
                           isPicked
-                            ? "border-orange-400 bg-orange-400 text-zinc-950"
+                            ? "border-accent bg-accent text-zinc-950"
                             : "border-white/20 text-transparent"
                         }`}
                       >
@@ -345,19 +345,19 @@ export function TransactionList({
                     )}
                     <BankLogo bank={t.bank_name} size={40} />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm text-zinc-100">
+                      <p className="truncate text-sm text-ink">
                         {t.description ?? (income ? "Ingreso" : "Gasto")}
                       </p>
-                      <p className="text-xs text-zinc-500">
+                      <p className="text-xs text-ink-3">
                         {t.bank_name} · {formatDate(t.transaction_date)}
                       </p>
                       {!pickMode && (
-                        <p className="mt-0.5 text-[11px] text-zinc-600">Ver más detalles</p>
+                        <p className="mt-0.5 text-[11px] text-ink-3">Ver más detalles</p>
                       )}
                     </div>
                     <span
                       className={`font-mono text-sm ${
-                        income ? "text-emerald-400" : "text-zinc-300"
+                        income ? "text-emerald-400" : "text-ink-2"
                       }`}
                     >
                       {income ? "+" : "-"}
@@ -371,7 +371,7 @@ export function TransactionList({
                           animate={{ opacity: 1, scale: 1, y: 0 }}
                           exit={{ opacity: 0, scale: 0.7 }}
                           transition={{ type: "spring", stiffness: 420, damping: 20 }}
-                          className="absolute -right-1.5 -top-1.5 rounded-full bg-orange-400 px-2 py-0.5 text-[10px] font-bold tracking-wide text-zinc-950"
+                          className="absolute -right-1.5 -top-1.5 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold tracking-wide text-zinc-950"
                         >
                           NUEVO
                         </motion.span>
@@ -398,16 +398,16 @@ export function TransactionList({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={tap}
-            className="fixed inset-x-4 bottom-24 z-40 mx-auto flex max-w-md items-center justify-between gap-3 rounded-2xl border border-white/10 bg-zinc-900 p-3 pl-4 shadow-[0_8px_30px_rgba(0,0,0,0.4)] sm:inset-x-0"
+            className="fixed inset-x-4 bottom-24 z-40 mx-auto flex max-w-md items-center justify-between gap-3 rounded-2xl border border-line bg-surface p-3 pl-4 shadow-[0_8px_30px_rgba(0,0,0,0.4)] sm:inset-x-0"
           >
-            <span className="text-sm text-zinc-300">
+            <span className="text-sm text-ink-2">
               {pickedIds.size} seleccionado{pickedIds.size === 1 ? "" : "s"}
             </span>
             <div className="flex items-center gap-2">
               <button
                 onClick={exitPickMode}
                 aria-label="Cancelar selección"
-                className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 cursor-pointer"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-raised hover:text-ink cursor-pointer"
               >
                 <X size={16} weight="bold" />
               </button>

@@ -84,10 +84,10 @@ export function WelcomeOnboarding({
   }
 
   return (
-    <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-zinc-950 px-6 py-16 sm:px-10">
+    <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-ground px-6 py-16 sm:px-10">
       <div
         aria-hidden="true"
-        className="auth-blob-a pointer-events-none absolute right-[-15%] top-[-10%] h-[26rem] w-[26rem] rounded-full bg-orange-400/[0.07] blur-[120px]"
+        className="auth-blob-a pointer-events-none absolute right-[-15%] top-[-10%] h-[26rem] w-[26rem] rounded-full bg-accent/[0.07] blur-[120px]"
       />
       <div
         aria-hidden="true"
@@ -99,7 +99,7 @@ export function WelcomeOnboarding({
           initial={reduce ? undefined : { opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="inline-flex w-fit -rotate-2 items-center rounded-md border border-dashed border-white/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-zinc-400"
+          className="inline-flex w-fit -rotate-2 items-center rounded-md border border-dashed border-white/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-ink-2"
         >
           Antes de arrancar
         </motion.span>
@@ -110,10 +110,10 @@ export function WelcomeOnboarding({
           transition={{ duration: 0.5, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col gap-1"
         >
-          <h1 className="text-3xl font-semibold leading-tight tracking-tight text-zinc-50 sm:text-4xl">
+          <h1 className="text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
             Qué bueno tenerte.
           </h1>
-          <p className="text-sm leading-relaxed text-zinc-500">
+          <p className="text-sm leading-relaxed text-ink-3">
             Dos datos opcionales y listo — menos de un minuto.
           </p>
         </motion.div>
@@ -122,14 +122,14 @@ export function WelcomeOnboarding({
           initial={reduce ? undefined : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-4 rounded-2xl border border-white/10 bg-zinc-900/60 p-4"
+          className="flex items-center gap-4 rounded-2xl border border-line bg-surface/60 p-4"
         >
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
             aria-label="Elegir foto de perfil"
-            className="group relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-zinc-950 cursor-pointer disabled:opacity-60"
+            className="group relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-ground cursor-pointer disabled:opacity-60"
           >
             {avatarUrl ? (
               <Image
@@ -140,9 +140,9 @@ export function WelcomeOnboarding({
                 className="h-full w-full object-cover"
               />
             ) : (
-              <Camera size={20} weight="bold" className="text-zinc-600" />
+              <Camera size={20} weight="bold" className="text-ink-3" />
             )}
-            <span className="absolute inset-0 flex items-center justify-center bg-zinc-950/0 text-transparent transition-colors group-hover:bg-zinc-950/50 group-hover:text-zinc-100">
+            <span className="absolute inset-0 flex items-center justify-center bg-ground/0 text-transparent transition-colors group-hover:bg-ground/50 group-hover:text-ink">
               <Camera size={18} weight="bold" />
             </span>
           </button>
@@ -158,9 +158,9 @@ export function WelcomeOnboarding({
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Tu nombre"
-              className="w-full border-b border-white/15 bg-transparent pb-1 text-base font-medium text-zinc-50 outline-none placeholder:text-zinc-600 focus:border-orange-400"
+              className="w-full border-b border-white/15 bg-transparent pb-1 text-base font-medium text-ink outline-none placeholder:text-ink-3 focus:border-accent"
             />
-            <span className="text-xs text-zinc-600">
+            <span className="text-xs text-ink-3">
               {uploading ? "Subiendo tu foto..." : "Tocá el círculo para ponerle una foto (opcional)"}
             </span>
           </div>
@@ -172,15 +172,15 @@ export function WelcomeOnboarding({
           transition={{ duration: 0.5, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col gap-1.5"
         >
-          <span className="text-xs font-medium text-zinc-400">
-            ¿Cuándo es tu cumple? <span className="font-normal text-zinc-600">(opcional — por si un día te queremos saludar)</span>
+          <span className="text-xs font-medium text-ink-2">
+            ¿Cuándo es tu cumple? <span className="font-normal text-ink-3">(opcional — por si un día te queremos saludar)</span>
           </span>
           <input
             type="date"
             value={birthDate}
             onChange={(e) => setBirthDate(e.target.value)}
             max={new Date().toISOString().slice(0, 10)}
-            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
+            className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
           />
         </motion.label>
 
@@ -198,7 +198,7 @@ export function WelcomeOnboarding({
             whileHover={reduce ? undefined : { scale: 1.02 }}
             whileTap={reduce ? undefined : { scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="inline-flex items-center gap-2 rounded-full bg-orange-400 px-6 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
           >
             {pending ? "Guardando..." : "Empezar a usar TicoFinanza"}
             {!pending && <ArrowRight size={16} weight="bold" />}
@@ -206,7 +206,7 @@ export function WelcomeOnboarding({
           <button
             onClick={skip}
             disabled={skipping}
-            className="text-sm text-zinc-500 transition-colors hover:text-zinc-300 cursor-pointer disabled:opacity-40"
+            className="text-sm text-ink-3 transition-colors hover:text-ink-2 cursor-pointer disabled:opacity-40"
           >
             Ahora no
           </button>

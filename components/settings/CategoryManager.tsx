@@ -51,11 +51,11 @@ function CategoryGroup({
 
   return (
     <div className="flex flex-col gap-2">
-      <h4 className="flex items-center gap-1.5 text-xs font-medium text-zinc-400">
+      <h4 className="flex items-center gap-1.5 text-xs font-medium text-ink-2">
         {income ? (
           <ArrowDownLeft size={12} weight="bold" className="text-emerald-400" />
         ) : (
-          <ArrowUpRight size={12} weight="bold" className="text-zinc-500" />
+          <ArrowUpRight size={12} weight="bold" className="text-ink-3" />
         )}
         {title}
       </h4>
@@ -72,7 +72,7 @@ function CategoryGroup({
               className={`flex items-center gap-1.5 rounded-full border py-1.5 pl-3 pr-2 text-xs font-medium ${
                 income
                   ? "border-emerald-400/25 bg-emerald-400/5 text-emerald-300"
-                  : "border-white/10 text-zinc-300"
+                  : "border-line text-ink-2"
               }`}
             >
               {c.name}
@@ -84,7 +84,7 @@ function CategoryGroup({
                 className={`flex h-4 w-4 items-center justify-center rounded-full transition-colors cursor-pointer ${
                   income
                     ? "text-emerald-400/60 hover:bg-emerald-400/15 hover:text-emerald-300"
-                    : "text-zinc-500 hover:bg-zinc-800 hover:text-zinc-200"
+                    : "text-ink-3 hover:bg-surface-raised hover:text-ink"
                 }`}
               >
                 <X size={10} weight="bold" />
@@ -93,7 +93,7 @@ function CategoryGroup({
           ))}
         </AnimatePresence>
         {categories.length === 0 && (
-          <span className="text-xs text-zinc-600">Sin categorías extra todavía.</span>
+          <span className="text-xs text-ink-3">Sin categorías extra todavía.</span>
         )}
       </div>
       <div className="flex gap-2">
@@ -102,7 +102,7 @@ function CategoryGroup({
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && submit()}
           placeholder="Nueva categoría"
-          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-1.5 text-xs text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-orange-400/50"
+          className="w-full rounded-lg border border-line bg-ground px-3 py-1.5 text-xs text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/50"
         />
         <motion.button
           onClick={submit}
@@ -110,7 +110,7 @@ function CategoryGroup({
           aria-label="Agregar categoría"
           whileTap={reduce ? undefined : { scale: 0.88 }}
           transition={tap}
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100 disabled:opacity-40 cursor-pointer"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-line text-ink-2 transition-colors hover:border-white/20 hover:text-ink disabled:opacity-40 cursor-pointer"
         >
           <Plus size={14} weight="bold" />
         </motion.button>
@@ -127,8 +127,8 @@ export function CategoryManager({ categories }: { categories: UserCategory[] }) 
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h3 className="text-sm font-medium text-zinc-100">Categorías personalizadas</h3>
-        <p className="text-xs text-zinc-500">
+        <h3 className="text-sm font-medium text-ink">Categorías personalizadas</h3>
+        <p className="text-xs text-ink-3">
           Se suman a las categorías por defecto al registrar efectivo.
         </p>
       </div>

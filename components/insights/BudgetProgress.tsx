@@ -10,7 +10,7 @@ export function BudgetProgress({
 }) {
   if (budgets.length === 0) {
     return (
-      <p className="text-sm text-zinc-600">
+      <p className="text-sm text-ink-3">
         No tenés presupuestos. Configuralos en Ajustes para ver tu progreso acá.
       </p>
     );
@@ -25,14 +25,14 @@ export function BudgetProgress({
         return (
           <li key={b.id} className="flex flex-col gap-1.5">
             <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-sm">
-              <span className="min-w-0 truncate text-zinc-200">{b.category}</span>
+              <span className="min-w-0 truncate text-ink">{b.category}</span>
               <span
-                className={`shrink-0 font-mono text-xs sm:text-sm ${over ? "text-rose-400" : "text-zinc-400"}`}
+                className={`shrink-0 font-mono text-xs sm:text-sm ${over ? "text-rose-400" : "text-ink-2"}`}
               >
                 {formatMoney(spent, b.currency)} / {formatMoney(b.monthly_limit, b.currency)}
               </span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-surface-raised">
               <div
                 className={`h-full w-full origin-left rounded-full transition-transform duration-500 ${
                   over ? "bg-rose-400" : pct > 0.8 ? "bg-amber-400" : "bg-emerald-400"

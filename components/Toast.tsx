@@ -58,8 +58,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               transition={{ type: "spring", stiffness: 420, damping: 30 }}
               className={`pointer-events-auto flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-md ${
                 t.kind === "success"
-                  ? "border-emerald-400/25 bg-zinc-900/95 text-zinc-100"
-                  : "border-rose-400/25 bg-zinc-900/95 text-zinc-100"
+                  ? "border-emerald-400/25 bg-surface/95 text-ink"
+                  : "border-rose-400/25 bg-surface/95 text-ink"
               }`}
             >
               <span

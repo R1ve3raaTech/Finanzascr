@@ -22,7 +22,7 @@ export function BreakdownList({
   emptyLabel: string;
 }) {
   if (items.length === 0) {
-    return <p className="text-sm text-zinc-600">{emptyLabel}</p>;
+    return <p className="text-sm text-ink-3">{emptyLabel}</p>;
   }
 
   return (
@@ -32,18 +32,18 @@ export function BreakdownList({
         return (
           <li key={item.label} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between gap-3 text-sm">
-              <span className="flex min-w-0 items-center gap-2 text-zinc-200">
+              <span className="flex min-w-0 items-center gap-2 text-ink">
                 <span
                   className="h-2 w-2 shrink-0 rounded-full"
                   style={{ background: color }}
                 />
                 <span className="truncate">{item.label}</span>
               </span>
-              <span className="shrink-0 font-mono text-zinc-400">
+              <span className="shrink-0 font-mono text-ink-2">
                 {formatMoney(item.amount, "CRC")}
               </span>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-raised">
               <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: item.share }}

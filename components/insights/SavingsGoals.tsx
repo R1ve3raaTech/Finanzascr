@@ -39,12 +39,12 @@ export function SavingsGoals({
   return (
     <>
       <div className="mb-1 flex items-center justify-between gap-3">
-        <p className="text-xs text-zinc-600">
+        <p className="text-xs text-ink-3">
           El progreso se calcula solo: ingresos menos gastos en esa moneda desde que creaste la meta.
         </p>
         <button
           onClick={openCreate}
-          className="flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-orange-400/10 px-3 text-xs font-semibold text-orange-300 transition-colors hover:bg-orange-400/15 cursor-pointer"
+          className="flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-accent/10 px-3 text-xs font-semibold text-accent-soft transition-colors hover:bg-accent/15 cursor-pointer"
         >
           <Plus size={14} weight="bold" />
           Nueva meta
@@ -52,7 +52,7 @@ export function SavingsGoals({
       </div>
 
       {goals.length === 0 ? (
-        <p className="mt-3 text-sm text-zinc-600">
+        <p className="mt-3 text-sm text-ink-3">
           Todavía no tenés metas de ahorro. Creá una para ver cuánto llevás acumulado.
         </p>
       ) : (
@@ -66,23 +66,23 @@ export function SavingsGoals({
               <li key={g.id}>
                 <button
                   onClick={() => openEdit(g)}
-                  className="flex w-full flex-col gap-1.5 rounded-xl border border-white/10 bg-zinc-950/40 p-4 text-left transition-colors hover:border-white/20 cursor-pointer"
+                  className="flex w-full flex-col gap-1.5 rounded-xl border border-line bg-ground/40 p-4 text-left transition-colors hover:border-white/20 cursor-pointer"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-sm">
-                    <span className="min-w-0 truncate text-zinc-200">{g.name}</span>
-                    <span className="shrink-0 font-mono text-xs text-zinc-400 sm:text-sm">
+                    <span className="min-w-0 truncate text-ink">{g.name}</span>
+                    <span className="shrink-0 font-mono text-xs text-ink-2 sm:text-sm">
                       {formatMoney(progress, g.currency)} / {formatMoney(g.target_amount, g.currency)}
                     </span>
                   </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-surface-raised">
                     <div
                       className={`h-full w-full origin-left rounded-full transition-transform duration-500 ${
-                        reached ? "bg-emerald-400" : "bg-orange-400"
+                        reached ? "bg-emerald-400" : "bg-accent"
                       }`}
                       style={{ transform: `scaleX(${pct})` }}
                     />
                   </div>
-                  <div className="flex items-center justify-between text-[11px] text-zinc-600">
+                  <div className="flex items-center justify-between text-[11px] text-ink-3">
                     <span>{reached ? "¡Meta cumplida!" : `${Math.round(pct * 100)}%`}</span>
                     {deadline && (
                       <span className={deadline.overdue && !reached ? "text-amber-400" : undefined}>

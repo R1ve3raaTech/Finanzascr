@@ -32,10 +32,10 @@ export function ProfileAvatar({
           alt={name ?? "Perfil"}
           width={32}
           height={32}
-          className="h-8 w-8 rounded-full border border-white/10 object-cover"
+          className="h-8 w-8 rounded-full border border-line object-cover"
         />
       ) : (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-zinc-900 text-xs font-medium text-zinc-300">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-xs font-medium text-ink-2">
           {name?.[0]?.toUpperCase() ?? "?"}
         </div>
       )}

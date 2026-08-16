@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# skills de agentes: se reinstalan con `npx skills experimental_install` a
+# partir de skills-lock.json, que sí se versiona. Los directorios en sí son
+# cientos de archivos de terceros que no son parte de la app.
+/.agents/
+/.claude/
+/agent/

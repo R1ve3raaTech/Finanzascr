@@ -80,34 +80,34 @@ export function MockupPreview() {
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         style={{ rotateX, rotateY, transformPerspective: 900 }}
-        className="relative w-full rounded-2xl border border-white/15 bg-zinc-900/95 p-5 shadow-[0_30px_80px_-24px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.04)_inset]"
+        className="relative w-full rounded-2xl border border-line-strong bg-surface/95 p-5 shadow-[0_30px_80px_-24px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.04)_inset]"
       >
         {/* Correo entrante */}
       <div className="relative h-24">
         {incoming.map((entry) => (
           <div
             key={entry.id}
-            className={`absolute inset-x-0 top-0 flex items-start gap-3 rounded-xl border border-white/10 bg-zinc-800/80 p-3.5 ${entry.emailClass}`}
+            className={`absolute inset-x-0 top-0 flex items-start gap-3 rounded-xl border border-line bg-surface-raised/80 p-3.5 ${entry.emailClass}`}
           >
-            <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-700">
-              <EnvelopeSimple size={16} weight="bold" className="text-zinc-300" />
+            <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-hover">
+              <EnvelopeSimple size={16} weight="bold" className="text-ink-2" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-zinc-300">{entry.from}</p>
-              <p className="truncate text-sm text-zinc-100">{entry.subject}</p>
-              <p className="truncate text-xs text-zinc-500">{entry.body}</p>
+              <p className="text-xs font-medium text-ink-2">{entry.from}</p>
+              <p className="truncate text-sm text-ink">{entry.subject}</p>
+              <p className="truncate text-xs text-ink-3">{entry.body}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <p className="mb-3 mt-4 text-xs font-medium text-zinc-500">
+      <p className="mb-3 mt-4 text-xs font-medium text-ink-3">
         Tus movimientos
       </p>
 
       {/* Lista de transacciones generadas */}
       <div className="relative h-[212px]">
-        <p className="mockup-placeholder absolute inset-x-0 top-0 rounded-xl border border-dashed border-white/10 p-3 text-center text-xs text-zinc-600">
+        <p className="mockup-placeholder absolute inset-x-0 top-0 rounded-xl border border-dashed border-line p-3 text-center text-xs text-ink-3">
           Esperando correos bancarios
         </p>
         {incoming.map((entry, i) => {
@@ -116,19 +116,19 @@ export function MockupPreview() {
           return (
             <div
               key={entry.id}
-              className={`absolute inset-x-0 flex items-center gap-3 rounded-xl border border-white/10 bg-zinc-900 p-3 ${entry.resultClass}`}
+              className={`absolute inset-x-0 flex items-center gap-3 rounded-xl border border-line bg-surface p-3 ${entry.resultClass}`}
               style={{ top: `${i * 70}px` }}
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-800">
-                <Icon size={16} weight="bold" className="text-orange-400" />
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-raised">
+                <Icon size={16} weight="bold" className="text-accent" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm text-zinc-100">{t.description}</p>
-                <p className="text-xs text-zinc-500">{t.bank}</p>
+                <p className="truncate text-sm text-ink">{t.description}</p>
+                <p className="text-xs text-ink-3">{t.bank}</p>
               </div>
               <span
-                className={`font-mono text-sm ${
-                  t.income ? "text-emerald-400" : "text-zinc-300"
+                className={`money font-mono text-sm ${
+                  t.income ? "text-emerald-400" : "text-ink-2"
                 }`}
               >
                 {t.amount}

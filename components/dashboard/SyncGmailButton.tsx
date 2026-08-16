@@ -33,7 +33,7 @@ export function SyncGmailButton() {
   return (
     <div className="flex items-center gap-2">
       {message && (
-        <span className="hidden max-w-[16ch] truncate text-xs text-zinc-500 sm:inline">
+        <span className="hidden max-w-[16ch] truncate text-xs text-ink-3 sm:inline">
           {message}
         </span>
       )}
@@ -44,7 +44,7 @@ export function SyncGmailButton() {
         whileHover={reduce ? undefined : { scale: 1.03 }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={tap}
-        className="flex h-8 items-center gap-1.5 rounded-full bg-orange-400/10 px-3 text-xs font-semibold text-orange-300 shadow-[0_0_0_1px_rgba(251,146,60,0.3)] transition-colors hover:bg-orange-400/15 disabled:opacity-50 cursor-pointer"
+        className="flex h-8 items-center gap-1.5 rounded-full bg-accent/10 px-3 text-xs font-semibold text-accent-soft shadow-[0_0_0_1px_rgba(56,189,248,0.3)] transition-colors hover:bg-accent/15 disabled:opacity-50 cursor-pointer"
       >
         <motion.span
           animate={pending ? { rotate: 360 } : { rotate: 0 }}

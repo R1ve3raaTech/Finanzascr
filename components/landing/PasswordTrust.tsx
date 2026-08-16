@@ -14,7 +14,7 @@ export function PasswordTrust() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-[22ch] text-2xl font-semibold tracking-tighter text-zinc-50 sm:text-3xl"
+          className="max-w-[22ch] text-2xl font-semibold tracking-tighter text-ink sm:text-3xl"
         >
           Nunca te pedimos la clave de tu banca en línea
         </motion.h2>
@@ -24,9 +24,9 @@ export function PasswordTrust() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-4 max-w-[46ch] text-sm leading-relaxed text-zinc-400 sm:text-base"
+          className="mt-4 max-w-[46ch] text-sm leading-relaxed text-ink-2 sm:text-base"
         >
-          Solo pedimos permiso de <span className="text-zinc-200">lectura</span> sobre tu Gmail —
+          Solo pedimos permiso de <span className="text-ink">lectura</span> sobre tu Gmail —
           el mismo tipo de acceso que le darías a cualquier casillero de correo. Podés revocarlo
           cuando quieras desde tu cuenta de Google, sin escribirnos.
         </motion.p>
@@ -36,9 +36,9 @@ export function PasswordTrust() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 inline-flex items-center gap-2 text-xs font-medium text-zinc-500"
+          className="mt-6 inline-flex items-center gap-2 text-xs font-medium text-ink-3"
         >
-          <EnvelopeSimpleOpen size={16} weight="bold" className="text-orange-400" />
+          <EnvelopeSimpleOpen size={16} weight="bold" className="text-accent" />
           Solo lectura sobre tu correo, nunca escritura
         </motion.div>
       </div>
@@ -48,17 +48,17 @@ export function PasswordTrust() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        className="divide-y divide-white/10 rounded-xl border border-white/10"
+        className="divide-y divide-line rounded-xl border border-line"
       >
         <div className="flex items-start gap-3 p-4">
           <Check size={16} weight="bold" className="mt-0.5 shrink-0 text-emerald-400" />
-          <p className="text-sm text-zinc-200">
+          <p className="text-sm text-ink">
             Leemos las notificaciones que tu banco ya te manda por correo.
           </p>
         </div>
         <div className="flex items-start gap-3 p-4">
-          <X size={16} weight="bold" className="mt-0.5 shrink-0 text-zinc-600" />
-          <p className="text-sm text-zinc-500">
+          <X size={16} weight="bold" className="mt-0.5 shrink-0 text-ink-3" />
+          <p className="text-sm text-ink-3">
             Nunca te pedimos usuario ni clave de tu banca en línea.
           </p>
         </div>

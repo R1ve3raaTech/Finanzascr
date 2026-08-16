@@ -171,7 +171,7 @@ export function AddCashModal({
         whileTap={reduce ? undefined : { scale: 0.94 }}
         transition={spring}
         aria-label="Registrar efectivo"
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-zinc-950 shadow-[0_8px_30px_rgba(251,146,60,0.35)] cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-zinc-950 shadow-[0_8px_30px_rgba(56,189,248,0.35)] cursor-pointer"
       >
         <Plus size={24} weight="bold" />
       </motion.button>
@@ -184,7 +184,7 @@ export function AddCashModal({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => !saved && close()}
-              className="fixed inset-0 z-50 bg-zinc-950/70 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-ground/70 backdrop-blur-sm"
             />
             <motion.div
               role="dialog"
@@ -194,15 +194,15 @@ export function AddCashModal({
               animate={{ opacity: 1, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
               transition={spring}
-              className="fixed inset-x-4 top-1/2 z-50 mx-auto flex max-h-[85dvh] max-w-md -translate-y-1/2 flex-col overflow-y-auto rounded-2xl border border-white/10 bg-zinc-900 sm:inset-x-0"
+              className="fixed inset-x-4 top-1/2 z-50 mx-auto flex max-h-[85dvh] max-w-md -translate-y-1/2 flex-col overflow-y-auto rounded-2xl border border-line bg-surface sm:inset-x-0"
             >
               {!saved && (
-                <div className="sticky top-0 z-10 flex items-center justify-between bg-zinc-900 px-6 pt-5 pb-2">
-                  <h2 className="text-base font-semibold text-zinc-50">Nuevo movimiento</h2>
+                <div className="sticky top-0 z-10 flex items-center justify-between bg-surface px-6 pt-5 pb-2">
+                  <h2 className="text-base font-semibold text-ink">Nuevo movimiento</h2>
                   <button
                     onClick={close}
                     aria-label="Cerrar"
-                    className="flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 cursor-pointer"
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-raised hover:text-ink cursor-pointer"
                   >
                     <X size={16} weight="bold" />
                   </button>
@@ -220,15 +220,15 @@ export function AddCashModal({
                       transition={{ duration: 0.15 }}
                       className="flex flex-col gap-5"
                     >
-                      <div className="mx-auto flex rounded-xl border border-white/10 p-1">
+                      <div className="mx-auto flex rounded-xl border border-line p-1">
                         <motion.button
                           onClick={() => pickType("EXPENSE")}
                           whileTap={reduce ? undefined : { scale: 0.96 }}
                           transition={bounce}
                           className={`flex items-center gap-1.5 rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                             type === "EXPENSE"
-                              ? "bg-zinc-800 text-zinc-50"
-                              : "text-zinc-500 hover:text-zinc-300"
+                              ? "bg-surface-raised text-ink"
+                              : "text-ink-3 hover:text-ink-2"
                           }`}
                         >
                           <ArrowUpRight size={14} weight="bold" />
@@ -241,7 +241,7 @@ export function AddCashModal({
                           className={`flex items-center gap-1.5 rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                             type === "INCOME"
                               ? "bg-emerald-400/15 text-emerald-300"
-                              : "text-zinc-500 hover:text-zinc-300"
+                              : "text-ink-3 hover:text-ink-2"
                           }`}
                         >
                           <ArrowDownLeft size={14} weight="bold" />
@@ -251,7 +251,7 @@ export function AddCashModal({
 
                       <div className="flex flex-col items-center gap-3">
                         <div className="flex items-center justify-center gap-2">
-                          <span className="font-mono text-3xl text-zinc-500">
+                          <span className="font-mono text-3xl text-ink-3">
                             {CURRENCY_SYMBOL[currency]}
                           </span>
                           <input
@@ -260,18 +260,18 @@ export function AddCashModal({
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             placeholder="0"
-                            className="w-40 bg-transparent text-center font-mono text-5xl text-zinc-50 outline-none placeholder:text-zinc-700"
+                            className="w-40 bg-transparent text-center font-mono text-5xl text-ink outline-none placeholder:text-ink-3"
                           />
                         </div>
-                        <div className="flex rounded-xl border border-white/10 p-1">
+                        <div className="flex rounded-xl border border-line p-1">
                           {(["CRC", "USD"] as const).map((c) => (
                             <button
                               key={c}
                               onClick={() => setCurrency(c)}
                               className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors cursor-pointer ${
                                 currency === c
-                                  ? "bg-zinc-800 text-zinc-50"
-                                  : "text-zinc-500 hover:text-zinc-300"
+                                  ? "bg-surface-raised text-ink"
+                                  : "text-ink-3 hover:text-ink-2"
                               }`}
                             >
                               {CURRENCY_SYMBOL[c]} {CURRENCY_LABEL[c]}
@@ -284,24 +284,24 @@ export function AddCashModal({
                         value={description}
                         onChange={(e) => handleDescriptionChange(e.target.value)}
                         placeholder={type === "EXPENSE" ? "¿En qué? (ej. Uber, súper...)" : "¿De dónde? (opcional)"}
-                        className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors placeholder:text-zinc-600 focus:border-orange-400/50"
+                        className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/50"
                       />
 
                       <div className="flex flex-col gap-2">
-                        <span className="flex items-center gap-1.5 text-xs font-medium text-zinc-400">
+                        <span className="flex items-center gap-1.5 text-xs font-medium text-ink-2">
                           Categoría
                           {suggesting && (
                             <motion.span
                               animate={{ opacity: [0.4, 1, 0.4] }}
                               transition={{ repeat: Infinity, duration: 1.2 }}
-                              className="flex items-center gap-1 text-orange-400"
+                              className="flex items-center gap-1 text-accent"
                             >
                               <Sparkle size={12} weight="fill" />
                               pensando...
                             </motion.span>
                           )}
                           {!suggesting && categoryIsAiPick && (
-                            <span className="flex items-center gap-1 text-orange-400">
+                            <span className="flex items-center gap-1 text-accent">
                               <Sparkle size={12} weight="fill" />
                               sugerido por IA
                             </span>
@@ -314,8 +314,8 @@ export function AddCashModal({
                               onClick={() => pickCategory(c)}
                               className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                                 category === c
-                                  ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
-                                  : "border-white/10 text-zinc-400 hover:border-white/20"
+                                  ? "border-accent/50 bg-accent/10 text-accent-soft"
+                                  : "border-line text-ink-2 hover:border-white/20"
                               }`}
                             >
                               {c}
@@ -324,10 +324,10 @@ export function AddCashModal({
                         </div>
                       </div>
 
-                      <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-zinc-950/50">
+                      <div className="flex flex-col gap-3 rounded-xl border border-line bg-ground/50">
                         <button
                           onClick={() => setShowDetails((v) => !v)}
-                          className="flex items-center justify-between px-4 py-2.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 cursor-pointer"
+                          className="flex items-center justify-between px-4 py-2.5 text-xs font-medium text-ink-2 transition-colors hover:text-ink cursor-pointer"
                         >
                           <span>
                             {bank === "Efectivo" ? "Efectivo" : BANK_BRAND[bank].initials} ·{" "}
@@ -348,7 +348,7 @@ export function AddCashModal({
                             >
                               <div className="flex flex-col gap-3 px-4 pb-4">
                                 <div className="flex flex-col gap-2">
-                                  <span className="text-xs font-medium text-zinc-400">
+                                  <span className="text-xs font-medium text-ink-2">
                                     ¿De dónde salió? (si no te llegó solo)
                                   </span>
                                   <div className="flex flex-wrap gap-2">
@@ -358,8 +358,8 @@ export function AddCashModal({
                                         onClick={() => setBank(b)}
                                         className={`flex items-center gap-1.5 rounded-full border py-1 pl-1 pr-3 text-xs font-medium transition-colors cursor-pointer ${
                                           bank === b
-                                            ? "border-orange-400/50 bg-orange-400/10 text-orange-300"
-                                            : "border-white/10 text-zinc-400 hover:border-white/20"
+                                            ? "border-accent/50 bg-accent/10 text-accent-soft"
+                                            : "border-line text-ink-2 hover:border-white/20"
                                         }`}
                                       >
                                         <BankLogo bank={b} size={18} />
@@ -372,7 +372,7 @@ export function AddCashModal({
                                   type="datetime-local"
                                   value={date}
                                   onChange={(e) => setDate(e.target.value)}
-                                  className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
+                                  className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
                                 />
                               </div>
                             </motion.div>
@@ -386,7 +386,7 @@ export function AddCashModal({
                         onClick={submit}
                         disabled={pending}
                         whileTap={reduce ? undefined : { scale: 0.98 }}
-                        className="rounded-xl bg-orange-400 py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+                        className="rounded-xl bg-accent py-3 text-sm font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
                       >
                         {pending ? "Guardando..." : "Guardar movimiento"}
                       </motion.button>
@@ -411,7 +411,7 @@ export function AddCashModal({
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-sm font-medium text-zinc-200"
+                        className="text-sm font-medium text-ink"
                       >
                         ¡Listo!
                       </motion.p>

@@ -89,33 +89,33 @@ export default async function InsightsPage() {
       : null;
 
   return (
-    <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
-      <header className="border-b border-white/10">
+    <main className="flex min-h-[100dvh] flex-col bg-ground">
+      <header className="border-b border-line">
         <div className="mx-auto flex h-[68px] w-full max-w-3xl items-center gap-3 px-4 sm:px-6">
           <HeaderIconLink href="/dashboard" label="Volver al dashboard">
             <ArrowLeft size={18} weight="bold" />
           </HeaderIconLink>
-          <h1 className="text-sm font-semibold tracking-tight text-zinc-50">Estadísticas</h1>
+          <h1 className="text-sm font-semibold tracking-tight text-ink">Estadísticas</h1>
         </div>
       </header>
 
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
         <section className="animate-fade-up grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
-            <p className="text-xs text-zinc-500">Ingresos</p>
+          <div className="rounded-2xl border border-line bg-surface/60 p-4">
+            <p className="text-xs text-ink-3">Ingresos</p>
             <p className="mt-1 font-mono text-lg text-emerald-400">
               {formatMoney(thisMonth.income, "CRC")}
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
-            <p className="text-xs text-zinc-500">Gastos</p>
+          <div className="rounded-2xl border border-line bg-surface/60 p-4">
+            <p className="text-xs text-ink-3">Gastos</p>
             <p className="mt-1 font-mono text-lg text-rose-400">
               {formatMoney(thisMonth.expense, "CRC")}
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
-            <p className="text-xs text-zinc-500">Neto</p>
-            <p className="mt-1 font-mono text-lg text-zinc-50">
+          <div className="rounded-2xl border border-line bg-surface/60 p-4">
+            <p className="text-xs text-ink-3">Neto</p>
+            <p className="mt-1 font-mono text-lg text-ink">
               {formatMoney(thisMonth.income - thisMonth.expense, "CRC")}
             </p>
             {netDelta !== null && (
@@ -128,18 +128,18 @@ export default async function InsightsPage() {
 
         <AiSummary snapshot={aiSnapshot} />
 
-        <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:60ms]">
-          <h2 className="mb-4 text-sm font-medium text-zinc-400">Metas de ahorro</h2>
+        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:60ms]">
+          <h2 className="mb-4 text-sm font-medium text-ink-2">Metas de ahorro</h2>
           <SavingsGoals goals={goals} transactions={transactions} />
         </section>
 
-        <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:90ms]">
-          <h2 className="mb-4 text-sm font-medium text-zinc-400">Últimos 6 meses (₡)</h2>
+        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:90ms]">
+          <h2 className="mb-4 text-sm font-medium text-ink-2">Últimos 6 meses (₡)</h2>
           <MonthlyBarChart data={months} />
         </section>
 
-        <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:120ms]">
-          <h2 className="mb-4 text-sm font-medium text-zinc-400">Gasto por entidad este mes</h2>
+        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:120ms]">
+          <h2 className="mb-4 text-sm font-medium text-ink-2">Gasto por entidad este mes</h2>
           <BreakdownList
             items={byEntity}
             colorMap={Object.fromEntries(
@@ -152,21 +152,21 @@ export default async function InsightsPage() {
           />
         </section>
 
-        <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:180ms]">
+        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:180ms]">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-sm font-medium text-zinc-400">Gasto por categoría este mes</h2>
+            <h2 className="text-sm font-medium text-ink-2">Gasto por categoría este mes</h2>
             <CategorizeButton pendingCount={uncategorizedCount} />
           </div>
           <BreakdownList items={byCategory} emptyLabel="Todavía no hay gastos categorizados este mes." />
         </section>
 
-        <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:240ms]">
-          <h2 className="mb-4 text-sm font-medium text-zinc-400">Presupuestos</h2>
+        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:240ms]">
+          <h2 className="mb-4 text-sm font-medium text-ink-2">Presupuestos</h2>
           <BudgetProgress budgets={budgets} spentByCategory={spentByCategory} />
         </section>
 
-        <section className="animate-fade-up rounded-2xl border border-white/10 bg-zinc-900/40 p-5 [animation-delay:300ms]">
-          <h2 className="mb-4 text-sm font-medium text-zinc-400">Gastos recurrentes</h2>
+        <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:300ms]">
+          <h2 className="mb-4 text-sm font-medium text-ink-2">Gastos recurrentes</h2>
           <SubscriptionsList items={recurring} />
         </section>
       </div>

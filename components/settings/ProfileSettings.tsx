@@ -105,8 +105,8 @@ export function ProfileSettings({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h3 className="text-sm font-medium text-zinc-100">Perfil</h3>
-        <p className="text-xs text-zinc-500">Tu nombre, foto y fecha de nacimiento.</p>
+        <h3 className="text-sm font-medium text-ink">Perfil</h3>
+        <p className="text-xs text-ink-3">Tu nombre, foto y fecha de nacimiento.</p>
       </div>
 
       <div className="flex items-center gap-4">
@@ -115,7 +115,7 @@ export function ProfileSettings({
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
           aria-label="Cambiar foto de perfil"
-          className="group relative flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-950 cursor-pointer disabled:opacity-60"
+          className="group relative flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-line bg-ground cursor-pointer disabled:opacity-60"
         >
           {avatarUrl ? (
             <Image
@@ -126,11 +126,11 @@ export function ProfileSettings({
               className="h-full w-full rounded-full object-cover"
             />
           ) : (
-            <span className="text-lg font-medium text-zinc-400">
+            <span className="text-lg font-medium text-ink-2">
               {fullName?.[0]?.toUpperCase() ?? "?"}
             </span>
           )}
-          <span className="absolute inset-0 flex items-center justify-center rounded-full bg-zinc-950/0 text-transparent transition-colors group-hover:bg-zinc-950/50 group-hover:text-zinc-100">
+          <span className="absolute inset-0 flex items-center justify-center rounded-full bg-ground/0 text-transparent transition-colors group-hover:bg-ground/50 group-hover:text-ink">
             <Camera size={18} weight="bold" />
           </span>
         </button>
@@ -141,25 +141,25 @@ export function ProfileSettings({
           onChange={handleFileChange}
           className="hidden"
         />
-        <div className="text-xs text-zinc-500">
+        <div className="text-xs text-ink-3">
           {uploading ? "Subiendo..." : "Tocá la foto para cambiarla. Máximo 5MB."}
         </div>
       </div>
 
       <label className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-zinc-400">Nombre</span>
+        <span className="text-xs font-medium text-ink-2">Nombre</span>
         <input
           value={fullName}
           onChange={(e) => {
             setFullName(e.target.value);
             setSaved(false);
           }}
-          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50"
+          className="w-full rounded-lg border border-line bg-ground px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-accent/50"
         />
       </label>
 
       <label className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-zinc-400">Fecha de nacimiento</span>
+        <span className="text-xs font-medium text-ink-2">Fecha de nacimiento</span>
         <input
           type="date"
           value={birthDate}
@@ -168,7 +168,7 @@ export function ProfileSettings({
             setSaved(false);
           }}
           max={new Date().toISOString().slice(0, 10)}
-          className="w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-50 outline-none transition-colors focus:border-orange-400/50 [color-scheme:dark]"
+          className="w-full rounded-lg border border-line bg-ground px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
         />
       </label>
 
@@ -179,7 +179,7 @@ export function ProfileSettings({
         disabled={pending || !fullName.trim()}
         whileTap={reduce ? undefined : { scale: 0.98 }}
         transition={tap}
-        className="self-start rounded-full bg-orange-400 px-4 py-2 text-xs font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
+        className="self-start rounded-full bg-accent px-4 py-2 text-xs font-semibold text-zinc-950 transition-opacity disabled:opacity-40 cursor-pointer"
       >
         {pending ? "Guardando..." : saved ? "Guardado" : "Guardar"}
       </motion.button>

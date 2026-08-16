@@ -48,7 +48,7 @@ export function DateRangeFilter() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
-        <div className="flex flex-wrap gap-0.5 rounded-full border border-white/10 bg-zinc-900/60 p-1">
+        <div className="flex flex-wrap gap-0.5 rounded-full border border-line bg-surface/60 p-1">
           {segments.map((s) => {
             const active = activeLabel === s.label;
             return (
@@ -64,10 +64,10 @@ export function DateRangeFilter() {
                   <motion.span
                     layoutId="date-range-active"
                     transition={slide}
-                    className="absolute inset-0 rounded-full bg-orange-400/15"
+                    className="absolute inset-0 rounded-full bg-accent/15"
                   />
                 )}
-                <span className={`relative ${active ? "text-orange-400" : "text-zinc-400 hover:text-zinc-100"}`}>
+                <span className={`relative ${active ? "text-accent" : "text-ink-2 hover:text-ink"}`}>
                   {s.label}
                 </span>
               </button>
@@ -83,8 +83,8 @@ export function DateRangeFilter() {
           aria-label="Rango personalizado"
           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors cursor-pointer ${
             hasFilter && !activePreset
-              ? "border-orange-400/40 bg-orange-400/10 text-orange-400"
-              : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
+              ? "border-accent/40 bg-accent/10 text-accent"
+              : "border-line text-ink-2 hover:border-white/20 hover:text-ink"
           }`}
         >
           <CalendarBlank size={14} weight="bold" />
@@ -92,31 +92,31 @@ export function DateRangeFilter() {
       </div>
 
       {showCustom && (
-        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-zinc-900/60 p-3">
-          <label className="flex items-center gap-2 text-xs text-zinc-500">
+        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-line bg-surface/60 p-3">
+          <label className="flex items-center gap-2 text-xs text-ink-3">
             Desde
             <input
               type="date"
               value={customFrom}
               max={customTo || undefined}
               onChange={(e) => setCustomFrom(e.target.value)}
-              className="rounded-lg border border-white/10 bg-zinc-950 px-2 py-1 text-xs text-zinc-100 [color-scheme:dark]"
+              className="rounded-lg border border-line bg-ground px-2 py-1 text-xs text-ink [color-scheme:dark]"
             />
           </label>
-          <label className="flex items-center gap-2 text-xs text-zinc-500">
+          <label className="flex items-center gap-2 text-xs text-ink-3">
             Hasta
             <input
               type="date"
               value={customTo}
               min={customFrom || undefined}
               onChange={(e) => setCustomTo(e.target.value)}
-              className="rounded-lg border border-white/10 bg-zinc-950 px-2 py-1 text-xs text-zinc-100 [color-scheme:dark]"
+              className="rounded-lg border border-line bg-ground px-2 py-1 text-xs text-ink [color-scheme:dark]"
             />
           </label>
           <button
             onClick={applyCustom}
             disabled={!customFrom || !customTo}
-            className="rounded-full bg-orange-400 px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-40 cursor-pointer"
+            className="rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-zinc-950 disabled:opacity-40 cursor-pointer"
           >
             Aplicar
           </button>

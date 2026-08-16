@@ -1,30 +1,61 @@
+import { LockKey, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import { LoginButton } from "./LoginButton";
 import { MockupPreview } from "./MockupPreview";
 
 export function Hero({ loggedIn = false }: { loggedIn?: boolean }) {
   return (
-    <section className="relative mx-auto grid w-full max-w-6xl items-center gap-12 overflow-hidden px-6 pb-20 pt-16 md:min-h-[calc(100dvh-72px)] md:grid-cols-[1.1fr_1fr] md:gap-16 md:pb-24 md:pt-0">
-      <div className="relative flex flex-col items-center gap-7 text-center md:items-start md:text-left">
-        <p className="animate-fade-up font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">
-          Costa Rica · lectura automática de correos bancarios
-        </p>
+    <section className="relative overflow-hidden">
+      {/* Luz de fondo detrás del mockup: le da profundidad al hero sin meter
+          una imagen ni un gradiente de esos que gritan "plantilla". Está
+          detrás del contenido y no captura clicks. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-[-12%] top-[-25%] h-[360px] w-[360px] rounded-full opacity-[0.14] blur-[100px] md:h-[680px] md:w-[680px] md:opacity-[0.22] md:blur-[130px]"
+        style={{ background: "radial-gradient(circle, var(--accent), transparent 70%)" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-[-30%] left-[-15%] h-[420px] w-[420px] rounded-full opacity-[0.10] blur-[120px]"
+        style={{ background: "radial-gradient(circle, var(--accent), transparent 70%)" }}
+      />
 
-        <h1 className="animate-fade-up font-montserrat text-[2.75rem] font-bold leading-[0.98] tracking-tighter text-zinc-50 md:text-7xl [animation-delay:90ms]">
-          Controlá tus finanzas sin mover un solo dedo
-        </h1>
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-4 pb-20 pt-16 sm:px-6 md:min-h-[calc(100dvh-68px)] md:grid-cols-[1.1fr_1fr] md:gap-16 md:pb-24 md:pt-0">
+        <div className="relative flex flex-col items-center gap-7 text-center md:items-start md:text-left">
+          <p className="animate-fade-up inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/5 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            Hecho en Costa Rica
+          </p>
 
-        <p className="animate-fade-up max-w-[46ch] text-base leading-relaxed text-zinc-400 md:text-lg [animation-delay:180ms]">
-          TicoFinanza se conecta a tu Gmail y lee las notificaciones que tu banco ya te manda por
-          correo, para registrar tus ingresos y gastos automáticamente — sin anotar nada a mano.
-        </p>
+          <h1 className="animate-fade-up text-balance font-montserrat text-[2.75rem] font-bold leading-[0.98] tracking-tighter text-ink md:text-7xl [animation-delay:90ms]">
+            Controlá tus finanzas sin mover un solo dedo
+          </h1>
 
-        <div className="animate-fade-up [animation-delay:270ms]">
-          <LoginButton large loggedIn={loggedIn} />
+          <p className="animate-fade-up max-w-[46ch] text-base leading-relaxed text-ink-2 md:text-lg [animation-delay:180ms]">
+            TicoFinanza se conecta a tu Gmail y lee las notificaciones que tu banco ya te manda por
+            correo, para registrar tus ingresos y gastos automáticamente — sin anotar nada a mano.
+          </p>
+
+          <div className="animate-fade-up flex flex-col items-center gap-4 md:items-start [animation-delay:270ms]">
+            <LoginButton large loggedIn={loggedIn} />
+
+            {/* Las dos objeciones que frenan a cualquiera antes de dar el
+                clic, contestadas en el mismo lugar donde dudan. */}
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-ink-3 md:justify-start">
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck size={14} weight="bold" className="text-accent" />
+                Gratis, sin tarjeta
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <LockKey size={14} weight="bold" className="text-accent" />
+                Nunca pedimos la clave de tu banco
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="animate-fade-up relative flex justify-center [animation-delay:360ms] md:justify-end">
-        <MockupPreview />
+        <div className="animate-fade-up relative flex justify-center [animation-delay:360ms] md:justify-end">
+          <MockupPreview />
+        </div>
       </div>
     </section>
   );

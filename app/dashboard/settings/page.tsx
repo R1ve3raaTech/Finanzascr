@@ -97,13 +97,13 @@ export default async function SettingsPage({
     null;
 
   return (
-    <main className="flex min-h-[100dvh] flex-col bg-zinc-950">
-      <header className="border-b border-white/10">
+    <main className="flex min-h-[100dvh] flex-col bg-ground">
+      <header className="border-b border-line">
         <div className="mx-auto flex h-[68px] w-full max-w-2xl items-center gap-3 px-4 sm:px-6">
           <HeaderIconLink href="/dashboard" label="Volver al dashboard">
             <ArrowLeft size={18} weight="bold" />
           </HeaderIconLink>
-          <h1 className="text-sm font-semibold tracking-tight text-zinc-50">Ajustes</h1>
+          <h1 className="text-sm font-semibold tracking-tight text-ink">Ajustes</h1>
         </div>
       </header>
 
@@ -143,10 +143,10 @@ export default async function SettingsPage({
         </SettingsGroup>
 
         <SettingsGroup label="Alertas y correo" delayMs={140}>
-          <SettingsSection icon={Bell} accent="orange">
+          <SettingsSection icon={Bell} accent="accent">
             <NotificationsSetting />
           </SettingsSection>
-          <SettingsSection icon={EnvelopeSimple} accent="orange">
+          <SettingsSection icon={EnvelopeSimple} accent="accent">
             <GmailConnections connections={gmailConnections ?? []} />
           </SettingsSection>
         </SettingsGroup>
@@ -154,12 +154,12 @@ export default async function SettingsPage({
         <SettingsGroup label="Datos" delayMs={220}>
           <a
             href="/api/export-csv"
-            className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-zinc-900/40 py-3 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-zinc-100"
+            className="flex items-center justify-center gap-2 rounded-2xl border border-line bg-surface/40 py-3 text-sm font-medium text-ink-2 transition-colors hover:border-white/20 hover:text-ink"
           >
             <DownloadSimple size={16} weight="bold" />
             Exportar transacciones a CSV
           </a>
-          <section className="flex flex-col gap-5 divide-y divide-rose-400/10 rounded-2xl border border-rose-400/15 bg-zinc-900/40 p-5">
+          <section className="flex flex-col gap-5 divide-y divide-rose-400/10 rounded-2xl border border-rose-400/15 bg-surface/40 p-5">
             <DangerZone transactionCount={transactionCount ?? 0} />
             <div className="pt-5">
               <DeleteAccountFlow email={user.email ?? ""} />
@@ -169,7 +169,7 @@ export default async function SettingsPage({
 
         <Link
           href="/privacidad"
-          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-400 [animation-delay:280ms]"
+          className="animate-fade-up flex items-center justify-center gap-2 py-2 text-xs text-ink-3 transition-colors hover:text-ink-2 [animation-delay:280ms]"
         >
           <ShieldCheck size={14} weight="bold" />
           Política de privacidad
