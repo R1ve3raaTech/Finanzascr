@@ -69,7 +69,7 @@ export function MonthlyBarChart({ data }: { data: MonthTotal[] }) {
                           cur?.i === i && cur.series === series ? null : { i, series }
                         )
                       }
-                      aria-label={`${SERIES_LABEL[series]} de ${d.label}: ${formatMoney(value, "CRC")}`}
+                      aria-label={`${SERIES_LABEL[series]} de ${d.label}: ${formatMoney(value)}`}
                       className={`flex h-16 w-full cursor-pointer flex-col items-center rounded-sm transition-colors hover:bg-ink/[0.04] ${
                         up ? "justify-end" : "justify-start"
                       }`}
@@ -97,7 +97,7 @@ export function MonthlyBarChart({ data }: { data: MonthTotal[] }) {
                           up ? "bottom-full mb-1.5" : "top-full mt-1.5"
                         }`}
                       >
-                        {formatMoney(value, "CRC")}
+                        {formatMoney(value)}
                       </div>
                     )}
 
@@ -134,8 +134,8 @@ export function MonthlyBarChart({ data }: { data: MonthTotal[] }) {
           {data.map((d) => (
             <tr key={d.monthKey}>
               <th scope="row">{d.label}</th>
-              <td>{formatMoney(d.income, "CRC")}</td>
-              <td>{formatMoney(d.expense, "CRC")}</td>
+              <td>{formatMoney(d.income)}</td>
+              <td>{formatMoney(d.expense)}</td>
             </tr>
           ))}
         </tbody>

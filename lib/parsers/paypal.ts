@@ -25,16 +25,14 @@ export const parsePayPal: EmailParser = (bodyText, { receivedAt }) => {
   // \b evita que "Subtotal" (mismo cuerpo, misma fila de la tabla, justo
   // arriba de "Total") matchee primero — sin el límite de palabra, "Total"
   // aparece como sufijo de "Subtotal" y esa era la fila que ganaba.
-  const totalMatch = bodyText.match(/\bTotal\s*\n?\s*[₡$]?\s*([\d.,]+)\s*(USD|CRC)/i);
+  // La moneda es cualquier código de 3 letras (PayPal no limita a USD/CRC:
+  // puede mostrar el total en euros, libras, etc. según la cuenta).
+  const totalMatch = bodyText.match(/\bTotal\s*\n?\s*[₡$€£]?\s*([\d.,]+)\s*([A-Z]{3})/i);
 
   if (!merchant || (!crcMatch && !totalMatch)) return null;
 
   const amount = parseIntlAmount(crcMatch ? crcMatch[1] : totalMatch![1]);
-  const currency = crcMatch
-    ? ("CRC" as const)
-    : totalMatch![2].toUpperCase() === "USD"
-      ? ("USD" as const)
-      : ("CRC" as const);
+  const currency = crcMatch ? "CRC" : totalMatch![2].toUpperCase();
 
   return {
     bank_name: "PayPal",

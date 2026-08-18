@@ -91,7 +91,7 @@ export function AiSummary({ snapshot }: { snapshot: FinanceSnapshot }) {
         )}
       </AnimatePresence>
 
-      {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
+      {error && <p className="mt-2 text-xs text-expense">{error}</p>}
     </section>
   );
 }

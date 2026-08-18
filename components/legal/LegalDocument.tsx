@@ -38,7 +38,7 @@ export function LegalDocument({
       </header>
 
       <article className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-14 sm:px-6">
-        <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{title}</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">{title}</h1>
         <p className="mt-3 text-sm text-ink-3">Última actualización: {updatedAt}.</p>
         <div className="mt-4 max-w-[62ch] text-base leading-relaxed text-ink-2">{intro}</div>
 
@@ -77,9 +77,9 @@ export function LegalSection({
     <section className="flex flex-col gap-3 border-t border-line py-8 first:border-t-0">
       <div className="flex items-baseline gap-3">
         <span className="font-mono text-xs text-ink-3">{String(number).padStart(2, "0")}</span>
-        <h2 className="text-lg font-semibold text-white">{title}</h2>
+        <h2 className="text-lg font-semibold text-ink">{title}</h2>
       </div>
-      <div className="flex flex-col gap-3 pl-[calc(1.75rem)] text-[15px] leading-relaxed text-ink-2 [&_a]:text-white [&_a]:underline [&_a]:decoration-ink-3 [&_a]:underline-offset-2 [&_a]:transition-colors [&_a:hover]:decoration-white [&_li]:pl-1 [&_span]:text-ink">
+      <div className="flex flex-col gap-3 pl-[calc(1.75rem)] text-[15px] leading-relaxed text-ink-2 [&_a]:text-ink [&_a]:underline [&_a]:decoration-ink-3 [&_a]:underline-offset-2 [&_a]:transition-colors [&_a:hover]:decoration-ink [&_li]:pl-1 [&_span]:text-ink">
         {children}
       </div>
     </section>

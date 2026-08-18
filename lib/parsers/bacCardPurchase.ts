@@ -1,10 +1,4 @@
-import {
-  crLocalToUtcIso,
-  isPaypalRoutedMerchant,
-  nioToCrc,
-  parseCRAmount,
-  type EmailParser,
-} from "./types";
+import { crLocalToUtcIso, isPaypalRoutedMerchant, parseCRAmount, type EmailParser } from "./types";
 
 const MONTHS: Record<string, number> = {
   ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5,
@@ -25,8 +19,8 @@ function parseCardDate(raw: string): string {
  * (notificacion@notificacionesbaccr.com): tabla clave-valor Comercio /
  * Ciudad y país / Fecha / Visa / Autorización / Referencia / Tipo de
  * Transacción / Monto. El monto puede venir en CRC, USD o NIC (compras
- * hechas en Nicaragua con la misma tarjeta) — los córdobas se convierten a
- * colones porque la app ya no maneja el córdoba como moneda propia.
+ * hechas en Nicaragua con la misma tarjeta) — se devuelve la moneda cruda
+ * tal cual, la conversión a colones pasa después en parseEmail().
  *
  * Este layout ("Comprobante de Compra" con esa misma tabla de campos) no es
  * exclusivo de BAC: Banco Popular manda notificaciones de compra con la
@@ -53,13 +47,11 @@ export const parseBacCardPurchase: EmailParser = (bodyText) => {
   if (isPaypalRoutedMerchant(comercio)) return null;
 
   const [, currencyRaw, amountRaw] = montoMatch;
-  const isNio = /NIC/i.test(currencyRaw);
-  const currency = /USD|\$/i.test(currencyRaw) ? "USD" : "CRC";
-  const parsedAmount = parseCRAmount(amountRaw);
+  const currency = /NIC/i.test(currencyRaw) ? "NIO" : /USD|\$/i.test(currencyRaw) ? "USD" : "CRC";
 
   return {
     bank_name: "BAC",
-    amount: isNio ? nioToCrc(parsedAmount) : parsedAmount,
+    amount: parseCRAmount(amountRaw),
     currency,
     description: comercio,
     type: "EXPENSE",

@@ -1,9 +1,16 @@
-import type { BankName, Currency, TransactionType } from "@/lib/types";
+import type { BankName, TransactionType } from "@/lib/types";
 
 export interface ParsedTransaction {
   bank_name: BankName;
   amount: number;
-  currency: Currency;
+  /**
+   * Moneda cruda tal como la detectó el parser (código ISO 4217 tipo
+   * "USD"/"NIO"/"CRC", o "NIC" — el que usan los bancos para el córdoba, no
+   * el código real). No es necesariamente "CRC": la conversión a colones
+   * pasa después, una sola vez, en parseEmail() — así ningún parser
+   * individual necesita saber de tipos de cambio.
+   */
+  currency: string;
   description: string;
   type: TransactionType;
   transaction_date: string;
@@ -37,20 +44,6 @@ export function parseCRAmount(raw: string): number {
  */
 export function isPaypalRoutedMerchant(merchant: string): boolean {
   return /paypal|^\s*pp\*/i.test(merchant);
-}
-
-/**
- * Tipo de cambio fijo y aproximado de córdoba nicaragüense (NIO) a colón
- * (CRC). La app ya no maneja el córdoba como moneda propia (nadie más que
- * Camil lo necesitaba, y le agregaba una tercera columna al saldo todo el
- * tiempo) — los pocos correos que llegan en córdobas (compras hechas en
- * Nicaragua) se convierten a colones en el momento de parsear el correo.
- * No se usa una tasa en vivo porque son montos chicos y esporádicos.
- */
-export const NIO_TO_CRC_RATE = 14.2;
-
-export function nioToCrc(amountNio: number): number {
-  return Math.round(amountNio * NIO_TO_CRC_RATE);
 }
 
 /**

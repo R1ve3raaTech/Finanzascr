@@ -176,11 +176,11 @@ export function ProfileSettings({
             setSaved(false);
           }}
           max={new Date().toISOString().slice(0, 10)}
-          className="w-full rounded-lg border border-line bg-ground px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
+          className="w-full rounded-lg border border-line bg-ground px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-accent/50"
         />
       </label>
 
-      {error && <p className="text-xs text-rose-400">{error}</p>}
+      {error && <p className="text-xs text-expense">{error}</p>}
 
       <motion.button
         onClick={save}

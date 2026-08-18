@@ -29,7 +29,7 @@ export function LoginButton({
       whileHover={reduce ? undefined : { scale: 1.02 }}
       whileTap={reduce ? undefined : { scale: 0.97 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className={`inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap rounded-full bg-zinc-50 font-medium text-ground shadow-[0_8px_30px_rgba(56,189,248,0.12)] transition-shadow hover:shadow-[0_8px_40px_rgba(56,189,248,0.2)] cursor-pointer ${
+      className={`inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap rounded-full bg-zinc-50 font-medium text-zinc-900 shadow-[0_8px_30px_rgba(56,189,248,0.12)] transition-shadow hover:shadow-[0_8px_40px_rgba(56,189,248,0.2)] cursor-pointer ${
         large ? "gap-3 px-7 py-3.5 text-base" : "px-4 py-2.5 text-sm sm:px-5"
       }`}
     >

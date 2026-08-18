@@ -15,9 +15,9 @@ import { addCashTransaction, suggestCategory } from "@/app/dashboard/actions";
 import { BankLogo } from "@/components/dashboard/BankLogo";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { DEFAULT_EXPENSE_CATEGORIES as expenseCategories, DEFAULT_INCOME_CATEGORIES as incomeCategories } from "@/lib/categories";
-import { CURRENCY_LABEL, CURRENCY_SYMBOL, manualBankOptions } from "@/lib/transactionFormOptions";
+import { manualBankOptions } from "@/lib/transactionFormOptions";
 import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
-import type { BankName, Currency, TransactionType, UserCategory } from "@/lib/types";
+import type { BankName, TransactionType, UserCategory } from "@/lib/types";
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 const bounce = { type: "spring", stiffness: 400, damping: 22 } as const;
@@ -33,10 +33,8 @@ function nowForInput(): string {
 }
 
 export function AddCashModal({
-  defaultCurrency = "CRC",
   customCategories = [],
 }: {
-  defaultCurrency?: Currency;
   customCategories?: UserCategory[];
 }) {
   const reduce = useReducedMotion();
@@ -55,7 +53,6 @@ export function AddCashModal({
 
   const [type, setType] = useState<TransactionType>("EXPENSE");
   const [amount, setAmount] = useState("");
-  const [currency, setCurrency] = useState<Currency>(defaultCurrency);
   const [bank, setBank] = useState<BankName>("Efectivo");
   const [category, setCategory] = useState(allExpenseCategories[0]);
   const [categoryIsAiPick, setCategoryIsAiPick] = useState(false);
@@ -73,7 +70,6 @@ export function AddCashModal({
     setSaved(false);
     setType("EXPENSE");
     setAmount("");
-    setCurrency(defaultCurrency);
     setBank("Efectivo");
     setCategory(allExpenseCategories[0]);
     setCategoryIsAiPick(false);
@@ -120,7 +116,6 @@ export function AddCashModal({
         description: value,
         type,
         amount: Number(amount.replace(",", ".")) || 0,
-        currency,
         bank,
       });
       if (requestId !== suggestRequestId.current) return;
@@ -147,7 +142,6 @@ export function AddCashModal({
     startTransition(async () => {
       const result = await addCashTransaction({
         amount: Number(amount.replace(",", ".")),
-        currency,
         description: description.trim(),
         category,
         type,
@@ -240,7 +234,7 @@ export function AddCashModal({
                           transition={bounce}
                           className={`flex items-center gap-1.5 rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                             type === "INCOME"
-                              ? "bg-emerald-400/15 text-emerald-300"
+                              ? "bg-income/15 text-income"
                               : "text-ink-3 hover:text-ink-2"
                           }`}
                         >
@@ -249,35 +243,16 @@ export function AddCashModal({
                         </motion.button>
                       </div>
 
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="font-mono text-3xl text-ink-3">
-                            {CURRENCY_SYMBOL[currency]}
-                          </span>
-                          <input
-                            autoFocus
-                            inputMode="decimal"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            placeholder="0"
-                            className="w-40 bg-transparent text-center font-mono text-5xl text-ink outline-none placeholder:text-ink-3"
-                          />
-                        </div>
-                        <div className="flex rounded-xl border border-line p-1">
-                          {(["CRC", "USD"] as const).map((c) => (
-                            <button
-                              key={c}
-                              onClick={() => setCurrency(c)}
-                              className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors cursor-pointer ${
-                                currency === c
-                                  ? "bg-surface-raised text-ink"
-                                  : "text-ink-3 hover:text-ink-2"
-                              }`}
-                            >
-                              {CURRENCY_SYMBOL[c]} {CURRENCY_LABEL[c]}
-                            </button>
-                          ))}
-                        </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="font-mono text-3xl text-ink-3">₡</span>
+                        <input
+                          autoFocus
+                          inputMode="decimal"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          placeholder="0"
+                          className="w-40 bg-transparent text-center font-mono text-5xl text-ink outline-none placeholder:text-ink-3"
+                        />
                       </div>
 
                       <input
@@ -372,7 +347,7 @@ export function AddCashModal({
                                   type="datetime-local"
                                   value={date}
                                   onChange={(e) => setDate(e.target.value)}
-                                  className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
+                                  className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50"
                                 />
                               </div>
                             </motion.div>
@@ -380,7 +355,7 @@ export function AddCashModal({
                         </AnimatePresence>
                       </div>
 
-                      {error && <p className="text-sm text-rose-400">{error}</p>}
+                      {error && <p className="text-sm text-expense">{error}</p>}
 
                       <motion.button
                         onClick={submit}
@@ -403,7 +378,7 @@ export function AddCashModal({
                         initial={reduce ? { opacity: 0 } : { scale: 0, rotate: -20 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 480, damping: 18 }}
-                        className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400"
+                        className="flex h-16 w-16 items-center justify-center rounded-full bg-income"
                       >
                         <Check size={30} weight="bold" className="text-ground" />
                       </motion.div>

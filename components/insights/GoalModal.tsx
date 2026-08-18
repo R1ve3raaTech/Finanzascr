@@ -7,9 +7,8 @@ import { Trash, X } from "@phosphor-icons/react";
 import { createSavingsGoal, deleteSavingsGoal, updateSavingsGoal } from "@/app/dashboard/actions";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useToast } from "@/components/Toast";
-import { CURRENCY_LABEL, CURRENCY_SYMBOL } from "@/lib/transactionFormOptions";
 import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
-import type { Currency, SavingsGoal } from "@/lib/types";
+import type { SavingsGoal } from "@/lib/types";
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 
@@ -28,7 +27,6 @@ export function GoalModal({
   const toast = useToast();
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
-  const [currency, setCurrency] = useState<Currency>("CRC");
   const [targetDate, setTargetDate] = useState("");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +51,6 @@ export function GoalModal({
     setLastSessionKey(sessionKey);
     setName(goal?.name ?? "");
     setAmount(goal ? String(goal.target_amount) : "");
-    setCurrency(goal?.currency ?? "CRC");
     setTargetDate(goal?.target_date ?? "");
     setConfirmingDelete(false);
     setError(null);
@@ -73,7 +70,6 @@ export function GoalModal({
       const input = {
         name: name.trim(),
         targetAmount: Number(amount.replace(",", ".")),
-        currency,
         targetDate: targetDate || null,
       };
       const result = goal
@@ -147,34 +143,15 @@ export function GoalModal({
                 className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/50"
               />
 
-              <div className="flex flex-col items-center gap-3">
-                <div className="flex items-center justify-center gap-2">
-                  <span className="font-mono text-3xl text-ink-3">
-                    {CURRENCY_SYMBOL[currency]}
-                  </span>
-                  <input
-                    inputMode="decimal"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    placeholder="0"
-                    className="w-40 bg-transparent text-center font-mono text-5xl text-ink outline-none placeholder:text-ink-3"
-                  />
-                </div>
-                <div className="flex rounded-xl border border-line p-1">
-                  {(["CRC", "USD"] as const).map((c) => (
-                    <button
-                      key={c}
-                      onClick={() => setCurrency(c)}
-                      className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors cursor-pointer ${
-                        currency === c
-                          ? "bg-surface-raised text-ink"
-                          : "text-ink-3 hover:text-ink-2"
-                      }`}
-                    >
-                      {CURRENCY_SYMBOL[c]} {CURRENCY_LABEL[c]}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex items-center justify-center gap-2">
+                <span className="font-mono text-3xl text-ink-3">₡</span>
+                <input
+                  inputMode="decimal"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0"
+                  className="w-40 bg-transparent text-center font-mono text-5xl text-ink outline-none placeholder:text-ink-3"
+                />
               </div>
 
               <label className="flex flex-col gap-1.5">
@@ -185,11 +162,11 @@ export function GoalModal({
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
+                  className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50"
                 />
               </label>
 
-              {error && <p className="text-sm text-rose-400">{error}</p>}
+              {error && <p className="text-sm text-expense">{error}</p>}
 
               <div className="flex gap-2">
                 {goal && (
@@ -197,7 +174,7 @@ export function GoalModal({
                     onClick={() => setConfirmingDelete(true)}
                     disabled={isPending}
                     aria-label="Eliminar meta"
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-400/20 text-rose-400 transition-colors hover:border-rose-400/40 hover:bg-rose-400/10 disabled:opacity-50 cursor-pointer"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-expense/20 text-expense transition-colors hover:border-expense/40 hover:bg-expense/10 disabled:opacity-50 cursor-pointer"
                   >
                     <Trash size={16} weight="bold" />
                   </button>

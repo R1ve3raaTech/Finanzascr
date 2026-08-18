@@ -3,28 +3,19 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDownLeft, ArrowUpRight } from "@phosphor-icons/react";
 import { formatMoney } from "@/lib/format";
-import { CURRENCY_LABEL } from "@/lib/transactionFormOptions";
-import type { Currency } from "@/lib/types";
 
 export function BalanceCard({
   crc,
-  usd,
   filtered = false,
   month,
 }: {
   crc: number;
-  usd: number;
   filtered?: boolean;
   /** Ingresos y gastos del mes en curso. Solo se muestra en la vista sin
    *  filtro de fechas: con un rango puesto, "este mes" no querría decir nada. */
-  month?: { currency: Currency; income: number; expense: number };
+  month?: { income: number; expense: number };
 }) {
   const reduce = useReducedMotion();
-
-  const columns = [
-    { code: "CRC" as const, value: crc },
-    { code: "USD" as const, value: usd },
-  ];
 
   return (
     <motion.section
@@ -38,20 +29,13 @@ export function BalanceCard({
           {filtered ? "Neto del período seleccionado" : "Saldo consolidado"}
         </h2>
 
-        <div className="mt-5 grid gap-6 sm:grid-cols-2">
-          {columns.map((c) => (
-            <div key={c.code}>
-              <p className="text-xs text-ink-3">{CURRENCY_LABEL[c.code]}</p>
-              <p
-                className={`money mt-1 font-mono text-3xl tracking-tight ${
-                  c.value < 0 ? "text-expense" : "text-ink"
-                }`}
-              >
-                {formatMoney(c.value, c.code)}
-              </p>
-            </div>
-          ))}
-        </div>
+        <p
+          className={`money mt-3 font-mono text-3xl tracking-tight ${
+            crc < 0 ? "text-expense" : "text-ink"
+          }`}
+        >
+          {formatMoney(crc)}
+        </p>
       </div>
 
       {month && (
@@ -59,13 +43,13 @@ export function BalanceCard({
           <MonthStat
             icon={ArrowDownLeft}
             label="Ingresos del mes"
-            value={formatMoney(month.income, month.currency)}
+            value={formatMoney(month.income)}
             tone="income"
           />
           <MonthStat
             icon={ArrowUpRight}
             label="Gastos del mes"
-            value={formatMoney(month.expense, month.currency)}
+            value={formatMoney(month.expense)}
             tone="expense"
           />
         </div>

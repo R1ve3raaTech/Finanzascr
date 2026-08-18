@@ -4,11 +4,10 @@ import type { Budget } from "@/lib/types";
 
 export function BudgetProgress({
   budgets,
-  spentByCategoryCurrency,
+  spentByCategory,
 }: {
   budgets: Budget[];
-  /** Llaves `"categoría::MONEDA"` — ver expenseByCategoryAndCurrency. */
-  spentByCategoryCurrency: Map<string, number>;
+  spentByCategory: Map<string, number>;
 }) {
   if (budgets.length === 0) {
     return (
@@ -21,7 +20,7 @@ export function BudgetProgress({
   return (
     <ul className="flex flex-col gap-4">
       {budgets.map((b) => {
-        const spent = spentByCategoryCurrency.get(`${b.category}::${b.currency}`) ?? 0;
+        const spent = spentByCategory.get(b.category) ?? 0;
         const ratio = spent / b.monthly_limit;
         const pct = Math.min(1, ratio);
         const over = spent > b.monthly_limit;
@@ -51,7 +50,7 @@ export function BudgetProgress({
                   over ? "text-expense" : "text-ink-2"
                 }`}
               >
-                {formatMoney(spent, b.currency)} / {formatMoney(b.monthly_limit, b.currency)}
+                {formatMoney(spent)} / {formatMoney(b.monthly_limit)}
                 <span className="ml-1.5 text-ink-3">{Math.round(ratio * 100)}%</span>
               </span>
             </div>

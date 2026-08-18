@@ -59,7 +59,7 @@ export function BreakdownList({
                 <span className="truncate">{item.label}</span>
               </span>
               <span className="shrink-0 font-mono text-ink-2">
-                {formatMoney(item.amount, "CRC")}
+                {formatMoney(item.amount)}
               </span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-raised">

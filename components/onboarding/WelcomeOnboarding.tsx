@@ -184,11 +184,11 @@ export function WelcomeOnboarding({
             value={birthDate}
             onChange={(e) => setBirthDate(e.target.value)}
             max={new Date().toISOString().slice(0, 10)}
-            className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
+            className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50"
           />
         </motion.label>
 
-        {error && <p className="text-sm text-rose-400">{error}</p>}
+        {error && <p className="text-sm text-expense">{error}</p>}
 
         <motion.div
           initial={reduce ? undefined : { opacity: 0, y: 16 }}

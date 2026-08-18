@@ -17,10 +17,10 @@ import { useToast } from "@/components/Toast";
 import { formatMoney } from "@/lib/format";
 import { BANK_BRAND } from "@/lib/bankBrand";
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from "@/lib/categories";
-import { CURRENCY_LABEL, CURRENCY_SYMBOL, manualBankOptions } from "@/lib/transactionFormOptions";
+import { manualBankOptions } from "@/lib/transactionFormOptions";
 import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 import { BankLogo } from "./BankLogo";
-import type { BankName, Currency, Transaction, TransactionType, UserCategory } from "@/lib/types";
+import type { BankName, Transaction, TransactionType, UserCategory } from "@/lib/types";
 
 const spring = { type: "spring", stiffness: 300, damping: 28 } as const;
 
@@ -74,7 +74,6 @@ export function TransactionDetailModal({
 
   const [type, setType] = useState<TransactionType>("EXPENSE");
   const [amount, setAmount] = useState("");
-  const [currency, setCurrency] = useState<Currency>("CRC");
   const [bank, setBank] = useState<BankName>("Efectivo");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -101,7 +100,6 @@ export function TransactionDetailModal({
     if (!transaction) return;
     setType(transaction.type);
     setAmount(String(transaction.amount));
-    setCurrency(transaction.currency);
     setBank(transaction.bank_name);
     setCategory(
       transaction.category ??
@@ -128,7 +126,6 @@ export function TransactionDetailModal({
     startTransition(async () => {
       const result = await updateTransaction(transaction.id, {
         amount: Number(amount.replace(",", ".")),
-        currency,
         description: description.trim(),
         category,
         type,
@@ -195,11 +192,11 @@ export function TransactionDetailModal({
                         </p>
                         <p
                           className={`mt-1 font-mono text-lg ${
-                            transaction.type === "INCOME" ? "text-emerald-400" : "text-ink-2"
+                            transaction.type === "INCOME" ? "text-income" : "text-ink-2"
                           }`}
                         >
                           {transaction.type === "INCOME" ? "+" : "-"}
-                          {formatMoney(transaction.amount, transaction.currency)}
+                          {formatMoney(transaction.amount)}
                         </p>
                       </div>
                     </div>
@@ -246,7 +243,7 @@ export function TransactionDetailModal({
                   </div>
 
                   <div className="mt-5 border-t border-line pt-4">
-                    {error && <p className="mb-3 text-xs text-rose-400">{error}</p>}
+                    {error && <p className="mb-3 text-xs text-expense">{error}</p>}
                     <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={startEditing}
@@ -257,7 +254,7 @@ export function TransactionDetailModal({
                       </button>
                       <button
                         onClick={() => setConfirming(true)}
-                        className="flex items-center gap-2 rounded-full border border-rose-400/20 px-4 py-2 text-xs font-medium text-rose-400 transition-colors hover:border-rose-400/40 hover:bg-rose-400/10 cursor-pointer"
+                        className="flex items-center gap-2 rounded-full border border-expense/20 px-4 py-2 text-xs font-medium text-expense transition-colors hover:border-expense/40 hover:bg-expense/10 cursor-pointer"
                       >
                         <Trash size={14} weight="bold" />
                         Eliminar
@@ -295,7 +292,7 @@ export function TransactionDetailModal({
                           onClick={() => pickType("INCOME")}
                           className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                             type === "INCOME"
-                              ? "bg-emerald-400/15 text-emerald-300"
+                              ? "bg-income/15 text-income"
                               : "text-ink-3 hover:text-ink-2"
                           }`}
                         >
@@ -304,9 +301,7 @@ export function TransactionDetailModal({
                       </div>
 
                       <div className="flex items-center justify-center gap-2">
-                        <span className="font-mono text-3xl text-ink-3">
-                          {CURRENCY_SYMBOL[currency]}
-                        </span>
+                        <span className="font-mono text-3xl text-ink-3">₡</span>
                         <input
                           inputMode="decimal"
                           value={amount}
@@ -314,21 +309,6 @@ export function TransactionDetailModal({
                           placeholder="0"
                           className="w-40 bg-transparent text-center font-mono text-5xl text-ink outline-none placeholder:text-ink-3"
                         />
-                      </div>
-                      <div className="flex rounded-xl border border-line p-1">
-                        {(["CRC", "USD"] as const).map((c) => (
-                          <button
-                            key={c}
-                            onClick={() => setCurrency(c)}
-                            className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors cursor-pointer ${
-                              currency === c
-                                ? "bg-surface-raised text-ink"
-                                : "text-ink-3 hover:text-ink-2"
-                            }`}
-                          >
-                            {CURRENCY_SYMBOL[c]} {CURRENCY_LABEL[c]}
-                          </button>
-                        ))}
                       </div>
                     </div>
 
@@ -387,11 +367,11 @@ export function TransactionDetailModal({
                         type="datetime-local"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
-                        className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 [color-scheme:dark]"
+                        className="w-full rounded-xl border border-line bg-ground px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50"
                       />
                     </div>
 
-                    {error && <p className="text-sm text-rose-400">{error}</p>}
+                    {error && <p className="text-sm text-expense">{error}</p>}
 
                     <div className="flex gap-2">
                       <button

@@ -374,11 +374,11 @@ export function TransactionList({
                     </div>
                     <span
                       className={`font-mono text-sm ${
-                        income ? "text-emerald-400" : "text-ink-2"
+                        income ? "text-income" : "text-ink-2"
                       }`}
                     >
                       {income ? "+" : "-"}
-                      {formatMoney(t.amount, t.currency)}
+                      {formatMoney(t.amount)}
                     </span>
 
                     <AnimatePresence>
@@ -430,7 +430,7 @@ export function TransactionList({
               </button>
               <button
                 onClick={() => setConfirmingBulkDelete(true)}
-                className="flex items-center gap-2 rounded-full bg-rose-400/10 px-4 py-2 text-xs font-semibold text-rose-400 transition-colors hover:bg-rose-400/15 cursor-pointer"
+                className="flex items-center gap-2 rounded-full bg-expense/10 px-4 py-2 text-xs font-semibold text-expense transition-colors hover:bg-expense/15 cursor-pointer"
               >
                 <Trash size={14} weight="bold" />
                 Eliminar

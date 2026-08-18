@@ -100,7 +100,7 @@ export function DateRangeFilter() {
               value={customFrom}
               max={customTo || undefined}
               onChange={(e) => setCustomFrom(e.target.value)}
-              className="rounded-lg border border-line bg-ground px-2 py-1 text-xs text-ink [color-scheme:dark]"
+              className="rounded-lg border border-line bg-ground px-2 py-1 text-xs text-ink"
             />
           </label>
           <label className="flex items-center gap-2 text-xs text-ink-3">
@@ -110,7 +110,7 @@ export function DateRangeFilter() {
               value={customTo}
               min={customFrom || undefined}
               onChange={(e) => setCustomTo(e.target.value)}
-              className="rounded-lg border border-line bg-ground px-2 py-1 text-xs text-ink [color-scheme:dark]"
+              className="rounded-lg border border-line bg-ground px-2 py-1 text-xs text-ink"
             />
           </label>
           <button

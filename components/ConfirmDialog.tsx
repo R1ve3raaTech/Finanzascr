@@ -63,11 +63,11 @@ export function ConfirmDialog({
             animate={{ opacity: 1, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94 }}
             transition={spring}
-            className="fixed inset-x-4 top-1/2 z-[70] mx-auto max-w-xs -translate-y-1/2 rounded-2xl border border-rose-400/20 bg-surface p-5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] sm:inset-x-0"
+            className="fixed inset-x-4 top-1/2 z-[70] mx-auto max-w-xs -translate-y-1/2 rounded-2xl border border-expense/20 bg-surface p-5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] sm:inset-x-0"
           >
             <div className="flex flex-col items-center gap-3 text-center">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-rose-400/10">
-                <WarningCircle size={22} weight="bold" className="text-rose-400" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-expense/10">
+                <WarningCircle size={22} weight="bold" className="text-expense" />
               </div>
               <div>
                 <h2 className="text-sm font-semibold text-ink">{title}</h2>
@@ -86,7 +86,7 @@ export function ConfirmDialog({
                 <button
                   onClick={onConfirm}
                   disabled={pending}
-                  className="rounded-xl bg-rose-400 py-2.5 text-sm font-semibold text-on-accent transition-opacity hover:bg-rose-300 disabled:opacity-50 cursor-pointer"
+                  className="rounded-xl bg-expense py-2.5 text-sm font-semibold text-on-accent transition-opacity hover:bg-expense disabled:opacity-50 cursor-pointer"
                 >
                   {pending ? "..." : confirmLabel}
                 </button>

@@ -1,4 +1,10 @@
-export type Currency = "CRC" | "USD";
+// La app solo maneja colones — cualquier transacción que llegue en otra
+// moneda (dólares, córdobas, euros, lo que sea) se convierte a colones al
+// parsear el correo, con el tipo de cambio del día (ver lib/exchangeRate.ts).
+// Sigue siendo un tipo (en vez de borrar el campo) para no tener que tocar
+// cada firma de función que hoy recibe una moneda, y por si algún día vuelve
+// a hacer falta más de una.
+export type Currency = "CRC";
 export type TransactionType = "INCOME" | "EXPENSE";
 export type BankName =
   | "BAC"
@@ -34,9 +40,11 @@ export interface Profile {
   updated_at: string;
 }
 
+export type Theme = "dark" | "light" | "system";
+
 export interface UserSettings {
   user_id: string;
-  default_currency: Currency;
+  theme: Theme;
   notifications_enabled: boolean;
   updated_at: string;
 }

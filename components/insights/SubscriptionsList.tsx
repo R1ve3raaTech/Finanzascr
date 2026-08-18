@@ -17,7 +17,7 @@ export function SubscriptionsList({ items }: { items: RecurringItem[] }) {
     <div className="flex flex-col gap-4">
       <p className="text-sm text-ink-2">
         Aprox.{" "}
-        <span className="font-mono text-ink">{formatMoney(totalMonthly, "CRC")}</span>{" "}
+        <span className="font-mono text-ink">{formatMoney(totalMonthly)}</span>{" "}
         por mes en gastos que se repiten.
       </p>
       <ul className="flex flex-col gap-2">
@@ -33,7 +33,7 @@ export function SubscriptionsList({ items }: { items: RecurringItem[] }) {
               </p>
             </div>
             <span className="shrink-0 font-mono text-sm text-ink-2">
-              ~{formatMoney(item.averageAmount, item.currency)}
+              ~{formatMoney(item.averageAmount)}
             </span>
           </li>
         ))}

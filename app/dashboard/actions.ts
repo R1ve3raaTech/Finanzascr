@@ -13,26 +13,21 @@ import { formatMoney } from "@/lib/format";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { decryptToken } from "@/lib/tokenCrypto";
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from "@/lib/categories";
-import type { BankName, Currency, TransactionType } from "@/lib/types";
+import type { BankName, TransactionType } from "@/lib/types";
 
 /**
  * Avisa por push la primera vez que un gasto categorizado hace que el mes
  * se pase del presupuesto de esa categoría (no en cada gasto siguiente).
  */
-async function checkBudgetAndNotify(
-  userId: string,
-  category: string,
-  currency: Currency,
-  justSpent: number
-) {
+async function checkBudgetAndNotify(userId: string, category: string, justSpent: number) {
   const admin = createAdminClient();
   const { data: budget } = await admin
     .from("budgets")
-    .select("monthly_limit, currency")
+    .select("monthly_limit")
     .eq("user_id", userId)
     .eq("category", category)
     .maybeSingle();
-  if (!budget || budget.currency !== currency) return;
+  if (!budget) return;
 
   const start = new Date();
   start.setDate(1);
@@ -44,7 +39,6 @@ async function checkBudgetAndNotify(
     .eq("user_id", userId)
     .eq("category", category)
     .eq("type", "EXPENSE")
-    .eq("currency", currency)
     .gte("transaction_date", start.toISOString());
 
   const spent = (rows ?? []).reduce((sum, r) => sum + r.amount, 0);
@@ -53,7 +47,7 @@ async function checkBudgetAndNotify(
   if (spent > budget.monthly_limit && spentBefore <= budget.monthly_limit) {
     await sendPushToUser(admin, userId, {
       title: "Te pasaste del presupuesto",
-      body: `${category}: ${formatMoney(spent, currency)} de ${formatMoney(budget.monthly_limit, currency)} este mes.`,
+      body: `${category}: ${formatMoney(spent)} de ${formatMoney(budget.monthly_limit)} este mes.`,
       url: "/dashboard/insights",
     }).catch(() => {});
   }
@@ -61,7 +55,6 @@ async function checkBudgetAndNotify(
 
 export async function addCashTransaction(input: {
   amount: number;
-  currency: Currency;
   description: string;
   category: string;
   type: TransactionType;
@@ -87,7 +80,7 @@ export async function addCashTransaction(input: {
     user_id: user.id,
     bank_name: input.bank ?? "Efectivo",
     amount: input.amount,
-    currency: input.currency,
+    currency: "CRC",
     description: input.description || null,
     category: input.category || null,
     type: input.type,
@@ -100,7 +93,7 @@ export async function addCashTransaction(input: {
   }
 
   if (input.type === "EXPENSE" && input.category) {
-    await checkBudgetAndNotify(user.id, input.category, input.currency, input.amount);
+    await checkBudgetAndNotify(user.id, input.category, input.amount);
   }
 
   revalidatePath("/dashboard");
@@ -118,7 +111,6 @@ export async function suggestCategory(input: {
   description: string;
   type: TransactionType;
   amount: number;
-  currency: Currency;
   bank: BankName;
 }) {
   const supabase = await createClient();
@@ -160,7 +152,7 @@ export async function suggestCategory(input: {
           bank_name: input.bank,
           description: input.description,
           amount: input.amount || 0,
-          currency: input.currency,
+          currency: "CRC",
           type: input.type,
         },
       ],
@@ -243,7 +235,6 @@ export async function updateTransaction(
   id: string,
   input: {
     amount: number;
-    currency: Currency;
     description: string;
     category: string;
     type: TransactionType;
@@ -271,7 +262,6 @@ export async function updateTransaction(
     .update({
       bank_name: input.bank,
       amount: input.amount,
-      currency: input.currency,
       description: input.description || null,
       category: input.category || null,
       type: input.type,
@@ -470,7 +460,6 @@ export async function subscribeToPush(subscription: {
 export async function createSavingsGoal(input: {
   name: string;
   targetAmount: number;
-  currency: Currency;
   targetDate: string | null;
 }) {
   const supabase = await createClient();
@@ -489,7 +478,7 @@ export async function createSavingsGoal(input: {
     user_id: user.id,
     name,
     target_amount: input.targetAmount,
-    currency: input.currency,
+    currency: "CRC",
     target_date: input.targetDate || null,
   });
 
@@ -500,7 +489,7 @@ export async function createSavingsGoal(input: {
 
 export async function updateSavingsGoal(
   id: string,
-  input: { name: string; targetAmount: number; currency: Currency; targetDate: string | null }
+  input: { name: string; targetAmount: number; targetDate: string | null }
 ) {
   const supabase = await createClient();
   const {
@@ -519,7 +508,6 @@ export async function updateSavingsGoal(
     .update({
       name,
       target_amount: input.targetAmount,
-      currency: input.currency,
       target_date: input.targetDate || null,
     })
     .eq("id", id)

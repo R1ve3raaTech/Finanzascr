@@ -7,8 +7,8 @@ export interface FinanceSnapshot {
   thisMonth: { income: number; expense: number };
   lastMonth: { income: number; expense: number } | null;
   topCategories: { label: string; amount: number }[];
-  budgets: { category: string; limit: number; spent: number; currency: string }[];
-  recurring: { description: string; amount: number; currency: string }[];
+  budgets: { category: string; limit: number; spent: number }[];
+  recurring: { description: string; amount: number }[];
 }
 
 /**

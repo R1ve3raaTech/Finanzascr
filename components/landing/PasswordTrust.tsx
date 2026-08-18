@@ -51,7 +51,7 @@ export function PasswordTrust() {
         className="divide-y divide-line rounded-xl border border-line"
       >
         <div className="flex items-start gap-3 p-4">
-          <Check size={16} weight="bold" className="mt-0.5 shrink-0 text-emerald-400" />
+          <Check size={16} weight="bold" className="mt-0.5 shrink-0 text-income" />
           <p className="text-sm text-ink">
             Leemos las notificaciones que tu banco ya te manda por correo.
           </p>

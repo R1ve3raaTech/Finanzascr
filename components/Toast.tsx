@@ -58,13 +58,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               transition={{ type: "spring", stiffness: 420, damping: 30 }}
               className={`pointer-events-auto flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-md ${
                 t.kind === "success"
-                  ? "border-emerald-400/25 bg-surface/95 text-ink"
-                  : "border-rose-400/25 bg-surface/95 text-ink"
+                  ? "border-income/25 bg-surface/95 text-ink"
+                  : "border-expense/25 bg-surface/95 text-ink"
               }`}
             >
               <span
                 className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                  t.kind === "success" ? "bg-emerald-400/15 text-emerald-400" : "bg-rose-400/15 text-rose-400"
+                  t.kind === "success" ? "bg-income/15 text-income" : "bg-expense/15 text-expense"
                 }`}
               >
                 {t.kind === "success" ? (

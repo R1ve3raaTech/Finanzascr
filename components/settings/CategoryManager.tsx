@@ -53,7 +53,7 @@ function CategoryGroup({
     <div className="flex flex-col gap-2">
       <h4 className="flex items-center gap-1.5 text-xs font-medium text-ink-2">
         {income ? (
-          <ArrowDownLeft size={12} weight="bold" className="text-emerald-400" />
+          <ArrowDownLeft size={12} weight="bold" className="text-income" />
         ) : (
           <ArrowUpRight size={12} weight="bold" className="text-ink-3" />
         )}
@@ -71,7 +71,7 @@ function CategoryGroup({
               transition={pop}
               className={`flex items-center gap-1.5 rounded-full border py-1.5 pl-3 pr-2 text-xs font-medium ${
                 income
-                  ? "border-emerald-400/25 bg-emerald-400/5 text-emerald-300"
+                  ? "border-income/25 bg-income/5 text-income"
                   : "border-line text-ink-2"
               }`}
             >
@@ -83,7 +83,7 @@ function CategoryGroup({
                 transition={tap}
                 className={`flex h-4 w-4 items-center justify-center rounded-full transition-colors cursor-pointer ${
                   income
-                    ? "text-emerald-400/60 hover:bg-emerald-400/15 hover:text-emerald-300"
+                    ? "text-income/60 hover:bg-income/15 hover:text-income"
                     : "text-ink-3 hover:bg-surface-raised hover:text-ink"
                 }`}
               >
@@ -115,7 +115,7 @@ function CategoryGroup({
           <Plus size={14} weight="bold" />
         </motion.button>
       </div>
-      {error && <p className="text-xs text-rose-400">{error}</p>}
+      {error && <p className="text-xs text-expense">{error}</p>}
     </div>
   );
 }

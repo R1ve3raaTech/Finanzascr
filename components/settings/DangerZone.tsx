@@ -51,7 +51,7 @@ export function DangerZone({ transactionCount }: { transactionCount: number }) {
           disabled={transactionCount === 0}
           whileTap={reduce ? undefined : { scale: 0.96 }}
           transition={spring}
-          className="flex shrink-0 items-center gap-1.5 rounded-full border border-rose-400/30 px-3 py-1.5 text-xs font-medium text-rose-400 transition-colors hover:border-rose-400/50 hover:bg-rose-400/10 disabled:opacity-40 cursor-pointer"
+          className="flex shrink-0 items-center gap-1.5 rounded-full border border-expense/30 px-3 py-1.5 text-xs font-medium text-expense transition-colors hover:border-expense/50 hover:bg-expense/10 disabled:opacity-40 cursor-pointer"
         >
           <Trash size={14} weight="bold" />
           Eliminar todo
@@ -76,10 +76,10 @@ export function DangerZone({ transactionCount }: { transactionCount: number }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }}
               transition={spring}
-              className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-sm rounded-2xl border border-rose-400/20 bg-surface p-6 sm:inset-x-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2"
+              className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-sm rounded-2xl border border-expense/20 bg-surface p-6 sm:inset-x-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2"
             >
-              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-rose-400/10">
-                <Warning size={22} weight="bold" className="text-rose-400" />
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-expense/10">
+                <Warning size={22} weight="bold" className="text-expense" />
               </div>
               <h2 className="text-base font-semibold text-ink">
                 ¿Eliminar {transactionCount} transacción{transactionCount === 1 ? "" : "es"}?
@@ -90,17 +90,17 @@ export function DangerZone({ transactionCount }: { transactionCount: number }) {
               </p>
 
               <label className="mt-4 flex flex-col gap-1.5 text-xs text-ink-3">
-                Escribí <span className="font-mono font-semibold text-rose-400">{CONFIRM_WORD}</span>{" "}
+                Escribí <span className="font-mono font-semibold text-expense">{CONFIRM_WORD}</span>{" "}
                 para confirmar
                 <input
                   value={typed}
                   onChange={(e) => setTyped(e.target.value)}
                   autoFocus
-                  className="rounded-lg border border-line bg-ground px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-rose-400/50"
+                  className="rounded-lg border border-line bg-ground px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-expense/50"
                 />
               </label>
 
-              {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
+              {error && <p className="mt-2 text-xs text-expense">{error}</p>}
 
               <div className="mt-5 grid grid-cols-2 gap-2">
                 <button
@@ -113,7 +113,7 @@ export function DangerZone({ transactionCount }: { transactionCount: number }) {
                 <button
                   onClick={confirm}
                   disabled={pending || typed !== CONFIRM_WORD}
-                  className="rounded-xl bg-rose-600 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-500 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+                  className="rounded-xl bg-danger py-2.5 text-sm font-semibold text-on-danger transition-colors hover:bg-danger-hover disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                 >
                   {pending ? "Eliminando..." : "Eliminar todo"}
                 </button>

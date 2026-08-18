@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
+import { ThemeSync } from "@/components/ThemeSync";
 import { resolveAvatarUrl, resolveFirstName } from "@/lib/profile";
 import { createClient } from "@/lib/supabase/server";
 
@@ -18,19 +19,21 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   let firstName: string | undefined;
   let avatarUrl: string | undefined;
+  let dbTheme: "dark" | "light" | "system" = "system";
 
   if (user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("full_name, avatar_url")
-      .eq("id", user.id)
-      .maybeSingle();
+    const [{ data: profile }, { data: settings }] = await Promise.all([
+      supabase.from("profiles").select("full_name, avatar_url").eq("id", user.id).maybeSingle(),
+      supabase.from("user_settings").select("theme").eq("user_id", user.id).maybeSingle(),
+    ]);
     firstName = resolveFirstName(user, profile?.full_name);
     avatarUrl = resolveAvatarUrl(user, profile?.avatar_url);
+    dbTheme = settings?.theme ?? "system";
   }
 
   return (
     <div className="lg:flex">
+      <ThemeSync dbTheme={dbTheme} />
       <AppSidebar name={firstName} avatarUrl={avatarUrl} />
       <div className="min-w-0 lg:flex-1">{children}</div>
     </div>

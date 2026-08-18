@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { issueDeletionCode, verifyDeletionCode } from "@/lib/accountDeletion";
-import type { Currency, TransactionType } from "@/lib/types";
+import type { Theme, TransactionType } from "@/lib/types";
 
 export async function updateProfile(input: {
   fullName: string;
@@ -42,7 +42,7 @@ export async function updateProfile(input: {
   return { error: null };
 }
 
-export async function setBudget(category: string, monthlyLimit: number, currency: Currency) {
+export async function setBudget(category: string, monthlyLimit: number) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -54,7 +54,7 @@ export async function setBudget(category: string, monthlyLimit: number, currency
   }
 
   const { error } = await supabase.from("budgets").upsert(
-    { user_id: user.id, category, monthly_limit: monthlyLimit, currency },
+    { user_id: user.id, category, monthly_limit: monthlyLimit, currency: "CRC" },
     { onConflict: "user_id,category" }
   );
 
@@ -77,7 +77,7 @@ export async function deleteBudget(id: string) {
   return { error: null };
 }
 
-export async function updateDefaultCurrency(currency: Currency) {
+export async function updateTheme(theme: Theme) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -87,7 +87,7 @@ export async function updateDefaultCurrency(currency: Currency) {
   const { error } = await supabase.from("user_settings").upsert(
     {
       user_id: user.id,
-      default_currency: currency,
+      theme,
       updated_at: new Date().toISOString(),
     },
     { onConflict: "user_id" }
@@ -95,7 +95,6 @@ export async function updateDefaultCurrency(currency: Currency) {
 
   if (error) return { error: "No se pudo guardar la preferencia." };
   revalidatePath("/dashboard/settings");
-  revalidatePath("/dashboard");
   return { error: null };
 }
 

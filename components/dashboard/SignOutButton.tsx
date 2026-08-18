@@ -67,7 +67,7 @@ export function SignOutButton() {
                   onClick={() => signOut()}
                   whileTap={reduce ? undefined : { scale: 0.97 }}
                   transition={tap}
-                  className="rounded-xl bg-rose-600 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-rose-500 cursor-pointer"
+                  className="rounded-xl bg-danger py-2.5 text-sm font-semibold text-on-danger transition-colors hover:bg-danger-hover cursor-pointer"
                 >
                   Salir
                 </motion.button>

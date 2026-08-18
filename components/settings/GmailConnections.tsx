@@ -73,7 +73,7 @@ export function GmailConnections({ connections }: { connections: GmailConnection
                 aria-label={`Desconectar ${c.email}`}
                 whileTap={reduce ? undefined : { scale: 0.85 }}
                 transition={tap}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-surface-raised hover:text-rose-400 disabled:opacity-40 cursor-pointer"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-surface-raised hover:text-expense disabled:opacity-40 cursor-pointer"
               >
                 <X size={14} weight="bold" />
               </motion.button>

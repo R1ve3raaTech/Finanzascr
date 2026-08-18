@@ -147,7 +147,7 @@ export function NotificationsSetting() {
             animate={{ x: enabled ? 26 : 3 }}
             transition={knobSpring}
             className={`absolute top-1 flex h-6 w-6 items-center justify-center rounded-full shadow-sm ${
-              enabled ? "bg-accent text-on-accent" : "bg-zinc-200 text-ground/60"
+              enabled ? "bg-accent text-on-accent" : "bg-zinc-200 text-zinc-500"
             }`}
           >
             {enabled ? (
@@ -163,7 +163,7 @@ export function NotificationsSetting() {
           Tu navegador no soporta notificaciones push.
         </p>
       )}
-      {error && <p className="text-xs text-rose-400">{error}</p>}
+      {error && <p className="text-xs text-expense">{error}</p>}
     </div>
   );
 }

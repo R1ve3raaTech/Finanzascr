@@ -71,13 +71,13 @@ export function SavingsGoals({
                   <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-sm">
                     <span className="min-w-0 truncate text-ink">{g.name}</span>
                     <span className="shrink-0 font-mono text-xs text-ink-2 sm:text-sm">
-                      {formatMoney(progress, g.currency)} / {formatMoney(g.target_amount, g.currency)}
+                      {formatMoney(progress)} / {formatMoney(g.target_amount)}
                     </span>
                   </div>
                   <div className="h-2 w-full overflow-hidden rounded-full bg-surface-raised">
                     <div
                       className={`h-full w-full origin-left rounded-full transition-transform duration-500 ${
-                        reached ? "bg-emerald-400" : "bg-accent"
+                        reached ? "bg-income" : "bg-accent"
                       }`}
                       style={{ transform: `scaleX(${pct})` }}
                     />
@@ -85,7 +85,7 @@ export function SavingsGoals({
                   <div className="flex items-center justify-between text-[11px] text-ink-3">
                     <span>{reached ? "¡Meta cumplida!" : `${Math.round(pct * 100)}%`}</span>
                     {deadline && (
-                      <span className={deadline.overdue && !reached ? "text-amber-400" : undefined}>
+                      <span className={deadline.overdue && !reached ? "text-warn" : undefined}>
                         {deadline.text}
                       </span>
                     )}

@@ -16,7 +16,7 @@ import {
   currentMonthKey,
   detectRecurring,
   expenseBreakdown,
-  expenseByCategoryAndCurrency,
+  expenseByCategory,
   monthlyTotals,
 } from "@/lib/insights";
 import { createClient } from "@/lib/supabase/server";
@@ -64,13 +64,8 @@ export default async function InsightsPage() {
   const uncategorizedCount = transactions.filter(
     (t) => t.is_automated && !t.category
   ).length;
-  // Todo el cálculo de esta página (monthlyTotals, expenseBreakdown) descarta
-  // lo que no sea colones, para no sumar peras con manzanas. Si el usuario
-  // tiene movimientos en dólares hay que decírselo: si no, ve totales que no
-  // le cuadran con su plata y no entiende por qué.
-  const hasOtherCurrency = transactions.some((t) => t.currency !== "CRC");
 
-  const spentByCategoryCurrency = expenseByCategoryAndCurrency(transactions, key);
+  const spentByCategory = expenseByCategory(transactions, key);
 
   const aiSnapshot = {
     thisMonth: { income: thisMonth.income, expense: thisMonth.expense },
@@ -79,12 +74,11 @@ export default async function InsightsPage() {
     budgets: budgets.map((b) => ({
       category: b.category,
       limit: b.monthly_limit,
-      spent: spentByCategoryCurrency.get(`${b.category}::${b.currency}`) ?? 0,
-      currency: b.currency,
+      spent: spentByCategory.get(b.category) ?? 0,
     })),
     recurring: recurring
       .slice(0, 5)
-      .map((r) => ({ description: r.description, amount: r.averageAmount, currency: r.currency })),
+      .map((r) => ({ description: r.description, amount: r.averageAmount })),
   };
 
   const netDelta =
@@ -116,30 +110,26 @@ export default async function InsightsPage() {
         <section className="animate-fade-up flex flex-col gap-3">
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
             <h2 className="text-sm font-medium text-ink-2">Este mes</h2>
-            <p className="text-[11px] text-ink-3">
-              {hasOtherCurrency
-                ? "Solo movimientos en colones — los dólares no se incluyen."
-                : "En colones."}
-            </p>
+            <p className="text-[11px] text-ink-3">En colones.</p>
           </div>
 
           <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
             <div className="bg-surface/60 p-4">
               <p className="text-xs text-ink-3">Ingresos</p>
               <p className="money mt-1 font-mono text-lg text-income">
-                {formatMoney(thisMonth.income, "CRC")}
+                {formatMoney(thisMonth.income)}
               </p>
             </div>
             <div className="bg-surface/60 p-4">
               <p className="text-xs text-ink-3">Gastos</p>
               <p className="money mt-1 font-mono text-lg text-expense">
-                {formatMoney(thisMonth.expense, "CRC")}
+                {formatMoney(thisMonth.expense)}
               </p>
             </div>
             <div className="bg-surface/60 p-4">
               <p className="text-xs text-ink-3">Neto</p>
               <p className="money mt-1 font-mono text-lg text-ink">
-                {formatMoney(thisMonth.income - thisMonth.expense, "CRC")}
+                {formatMoney(thisMonth.income - thisMonth.expense)}
               </p>
               {netDelta !== null && (
                 <p className={`text-[11px] ${netDelta >= 0 ? "text-income" : "text-expense"}`}>
@@ -192,7 +182,7 @@ export default async function InsightsPage() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:240ms]">
             <h2 className="mb-4 text-sm font-medium text-ink-2">Presupuestos</h2>
-            <BudgetProgress budgets={budgets} spentByCategoryCurrency={spentByCategoryCurrency} />
+            <BudgetProgress budgets={budgets} spentByCategory={spentByCategory} />
           </section>
 
           <section className="animate-fade-up rounded-2xl border border-line bg-surface/40 p-5 [animation-delay:300ms]">

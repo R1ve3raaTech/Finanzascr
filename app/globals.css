@@ -14,44 +14,104 @@
    justo el default que hace que una app parezca generada sola.
 --------------------------------------------------------------------------- */
 :root {
+  color-scheme: light;
+
   /* Superficies, de más profunda a más elevada */
-  --ground: #08090c;
-  --surface: #0e1014;
-  --surface-raised: #14171d;
-  --surface-hover: #191d24;
+  --ground: #f3f5f9;
+  --surface: #ffffff;
+  --surface-raised: #edf0f5;
+  --surface-hover: #e3e7ee;
 
   /* Líneas: casi siempre alcanza con la sutil; la fuerte es para foco/hover */
-  --line: rgb(255 255 255 / 0.08);
-  --line-strong: rgb(255 255 255 / 0.16);
+  --line: rgb(15 23 42 / 0.09);
+  --line-strong: rgb(15 23 42 / 0.18);
 
   /* Texto, en tres niveles de jerarquía */
-  --ink: #f4f6f8;
-  --ink-2: #a2aab8;
-  --ink-3: #6b7382;
+  --ink: #10151d;
+  --ink-2: #4c5566;
+  --ink-3: #838da0;
 
-  /* Marca */
-  --accent: #38bdf8;
-  --accent-soft: #7dd3fc;
-  --accent-deep: #0ea5e9;
-  --on-accent: #04141f;
+  /* Marca. Más profunda que en dark mode: el mismo celeste vibrante pierde
+     contraste apenas se lo pone sobre blanco, así que acá hace de sky-700 en
+     vez de sky-400. */
+  --accent: #0369a1;
+  --accent-soft: #0284c7;
+  --accent-deep: #075985;
+  --on-accent: #ffffff;
 
-  /* Semántica de plata — reservada, no decorativa */
-  --income: #34d399;
-  --expense: #fb7185;
-  --warn: #fbbf24;
+  /* Semántica de plata — reservada, no decorativa. Igual de más profundas
+     que en dark mode por la misma razón que el acento. */
+  --income: #059669;
+  --expense: #e11d48;
+  --warn: #b45309;
 
-  /* Rellenos de gráficos. Son un paso más profundos que los de arriba a
-     propósito: el texto necesita ser claro para leerse sobre el fondo oscuro,
-     pero una barra grande con ese mismo tono deslumbra. Estos dos están dentro
-     de la banda de luminosidad que pide el validador de paletas para dark mode
-     (OKLCH L 0.48–0.67) y pasan contraste contra la superficie de las
-     tarjetas. */
+  /* Botón destructivo sólido (borrar cuenta, cerrar sesión): un rojo fijo
+     con texto blanco fijo, no ligado al texto/fondo del tema — antes usaba
+     `text-ink`, que en modo claro daba texto casi negro sobre rojo. */
+  --danger: #e11d48;
+  --danger-hover: #f43f5e;
+  --on-danger: #ffffff;
+
+  /* Rellenos de gráficos. Mismos tonos profundos en los dos modos: ya
+     pasaban contraste contra tarjetas oscuras y también lo hacen contra
+     blanco. */
   --chart-income: #059669;
   --chart-expense: #e11d48;
 
   /* Compatibilidad con el nombre viejo */
   --background: var(--ground);
   --foreground: var(--ink);
+}
+
+/* Dark mode: automático por `prefers-color-scheme` cuando la preferencia es
+   "sistema" (sin atributo explícito), y forzado por la clase `.dark` que
+   agrega next-themes cuando el usuario elige "Oscuro" a mano. */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+    --ground: #08090c;
+    --surface: #0e1014;
+    --surface-raised: #14171d;
+    --surface-hover: #191d24;
+    --line: rgb(255 255 255 / 0.08);
+    --line-strong: rgb(255 255 255 / 0.16);
+    --ink: #f4f6f8;
+    --ink-2: #a2aab8;
+    --ink-3: #6b7382;
+    --accent: #38bdf8;
+    --accent-soft: #7dd3fc;
+    --accent-deep: #0ea5e9;
+    --on-accent: #04141f;
+    --income: #34d399;
+    --expense: #fb7185;
+    --warn: #fbbf24;
+    --danger: #dc2626;
+    --danger-hover: #ef4444;
+    --on-danger: #ffffff;
+  }
+}
+
+.dark {
+  color-scheme: dark;
+  --ground: #08090c;
+  --surface: #0e1014;
+  --surface-raised: #14171d;
+  --surface-hover: #191d24;
+  --line: rgb(255 255 255 / 0.08);
+  --line-strong: rgb(255 255 255 / 0.16);
+  --ink: #f4f6f8;
+  --ink-2: #a2aab8;
+  --ink-3: #6b7382;
+  --accent: #38bdf8;
+  --accent-soft: #7dd3fc;
+  --accent-deep: #0ea5e9;
+  --on-accent: #04141f;
+  --income: #34d399;
+  --expense: #fb7185;
+  --warn: #fbbf24;
+  --danger: #dc2626;
+  --danger-hover: #ef4444;
+  --on-danger: #ffffff;
 }
 
 @theme inline {
@@ -75,6 +135,9 @@
   --color-income: var(--income);
   --color-expense: var(--expense);
   --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-on-danger: var(--on-danger);
   --color-chart-income: var(--chart-income);
   --color-chart-expense: var(--chart-expense);
 
@@ -84,10 +147,6 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-montserrat: var(--font-montserrat);
-}
-
-html {
-  color-scheme: dark;
 }
 
 body {

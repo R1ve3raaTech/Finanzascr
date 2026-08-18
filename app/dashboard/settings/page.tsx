@@ -4,9 +4,9 @@ import { redirect } from "next/navigation";
 import {
   ArrowLeft,
   Bell,
-  CurrencyCircleDollar,
   DownloadSimple,
   EnvelopeSimple,
+  PaintBrush,
   ShieldCheck,
   Tag,
   User,
@@ -14,7 +14,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { BudgetManager } from "@/components/settings/BudgetManager";
 import { CategoryManager } from "@/components/settings/CategoryManager";
-import { CurrencySetting } from "@/components/settings/CurrencySetting";
+import { ThemeSetting } from "@/components/settings/ThemeSetting";
 import { DangerZone } from "@/components/settings/DangerZone";
 import { DeleteAccountFlow } from "@/components/settings/DeleteAccountFlow";
 import { GmailConnections } from "@/components/settings/GmailConnections";
@@ -84,8 +84,7 @@ export default async function SettingsPage({
     ]),
   ];
 
-  const resolvedSettings: Pick<UserSettings, "default_currency"> =
-    settings ?? { default_currency: "CRC" };
+  const resolvedSettings: Pick<UserSettings, "theme"> = settings ?? { theme: "system" };
 
   const initialFullName = resolveDisplayName(user, profile?.full_name) ?? "";
   const initialAvatarUrl = resolveAvatarUrl(user, profile?.avatar_url) ?? null;
@@ -108,12 +107,12 @@ export default async function SettingsPage({
         <h1 className="hidden text-2xl font-semibold tracking-tight text-ink lg:block">Ajustes</h1>
 
         {params.gmail_connected && (
-          <p className="animate-fade-up rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 text-sm text-emerald-300">
+          <p className="animate-fade-up rounded-xl border border-income/30 bg-income/10 px-4 py-2.5 text-sm text-income">
             Cuenta de Gmail conectada correctamente.
           </p>
         )}
         {params.gmail_error && (
-          <p className="animate-fade-up rounded-xl border border-rose-400/30 bg-rose-400/10 px-4 py-2.5 text-sm text-rose-300">
+          <p className="animate-fade-up rounded-xl border border-expense/30 bg-expense/10 px-4 py-2.5 text-sm text-expense">
             No se pudo conectar la cuenta de Gmail. Intentá de nuevo.
           </p>
         )}
@@ -136,8 +135,8 @@ export default async function SettingsPage({
           <SettingsSection icon={Wallet}>
             <BudgetManager budgets={(budgets ?? []) as Budget[]} categories={budgetCategories} />
           </SettingsSection>
-          <SettingsSection icon={CurrencyCircleDollar}>
-            <CurrencySetting initial={resolvedSettings.default_currency} />
+          <SettingsSection icon={PaintBrush}>
+            <ThemeSetting initial={resolvedSettings.theme} />
           </SettingsSection>
         </SettingsGroup>
 

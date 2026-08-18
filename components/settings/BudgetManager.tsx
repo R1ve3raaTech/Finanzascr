@@ -6,8 +6,7 @@ import { Plus, Wallet, X } from "@phosphor-icons/react";
 import { deleteBudget, setBudget } from "@/app/dashboard/settings/actions";
 import { useToast } from "@/components/Toast";
 import { formatMoney } from "@/lib/format";
-import { CURRENCY_SYMBOL } from "@/lib/transactionFormOptions";
-import type { Budget, Currency } from "@/lib/types";
+import type { Budget } from "@/lib/types";
 
 const tap = { type: "spring", stiffness: 400, damping: 25 } as const;
 const pop = { type: "spring", stiffness: 420, damping: 22 } as const;
@@ -25,7 +24,6 @@ export function BudgetManager({
   const available = categories.filter((c) => !budgets.some((b) => b.category === c));
   const [category, setCategory] = useState(available[0] ?? "");
   const [amount, setAmount] = useState("");
-  const [currency, setCurrency] = useState<Currency>("CRC");
   const [error, setError] = useState<string | null>(null);
 
   function submit() {
@@ -33,7 +31,7 @@ export function BudgetManager({
     if (!target || !amount) return;
     setError(null);
     startTransition(async () => {
-      const result = await setBudget(target, Number(amount.replace(",", ".")), currency);
+      const result = await setBudget(target, Number(amount.replace(",", ".")));
       if (result.error) {
         setError(result.error);
         toast.error(result.error);
@@ -77,14 +75,14 @@ export function BudgetManager({
               </div>
               <span className="min-w-0 flex-1 truncate text-sm text-ink">{b.category}</span>
               <span className="font-mono text-sm text-ink-2">
-                {formatMoney(b.monthly_limit, b.currency)}
+                {formatMoney(b.monthly_limit)}
               </span>
               <motion.button
                 onClick={() => remove(b.id, b.category)}
                 whileTap={reduce ? undefined : { scale: 0.85 }}
                 transition={tap}
                 aria-label={`Borrar presupuesto de ${b.category}`}
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-surface-raised hover:text-rose-400 cursor-pointer"
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-surface-raised hover:text-expense cursor-pointer"
               >
                 <X size={12} weight="bold" />
               </motion.button>
@@ -115,9 +113,7 @@ export function BudgetManager({
           </div>
           <div className="flex gap-2">
             <div className="flex flex-1 items-center gap-1.5 rounded-lg border border-line bg-ground pl-3 pr-1.5">
-              <span className="font-mono text-xs text-ink-3">
-                {CURRENCY_SYMBOL[currency]}
-              </span>
+              <span className="font-mono text-xs text-ink-3">₡</span>
               <input
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
@@ -126,19 +122,6 @@ export function BudgetManager({
                 placeholder="Límite mensual"
                 className="w-full bg-transparent py-1.5 text-xs text-ink outline-none placeholder:text-ink-3"
               />
-              <div className="flex shrink-0 rounded-md border border-line p-0.5">
-                {(["CRC", "USD"] as const).map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => setCurrency(c)}
-                    className={`rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors cursor-pointer ${
-                      currency === c ? "bg-surface-raised text-ink" : "text-ink-3"
-                    }`}
-                  >
-                    {c === "CRC" ? "₡" : "$"}
-                  </button>
-                ))}
-              </div>
             </div>
             <motion.button
               onClick={submit}
@@ -153,7 +136,7 @@ export function BudgetManager({
           </div>
         </div>
       )}
-      {error && <p className="text-xs text-rose-400">{error}</p>}
+      {error && <p className="text-xs text-expense">{error}</p>}
     </div>
   );
 }

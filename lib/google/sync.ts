@@ -69,7 +69,7 @@ export async function syncGmailForUser({
     for (const item of batch) {
       if (!item) continue;
       const { id, message } = item;
-      const parsed = parseEmail(message.bodyText, { receivedAt: message.receivedAt, ownerName });
+      const parsed = await parseEmail(message.bodyText, { receivedAt: message.receivedAt, ownerName });
       if (!parsed) continue;
 
       const { error: insertError, count } = await admin
@@ -94,7 +94,7 @@ export async function syncGmailForUser({
       } else if (count && count > 0) {
         transactionsInserted++;
         const title = parsed.type === "INCOME" ? "Nuevo ingreso" : "Nuevo gasto";
-        const body = `${parsed.bank_name} · ${formatMoney(parsed.amount, parsed.currency)} · ${parsed.description}`;
+        const body = `${parsed.bank_name} · ${formatMoney(parsed.amount)} · ${parsed.description}`;
         pushes.push(
           sendPushToUser(admin, userId, { title, body, url: "/dashboard" }).catch((err) => {
             errors.push(`push/${id}: ${(err as Error).message}`);

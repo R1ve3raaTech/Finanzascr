@@ -1,4 +1,4 @@
-import type { Currency, SavingsGoal, Transaction } from "./types";
+import type { SavingsGoal, Transaction } from "./types";
 
 export interface MonthTotal {
   monthKey: string;
@@ -18,9 +18,9 @@ function monthKey(iso: string): string {
  * (amount/currency/type/transaction_date) en vez de pedirle a la base el
  * historial de nuevo para dibujar el gráfico de 6 meses.
  */
-type MonthlyTotalsInput = Pick<Transaction, "currency" | "transaction_date" | "type" | "amount">;
+type MonthlyTotalsInput = Pick<Transaction, "transaction_date" | "type" | "amount">;
 
-/** Últimos `months` meses (incluyendo el actual), solo movimientos en CRC. */
+/** Últimos `months` meses (incluyendo el actual). */
 export function monthlyTotals(transactions: MonthlyTotalsInput[], months = 6): MonthTotal[] {
   const now = new Date();
   const buckets: MonthTotal[] = [];
@@ -33,7 +33,6 @@ export function monthlyTotals(transactions: MonthlyTotalsInput[], months = 6): M
   const byKey = new Map(buckets.map((b) => [b.monthKey, b]));
 
   for (const t of transactions) {
-    if (t.currency !== "CRC") continue;
     const bucket = byKey.get(monthKey(t.transaction_date));
     if (!bucket) continue;
     if (t.type === "INCOME") bucket.income += t.amount;
@@ -49,7 +48,7 @@ export interface BreakdownItem {
   share: number;
 }
 
-/** Gasto en CRC del mes indicado (por defecto el actual), agrupado por `keyFn`. */
+/** Gasto del mes indicado (por defecto el actual), agrupado por `keyFn`. */
 export function expenseBreakdown(
   transactions: Transaction[],
   keyFn: (t: Transaction) => string,
@@ -59,7 +58,7 @@ export function expenseBreakdown(
   const totals = new Map<string, number>();
 
   for (const t of transactions) {
-    if (t.type !== "EXPENSE" || t.currency !== "CRC") continue;
+    if (t.type !== "EXPENSE") continue;
     if (monthKey(t.transaction_date) !== target) continue;
     const key = keyFn(t);
     totals.set(key, (totals.get(key) ?? 0) + t.amount);
@@ -75,16 +74,8 @@ export function currentMonthKey(): string {
   return monthKey(new Date().toISOString());
 }
 
-/**
- * Gasto del mes agrupado por categoría **y moneda**, con la llave
- * `"categoría::MONEDA"`.
- *
- * `expenseBreakdown` descarta todo lo que no sea colones (para no sumar peras
- * con manzanas en el desglose), pero un presupuesto puede estar en dólares:
- * usar el desglose para eso hacía que a un presupuesto en dólares se le
- * mostrara el gasto en colones con el símbolo "$".
- */
-export function expenseByCategoryAndCurrency(
+/** Gasto del mes agrupado por categoría, para cruzar contra los presupuestos. */
+export function expenseByCategory(
   transactions: Transaction[],
   targetMonthKey?: string
 ): Map<string, number> {
@@ -94,7 +85,7 @@ export function expenseByCategoryAndCurrency(
   for (const t of transactions) {
     if (t.type !== "EXPENSE") continue;
     if (monthKey(t.transaction_date) !== target) continue;
-    const key = `${t.category ?? "Sin categoría"}::${t.currency}`;
+    const key = t.category ?? "Sin categoría";
     totals.set(key, (totals.get(key) ?? 0) + t.amount);
   }
 
@@ -104,23 +95,22 @@ export function expenseByCategoryAndCurrency(
 export interface RecurringItem {
   description: string;
   bankName: string;
-  currency: Currency;
   averageAmount: number;
   occurrences: number;
   lastDate: string;
 }
 
 /**
- * Detecta gastos recurrentes: mismo comercio + banco + moneda apareciendo
- * en al menos 2 meses distintos con montos parecidos (±10%). Heurística
- * simple sobre los datos que ya existen, no requiere tabla nueva.
+ * Detecta gastos recurrentes: mismo comercio + banco apareciendo en al
+ * menos 2 meses distintos con montos parecidos (±10%). Heurística simple
+ * sobre los datos que ya existen, no requiere tabla nueva.
  */
 export function detectRecurring(transactions: Transaction[]): RecurringItem[] {
   const groups = new Map<string, Transaction[]>();
 
   for (const t of transactions) {
     if (t.type !== "EXPENSE" || !t.description) continue;
-    const key = `${t.bank_name}::${t.description.toLowerCase().trim()}::${t.currency}`;
+    const key = `${t.bank_name}::${t.description.toLowerCase().trim()}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key)!.push(t);
   }
@@ -143,7 +133,6 @@ export function detectRecurring(transactions: Transaction[]): RecurringItem[] {
     results.push({
       description: sorted[0].description!,
       bankName: sorted[0].bank_name,
-      currency: sorted[0].currency,
       averageAmount: average,
       occurrences: group.length,
       lastDate: sorted[0].transaction_date,
@@ -155,17 +144,16 @@ export function detectRecurring(transactions: Transaction[]): RecurringItem[] {
 
 /**
  * Progreso de una meta de ahorro: se calcula solo, sumando ingresos y
- * restando gastos en la moneda de la meta desde que se creó — no hay
- * "aportes" manuales que llevar por separado. Si el usuario tiene varias
- * metas activas en la misma moneda, cada una mide el mismo dinero de forma
- * independiente (no se reparte entre metas), así que la suma de progresos
- * no es literalmente plata apartada en cajitas separadas.
+ * restando gastos desde que se creó — no hay "aportes" manuales que llevar
+ * por separado. Si el usuario tiene varias metas activas, cada una mide el
+ * mismo dinero de forma independiente (no se reparte entre metas), así que
+ * la suma de progresos no es literalmente plata apartada en cajitas
+ * separadas.
  */
 export function goalProgress(transactions: Transaction[], goal: SavingsGoal): number {
   const since = new Date(goal.created_at).getTime();
   let net = 0;
   for (const t of transactions) {
-    if (t.currency !== goal.currency) continue;
     if (new Date(t.transaction_date).getTime() < since) continue;
     net += t.type === "INCOME" ? t.amount : -t.amount;
   }

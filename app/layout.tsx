@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import { InstallPromptProvider } from "@/components/InstallPromptProvider";
 import { RegisterServiceWorker } from "@/components/RegisterServiceWorker";
 import { ToastProvider } from "@/components/Toast";
@@ -43,8 +44,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  // Mismo valor que --ground en globals.css y que el manifest.
-  themeColor: "#08090c",
+  // Mismos valores que --ground en globals.css para cada modo.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f3f5f9" },
+    { media: "(prefers-color-scheme: dark)", color: "#08090c" },
+  ],
 };
 
 export default function RootLayout({
@@ -55,13 +59,16 @@ export default function RootLayout({
   return (
     <html
       lang="es"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col overflow-x-hidden bg-ground text-ink">
-        <RegisterServiceWorker />
-        <InstallPromptProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </InstallPromptProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <RegisterServiceWorker />
+          <InstallPromptProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </InstallPromptProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

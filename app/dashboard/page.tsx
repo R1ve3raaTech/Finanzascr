@@ -16,7 +16,7 @@ import { endOfDayISO, startOfDayISO } from "@/lib/dateRange";
 import { monthlyTotals } from "@/lib/insights";
 import { resolveAvatarUrl, resolveFirstName } from "@/lib/profile";
 import { createClient } from "@/lib/supabase/server";
-import type { Currency, Transaction, UserCategory } from "@/lib/types";
+import type { Transaction, UserCategory } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -66,15 +66,10 @@ export default async function DashboardPage({
     transactionsQuery = transactionsQuery.limit(50);
   }
 
-  const [{ data }, { data: balanceRows }, { data: settings }, { data: categories }, { data: profile }] =
+  const [{ data }, { data: balanceRows }, { data: categories }, { data: profile }] =
     await Promise.all([
       transactionsQuery,
       balanceQuery,
-      supabase
-        .from("user_settings")
-        .select("default_currency")
-        .eq("user_id", user.id)
-        .maybeSingle(),
       supabase
         .from("user_categories")
         .select("*")
@@ -85,21 +80,20 @@ export default async function DashboardPage({
 
   const transactions = (data ?? []) as Transaction[];
   const userCategories = (categories ?? []) as UserCategory[];
-  const defaultCurrency: Currency = settings?.default_currency ?? "CRC";
 
-  const balance = { CRC: 0, USD: 0 };
-  // Ingresos y gastos del mes en curso, en la moneda por defecto del usuario:
-  // el saldo consolidado responde "cuánto tengo", pero lo que uno mira todos
-  // los días es "cuánto entró y cuánto se fue este mes".
+  let balance = 0;
+  // Ingresos y gastos del mes en curso: el saldo consolidado responde
+  // "cuánto tengo", pero lo que uno mira todos los días es "cuánto entró y
+  // cuánto se fue este mes".
   const monthStart = new Date();
   monthStart.setDate(1);
   monthStart.setHours(0, 0, 0, 0);
-  const month = { currency: defaultCurrency, income: 0, expense: 0 };
+  const month = { income: 0, expense: 0 };
 
   for (const t of balanceRows ?? []) {
-    balance[t.currency as Currency] += t.type === "INCOME" ? t.amount : -t.amount;
+    balance += t.type === "INCOME" ? t.amount : -t.amount;
 
-    if (t.currency === defaultCurrency && new Date(t.transaction_date) >= monthStart) {
+    if (new Date(t.transaction_date) >= monthStart) {
       if (t.type === "INCOME") month.income += t.amount;
       else month.expense += t.amount;
     }
@@ -142,12 +136,7 @@ export default async function DashboardPage({
 
         <DateRangeFilter />
 
-        <BalanceCard
-          crc={balance.CRC}
-          usd={balance.USD}
-          filtered={hasRange}
-          month={hasRange ? undefined : month}
-        />
+        <BalanceCard crc={balance} filtered={hasRange} month={hasRange ? undefined : month} />
 
         {/* En escritorio la lista y el gráfico van uno al lado del otro; en
             mobile el gráfico chico se esconde (ya hay una versión completa
@@ -170,7 +159,7 @@ export default async function DashboardPage({
         </div>
       </div>
 
-      <AddCashModal defaultCurrency={defaultCurrency} customCategories={userCategories} />
+      <AddCashModal customCategories={userCategories} />
     </main>
   );
 }

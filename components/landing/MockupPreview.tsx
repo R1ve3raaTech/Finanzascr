@@ -128,7 +128,7 @@ export function MockupPreview() {
               </div>
               <span
                 className={`money font-mono text-sm ${
-                  t.income ? "text-emerald-400" : "text-ink-2"
+                  t.income ? "text-income" : "text-ink-2"
                 }`}
               >
                 {t.amount}
