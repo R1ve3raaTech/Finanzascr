@@ -138,9 +138,6 @@ cada una desde Ajustes → o Camil corre un `UPDATE` en Supabase Studio
 buscando transacciones "BAC" cuyo `description` no le suene a Nicaragua/BAC).
 
 **Pendientes generales, sin fecha de sesión asociada:**
-- No hay migraciones pendientes de correr: la última en el repo
-  (`supabase/migrations/`) es `0015_account_deletion.sql`, igual a la última
-  confirmada aplicada en Supabase Studio.
 - El texto sobre notificaciones bancarias de BAC quedó deliberadamente
   genérico ("revisá los ajustes de notificaciones de tu banco") porque las
   instrucciones específicas que se probaron dos veces resultaron
@@ -149,3 +146,39 @@ buscando transacciones "BAC" cuyo `description` no le suene a Nicaragua/BAC).
 - Deploy manual siempre: `git push origin main` + `npx vercel --prod` (no
   hay auto-deploy conectado a GitHub). Dominio de producción actual:
   `www.ticofinanza.com`.
+
+## Dónde quedamos (2026-08-18)
+
+Se quitó el dólar de toda la app (solo queda colones) y se agregó
+selector de tema claro/oscuro/sistema. Deployado a producción.
+
+- Cualquier correo bancario en otra moneda (USD, córdobas, euros) se
+  convierte a CRC al parsear el correo, con el tipo de cambio en tiempo
+  real de `open.er-api.com` (`lib/exchangeRate.ts`, sin API key, cacheado
+  1h). La conversión pasa una sola vez en `parseEmail()`
+  (`lib/parsers/index.ts`) — los parsers individuales de banco siguen
+  devolviendo la moneda cruda que detectan (USD/NIO/CRC), no saben de
+  tipos de cambio.
+- "Moneda por defecto" en Ajustes se reemplazó por el selector de tema
+  (`components/settings/ThemeSetting.tsx`, usa `next-themes`). La paleta
+  clara se agregó en `app/globals.css` sin tocar la mayoría de los
+  componentes porque el rediseño del 2026-08-15 ya había tokenizado casi
+  todos los colores — los puntos con colores fijos que no pasaban por los
+  tokens (botón de Google, botones destructivos rojos, texto blanco
+  hardcodeado en /privacidad y /terminos) se migraron a tokens semánticos
+  nuevos (`--danger`/`--on-danger`) o existentes.
+- **Pendiente, bloqueante para que la migración de datos históricos se
+  aplique**: `supabase/migrations/0017_crc_only_theme.sql` está en el repo
+  pero sin correr — Camil tiene que ejecutarla a mano en Supabase Studio →
+  SQL Editor (mismo motivo de siempre: no hay acceso de escritura SQL
+  automatizado a la base, ver nota de acceso del 2026-08-15). Esa
+  migración convierte las filas viejas en USD a colones con el tipo de
+  cambio del día en que se escribió la migración (~449 CRC/USD,
+  hardcodeado como constante en el SQL, no es tiempo real), endurece los
+  check constraints de `currency` a solo `'CRC'`, y renombra
+  `user_settings.default_currency` a `theme`. Hasta que Camil la corra, la
+  columna en la base sigue llamándose `default_currency` — el código ya
+  asume `theme`, así que si alguien saved un tema antes de correr la
+  migración, esa escritura falla en silencio (el `.upsert` de
+  `updateTheme` no explota visiblemente, pero no persiste). Avisarle a
+  Camil de correr la migración cuanto antes.
