@@ -167,18 +167,8 @@ selector de tema claro/oscuro/sistema. Deployado a producción.
   tokens (botón de Google, botones destructivos rojos, texto blanco
   hardcodeado en /privacidad y /terminos) se migraron a tokens semánticos
   nuevos (`--danger`/`--on-danger`) o existentes.
-- **Pendiente, bloqueante para que la migración de datos históricos se
-  aplique**: `supabase/migrations/0017_crc_only_theme.sql` está en el repo
-  pero sin correr — Camil tiene que ejecutarla a mano en Supabase Studio →
-  SQL Editor (mismo motivo de siempre: no hay acceso de escritura SQL
-  automatizado a la base, ver nota de acceso del 2026-08-15). Esa
-  migración convierte las filas viejas en USD a colones con el tipo de
-  cambio del día en que se escribió la migración (~449 CRC/USD,
-  hardcodeado como constante en el SQL, no es tiempo real), endurece los
-  check constraints de `currency` a solo `'CRC'`, y renombra
-  `user_settings.default_currency` a `theme`. Hasta que Camil la corra, la
-  columna en la base sigue llamándose `default_currency` — el código ya
-  asume `theme`, así que si alguien saved un tema antes de correr la
-  migración, esa escritura falla en silencio (el `.upsert` de
-  `updateTheme` no explota visiblemente, pero no persiste). Avisarle a
-  Camil de correr la migración cuanto antes.
+- `supabase/migrations/0017_crc_only_theme.sql` ya la corrió Camil a mano
+  en Supabase Studio (confirmado 2026-08-18): filas viejas en USD
+  convertidas a colones, check constraints de `currency` endurecidos a
+  solo `'CRC'`, y `user_settings.default_currency` renombrada a `theme`.
+  No queda ninguna migración pendiente de correr.
