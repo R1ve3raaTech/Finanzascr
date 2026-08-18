@@ -22,7 +22,8 @@ export default function TermsOfServicePage() {
           autorización, correos de notificación bancaria en tu cuenta de Gmail para registrar tus
           movimientos automáticamente, y te permite además registrar transacciones a mano,
           organizarlas por categoría, definir presupuestos y ver estadísticas de tus gastos e
-          ingresos en colones, dólares y córdobas.
+          ingresos en colones. Cualquier movimiento en otra moneda se convierte a colones
+          automáticamente con el tipo de cambio del día.
         </p>
         <p>
           Es un proyecto operado por una persona física (no una empresa constituida). Los

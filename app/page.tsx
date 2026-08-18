@@ -36,7 +36,7 @@ const steps = [
   },
   {
     title: "Mirá tus finanzas claras",
-    body: "Tu saldo consolidado en colones y dólares, siempre al día. Solo el efectivo se anota a mano.",
+    body: "Tu saldo consolidado en colones, siempre al día. Solo el efectivo se anota a mano.",
   },
 ];
 

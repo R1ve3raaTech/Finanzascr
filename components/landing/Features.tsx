@@ -50,8 +50,8 @@ const features = [
   },
   {
     icon: Coins,
-    title: "Colones y dólares",
-    body: "Saldo separado por moneda, sin mezclar. El efectivo se anota en dos toques.",
+    title: "Todo en colones",
+    body: "Un gasto en dólares, euros o córdobas se convierte solo, con el tipo de cambio del día.",
   },
   {
     icon: DownloadSimple,
