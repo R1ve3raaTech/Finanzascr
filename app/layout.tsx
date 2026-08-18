@@ -22,24 +22,45 @@ const montserrat = Montserrat({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://www.ticofinanza.com";
+const DESCRIPTION =
+  "Lee automáticamente tus correos de BAC, BCR, Banco Nacional, Banco Popular, DaviBank, MUCAP y PayPal. Controlá tus finanzas sin mover un solo dedo. Hecho para Costa Rica.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   applicationName: "TicoFinanza",
   title: {
     default: "TicoFinanza | Todas tus entidades bancarias y tu dinero en un solo lugar",
     template: "%s · TicoFinanza",
   },
-  description:
-    "Lee automáticamente tus correos de BAC, BCR, Banco Nacional, Banco Popular, DaviBank, MUCAP y PayPal. Controlá tus finanzas sin mover un solo dedo. Hecho para Costa Rica.",
+  description: DESCRIPTION,
+  keywords: [
+    "finanzas personales Costa Rica",
+    "app finanzas Costa Rica",
+    "control de gastos automático",
+    "SINPE Móvil",
+    "BAC Credomatic",
+    "Banco Nacional",
+    "Banco Popular",
+    "presupuesto colones",
+  ],
   appleWebApp: { title: "TicoFinanza" },
   icons: { icon: "/favicon.ico", apple: "/icon-192.png" },
+  alternates: { canonical: SITE_URL },
   openGraph: {
     siteName: "TicoFinanza",
-    title: "TicoFinanza",
-    description:
-      "Lee automáticamente tus correos bancarios y registra tus transacciones sin anotar nada a mano.",
-    url: "https://www.ticofinanza.com",
+    title: "TicoFinanza | Todas tus entidades bancarias y tu dinero en un solo lugar",
+    description: DESCRIPTION,
+    url: SITE_URL,
     locale: "es_CR",
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "TicoFinanza" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TicoFinanza | Todas tus entidades bancarias y tu dinero en un solo lugar",
+    description: DESCRIPTION,
+    images: ["/og-image.png"],
   },
 };
 

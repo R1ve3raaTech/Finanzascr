@@ -40,6 +40,23 @@ const steps = [
   },
 ];
 
+// Datos estructurados para que Google entienda qué es la app sin tener que
+// inferirlo del texto — no incluye aggregateRating: inventar reseñas que no
+// existen viola las guías de Google y puede penalizar el sitio entero.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "TicoFinanza",
+  applicationCategory: "FinanceApplication",
+  operatingSystem: "Web, Android, iOS",
+  url: "https://www.ticofinanza.com",
+  description:
+    "Lee automáticamente tus correos de BAC, BCR, Banco Nacional, Banco Popular, DaviBank, MUCAP y PayPal. Controlá tus finanzas sin mover un solo dedo. Hecho para Costa Rica.",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "CRC" },
+  areaServed: "CR",
+  inLanguage: "es-CR",
+};
+
 export default async function LandingPage() {
   const supabase = await createClient();
   const {
@@ -49,6 +66,10 @@ export default async function LandingPage() {
 
   return (
     <main className="flex min-h-[100dvh] flex-col bg-ground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="sticky top-0 z-40 border-b border-line bg-ground/80 backdrop-blur">
         <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
           <Logo subtitle="finanzas personales" />
