@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { exchangeGoogleAuthCode } from "@/lib/google/oauth";
 import { encryptToken } from "@/lib/tokenCrypto";
+import { sendWelcomeEmailIfFirstTime } from "@/lib/email/welcomeEmail";
+import { resolveFirstName } from "@/lib/profile";
 
 const STATE_COOKIE = "login_state";
 const NONCE_COOKIE = "login_nonce";
@@ -47,10 +49,11 @@ export async function GET(request: NextRequest) {
       return redirectAndClearState(`${origin}/?error=auth`);
     }
 
+    const admin = createAdminClient();
+
     // Google solo manda refresh_token la primera vez (o con prompt=consent,
     // que forzamos siempre). Si no viene, dejamos el que ya teníamos.
     if (tokens.refresh_token) {
-      const admin = createAdminClient();
       const { error: tokenError } = await admin.from("gmail_tokens").upsert(
         {
           user_id: data.user.id,
@@ -69,9 +72,14 @@ export async function GET(request: NextRequest) {
 
     const { data: profile } = await supabase
       .from("profiles")
-      .select("onboarding_completed_at")
+      .select("full_name, onboarding_completed_at")
       .eq("id", data.user.id)
       .maybeSingle();
+
+    if (data.user.email) {
+      const firstName = resolveFirstName(data.user, profile?.full_name);
+      await sendWelcomeEmailIfFirstTime(admin, data.user.id, data.user.email, firstName);
+    }
 
     const destination = profile?.onboarding_completed_at ? "/dashboard" : "/bienvenida";
     return redirectAndClearState(`${origin}${destination}`);
